@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>언행심리 분석 프롬프트 생성기</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --color-text-primary: #1a1208;
+    --color-text-secondary: #6b5b3e;
+    --color-border-tertiary: #e5ddd0;
+    --color-border-secondary: #c8baa4;
+    --color-background-primary: #fdf9f3;
+    --color-hook: #8b1a1a;
+    --color-hook-bg: rgba(139,26,26,0.06);
+    --color-hook-border: rgba(139,26,26,0.3);
+  }
+  body { margin: 0; background: #f5efe6; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; }
+  .wrap { font-family: 'Noto Sans KR', sans-serif; color: var(--color-text-primary); max-width: 680px; width: 100%; background: var(--color-background-primary); border-radius: 8px; box-shadow: 0 4px 24px rgba(26,18,8,0.10); overflow: hidden; }
+  .hdr { text-align: center; padding: 2rem 1rem 1.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .hdr-sub { font-size: 10px; letter-spacing: 6px; color: #c4922a; margin-bottom: 8px; }
+  .hdr h1 { font-family: 'Noto Serif KR', serif; font-size: 22px; font-weight: 700; line-height: 1.4; margin: 0 0 6px; }
+  .hdr p { font-size: 12px; color: var(--color-text-secondary); margin: 0; }
+  .body { padding: 1.5rem 1.5rem; }
+  .step-label { font-size: 10px; letter-spacing: 3px; color: #8b1a1a; margin-bottom: 6px; }
+  .ig { margin-bottom: 1.5rem; }
+  .ig label { display: block; font-family: 'Noto Serif KR', serif; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--color-text-primary); }
+  .ig label span { font-size: 11px; font-weight: 300; color: var(--color-text-secondary); margin-left: 5px; font-family: 'Noto Sans KR', sans-serif; }
+  textarea, input[type=text] { width: 100%; border: 0.5px solid var(--color-border-secondary); border-radius: 4px; padding: 10px 12px; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-background-primary); resize: vertical; outline: none; }
+  textarea:focus, input[type=text]:focus { border-color: #c4922a; box-shadow: 0 0 0 2px rgba(196,146,42,0.15); }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pillars { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+  .pill { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border: 0.5px solid var(--color-border-tertiary); border-radius: 4px; background: var(--color-background-primary); cursor: pointer; user-select: none; transition: all 0.15s; }
+  .pill:hover { border-color: #c4922a; }
+  .pill.on { border-color: #8b1a1a; background: rgba(139,26,26,0.05); }
+  .chk { width: 15px; height: 15px; min-width: 15px; border: 1.5px solid var(--color-border-secondary); border-radius: 2px; margin-top: 1px; display: flex; align-items: center; justify-content: center; background: var(--color-background-primary); transition: all 0.15s; }
+  .pill.on .chk { background: #8b1a1a; border-color: #8b1a1a; color: white; font-size: 10px; }
+  .pill-text { font-size: 12px; line-height: 1.5; color: var(--color-text-primary); }
+  .fmt-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .fmt-tab { padding: 6px 14px; border: 0.5px solid var(--color-border-secondary); border-radius: 3px; font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-primary); transition: all 0.15s; }
+  .fmt-tab:hover { border-color: #c4922a; }
+  .fmt-tab.on { background: #1a1208; color: #f5f0e8; border-color: #1a1208; }
+
+  /* 훅 미리보기 카드 */
+  .hook-preview { display: none; margin-top: 12px; border: 0.5px solid var(--color-hook-border); border-left: 3px solid var(--color-hook); border-radius: 4px; background: var(--color-hook-bg); padding: 12px 14px; }
+  .hook-preview.show { display: block; }
+  .hook-preview-label { font-size: 9px; letter-spacing: 3px; color: var(--color-hook); font-weight: 600; margin-bottom: 8px; }
+  .hook-preview-content { font-size: 12px; line-height: 1.8; color: var(--color-text-secondary); }
+  .hook-preview-content .hook-item { display: flex; gap: 8px; margin-bottom: 6px; }
+  .hook-preview-content .hook-item:last-child { margin-bottom: 0; }
+  .hook-num { font-size: 10px; color: var(--color-hook); font-weight: 700; min-width: 16px; padding-top: 1px; }
+  .hook-desc { font-size: 11px; line-height: 1.7; color: var(--color-text-secondary); }
+
+  .btn-gen { width: 100%; padding: 14px; background: #1a1208; color: #f5f0e8; border: none; border-radius: 4px; font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; cursor: pointer; letter-spacing: 1px; transition: background 0.2s; margin-top: 6px; }
+  .btn-gen:hover { background: #8b1a1a; }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
+  .out { display: none; }
+  .out.show { display: block; }
+  .out-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .out-title { font-family: 'Noto Serif KR', serif; font-size: 16px; font-weight: 700; color: #8b1a1a; }
+  .out-acts { display: flex; gap: 6px; }
+  .btn-copy { padding: 6px 12px; border: 0.5px solid #c4922a; border-radius: 3px; font-size: 12px; cursor: pointer; color: #c4922a; background: transparent; transition: all 0.15s; }
+  .btn-copy:hover { background: #c4922a; color: white; }
+  .prompt-box { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-left: 3px solid #8b1a1a; border-radius: 4px; padding: 20px; font-size: 13px; line-height: 1.9; color: var(--color-text-primary); white-space: pre-wrap; }
+  .prompt-box h2 { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 700; color: #8b1a1a; margin: 1.2em 0 0.4em; }
+  .prompt-box h3 { font-family: 'Noto Serif KR', serif; font-size: 13px; font-weight: 600; color: #3d2e14; margin: 1em 0 0.3em; }
+  .prompt-box strong { font-weight: 600; }
+  .prompt-box ul { padding-left: 1.2em; margin: 0.4em 0; }
+  .prompt-box li { margin: 0.2em 0; }
+  .tag { display: inline-block; background: rgba(139,26,26,0.1); color: #8b1a1a; border-radius: 3px; padding: 1px 5px; font-size: 11px; font-weight: 500; }
+  .badge { display: inline-block; background: rgba(196,146,42,0.12); color: #7a5b12; border: 0.5px solid rgba(196,146,42,0.3); border-radius: 3px; padding: 2px 7px; font-size: 11px; font-weight: 500; margin-bottom: 12px; }
+  .footer { text-align: center; font-size: 11px; color: var(--color-text-secondary); margin-top: 0; border-top: 0.5px solid var(--color-border-tertiary); padding: 1rem; }
+  @media (max-width: 500px) { .row2 { grid-template-columns: 1fr; } .pillars { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <div class="hdr-sub">言行心理學</div>
+    <h1>언행심리 분석 프롬프트 생성기</h1>
+    <p>사건을 입력하면 언행심리학 관점의 분석 프롬프트를 자동으로 생성합니다</p>
+  </div>
+  <div class="body">
+    <div class="ig">
+      <div class="step-label">STEP 01</div>
+      <label>사건 내용 <span>분석할 사건이나 현상</span></label>
+      <textarea id="eventInput" rows="4" placeholder="예) 정치인 A가 국회에서 '절대 사퇴하지 않겠다'고 발언했지만, 3일 후 전격 사퇴를 발표했다..."></textarea>
+    </div>
+    <div class="row2">
+      <div class="ig">
+        <div class="step-label">STEP 02</div>
+        <label>주요 당사자 <span>분석 대상 인물</span></label>
+        <input type="text" id="personInput" placeholder="예) 정치인 A, 배우자 B">
+      </div>
+      <div class="ig">
+        <div class="step-label">STEP 03</div>
+        <label>사건 유형 <span>맥락 분류</span></label>
+        <input type="text" id="categoryInput" placeholder="예) 정치, 범죄, 기업, 연예">
+      </div>
+    </div>
+    <div class="ig">
+      <div class="step-label">STEP 04</div>
+      <label>적용할 언행심리 분석 원리 <span>해당 사건에 관련된 것을 선택</span></label>
+      <div class="pillars" id="pillarsGrid">
+        <div class="pill on" data-key="chain" onclick="togglePill(this)">
+          <div class="chk">✓</div><div class="pill-text">생각-말-행동 연쇄 분석</div>
+        </div>
+        <div class="pill on" data-key="yinyeon" onclick="togglePill(this)">
+          <div class="chk">✓</div><div class="pill-text">인연법 (조력자·배우자 영향)</div>
+        </div>
+        <div class="pill on" data-key="zerobase" onclick="togglePill(this)">
+          <div class="chk">✓</div><div class="pill-text">제로 베이스 독해법</div>
+        </div>
+        <div class="pill" data-key="bokgi" onclick="togglePill(this)">
+          <div class="chk"></div><div class="pill-text">복기(復棋) — 언행 패턴 재구성</div>
+        </div>
+        <div class="pill" data-key="timeline" onclick="togglePill(this)">
+          <div class="chk"></div><div class="pill-text">과거-현재-미래 투영</div>
+        </div>
+        <div class="pill" data-key="relation" onclick="togglePill(this)">
+          <div class="chk"></div><div class="pill-text">관계 선택론 (주변 인물 분석)</div>
+        </div>
+        <div class="pill" data-key="gap" onclick="togglePill(this)">
+          <div class="chk"></div><div class="pill-text">언행 불일치 균열 탐지</div>
+        </div>
+        <div class="pill" data-key="org" onclick="togglePill(this)">
+          <div class="chk"></div><div class="pill-text">조직·국가 단위 분석</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ig">
+      <div class="step-label">STEP 05</div>
+      <label>분석 글 형식</label>
+      <div class="fmt-tabs">
+        <div class="fmt-tab on" data-fmt="column" onclick="selectFmt(this)">칼럼 형식</div>
+        <div class="fmt-tab" data-fmt="report" onclick="selectFmt(this)">심층 분석 보고서</div>
+        <div class="fmt-tab" data-fmt="qa" onclick="selectFmt(this)">Q&A 풀이 형식</div>
+        <div class="fmt-tab" data-fmt="sns" onclick="selectFmt(this)">SNS 쇼츠 해설</div>
+        <div class="fmt-tab" data-fmt="script" onclick="selectFmt(this)">방송 스크립트</div>
+      </div>
+
+      <!-- 형식별 훅 미리보기 -->
+      <div class="hook-preview show" id="hookPreview">
+        <div class="hook-preview-label">▸ 이 형식의 훅(Hook) 구조</div>
+        <div class="hook-preview-content" id="hookPreviewContent"></div>
+      </div>
+    </div>
+
+    <button class="btn-gen" id="generateBtn" onclick="generate()">언행심리 분석 프롬프트 생성하기</button>
+    <hr class="divider">
+    <div class="out" id="outputArea">
+      <div class="out-hdr">
+        <div class="out-title">생성된 분석 프롬프트</div>
+        <div class="out-acts">
+          <button class="btn-copy" onclick="copyPrompt()">복사</button>
+        </div>
+      </div>
+      <div class="badge">✦ Claude에게 이 프롬프트를 붙여넣어 분석을 시작하세요</div>
+      <div class="prompt-box" id="promptBox"></div>
+    </div>
+  </div>
+  <div class="footer">언행심리학 이론 — <strong>강다인 언행심리마스터</strong> · 2026</div>
+</div>
+
+<script>
+let selectedFmt = 'column';
+
+// ───────────────────────────────────────────────
+// 형식별 훅 구조 설명 (미리보기용)
+// ───────────────────────────────────────────────
+const hookPreviews = {
+  column: [
+    { n:'①', t:'모순 포착 훅', d:'첫 문장에서 "이 사건의 가장 이상한 점은"으로 시작해 독자가 고개를 갸웃하게 만드는 모순 하나를 단도직입으로 제시' },
+    { n:'②', t:'반전 질문 훅', d:'독자가 "당연하다"고 여기는 통념을 뒤집는 질문으로 도입부를 닫고 본문으로 진입' }
+  ],
+  report: [
+    { n:'①', t:'핵심 발견 선공개 훅', d:'보고서 첫머리에 가장 충격적인 분석 결론 한 줄을 먼저 제시하고, "이 판단의 근거는 아래에 있다"로 독자를 본문으로 끌어당김' },
+    { n:'②', t:'데이터 역설 훅', d:'수치·날짜·발언문 등 팩트를 나열하되, 마지막 줄에서 "그런데 이것이 왜 문제인가?"라는 역설 질문으로 분석 욕구를 자극' }
+  ],
+  qa: [
+    { n:'①', t:'도발적 1번 질문 훅', d:'Q1을 가장 자극적이고 핵심적인 질문으로 배치. "왜 그는 스스로 무너졌을까?" 류의 질문으로 이후 전체 Q&A 집중도를 설정' },
+    { n:'②', t:'반전 답변 훅', d:'A1에서 독자 예상을 완전히 뒤집는 해석을 제시해 "다음 질문도 읽어야 한다"는 기대감 형성' }
+  ],
+  sns: [
+    { n:'①', t:'3초 멈춤 훅', d:'첫 줄 단독 배치: 숫자·날짜·충격 발언 원문 인용으로 스크롤을 멈추게 하는 한 문장. 마침표 없이 끝내 궁금증 유발' },
+    { n:'②', t:'공백 낙차 훅', d:'첫 줄 다음 의도적 짧은 공백으로 리듬 쉬어가기, 이어지는 두 번째 줄에서 "그런데"로 반전 시작' },
+    { n:'③', t:'마지막 한 줄 훅', d:'결론 뒤에 한 줄 공백 후 여운 한마디로 저장·공유 욕구를 자극하는 클로징 훅' }
+  ],
+  script: [
+    { n:'①', t:'개인 시선 오프닝 훅', d:'분석가의 솔직한 개인 반응으로 시작: "저는 이 사건을 보고 단 한 가지만 계속 머릿속에서 떠나지 않았습니다." 시청자와 감정 동기화' },
+    { n:'②', t:'시청자 참여 훅', d:'본문 중반에 한 번 "여기서 잠깐, 여러분이라면 어떻게 하셨겠습니까?"로 몰입감 재점화' },
+    { n:'③', t:'클로징 여운 훅', d:'최종 분석 후 시청자에게 열린 질문을 던지며 마무리. 단정하지 않아 댓글·토론 욕구 유발' }
+  ]
+};
+
+function renderHookPreview(fmt) {
+  const items = hookPreviews[fmt] || [];
+  const container = document.getElementById('hookPreviewContent');
+  container.innerHTML = items.map(item =>
+    `<div class="hook-item">
+      <div class="hook-num">${item.n}</div>
+      <div class="hook-desc"><strong>${item.t}</strong> — ${item.d}</div>
+    </div>`
+  ).join('');
+  document.getElementById('hookPreview').classList.add('show');
+}
+
+function togglePill(el) {
+  el.classList.toggle('on');
+  el.querySelector('.chk').textContent = el.classList.contains('on') ? '✓' : '';
+}
+
+function selectFmt(el) {
+  document.querySelectorAll('.fmt-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  selectedFmt = el.dataset.fmt;
+  renderHookPreview(selectedFmt);
+}
+
+// 초기 훅 미리보기
+renderHookPreview('column');
+
+function getPillars() {
+  const labels = {
+    chain:    '생각-말-행동 연쇄 분석',
+    yinyeon:  '인연법(因緣法) — 조력자·배우자 영향력 분석',
+    zerobase: '제로 베이스 독해법',
+    bokgi:    '복기(復棋) — 언행 패턴 재구성',
+    timeline: '과거-현재-미래 투영 원리',
+    relation: '관계 선택론 — 주변 인물 구도 분석',
+    gap:      '언행 불일치 균열 탐지',
+    org:      '조직·국가 단위 확장 분석'
+  };
+  return [...document.querySelectorAll('.pill.on')].map(el => labels[el.dataset.key]).filter(Boolean);
+}
+
+const pillarDescriptions = {
+  '생각-말-행동 연쇄 분석': `【생각-말-행동 연쇄 분석】
+  언행심리학 공리 1(생각은 말이다)과 공리 2(말은 행동의 예고다)를 적용한다.
+  - 당사자의 언어 표현에서 내면의 생각을 독해한다
+  - 과거 발언이 이번 행동을 어떻게 예고했는지 추적한다
+  - "왜 하필 그 말을 썼을까"라는 관점으로 언어 선택을 분석한다`,
+
+  '인연법(因緣法) — 조력자·배우자 영향력 분석': `【인연법(因緣法) 분석】
+  "이해하기 어려운 행동 뒤에는 반드시 그 생각을 심어준 조력자가 있다"는 원리를 적용한다.
+  - 당사자 주변의 핵심 인물(배우자, 참모, 멘토 등)을 식별한다
+  - 그 인물이 당사자의 언행에 미친 심리적 영향을 분석한다
+  - 관계 역학이 이번 사건에서 어떻게 작동했는지 해석한다`,
+
+  '제로 베이스 독해법': `【제로 베이스 독해법】
+  당사자의 사회적 지위·권력·명성을 0으로 초기화하고, 오직 태도와 언행 자체만으로 평가한다.
+  - "이 말과 행동을 일반인이 했다면 어떻게 평가받았을까?"라는 질문을 적용한다
+  - 권위·직함·배경에 의해 희석되어 온 언행의 본질을 드러낸다
+  - 사회적 프레임을 걷어낸 순수한 언행 분석을 제시한다`,
+
+  '복기(復棋) — 언행 패턴 재구성': `【복기(復棋) 분석】
+  바둑 복기처럼 사건의 언행 패턴을 시간순으로 재구성한다.
+  - 사건 이전의 발언·행동 데이터를 시간축으로 나열한다
+  - 반복되는 패턴과 변곡점을 찾는다
+  - "그때 그 말이 이미 신호였다"는 관점으로 역추적한다`,
+
+  '과거-현재-미래 투영 원리': `【과거-현재-미래 투영 분석】
+  과거의 언행 패턴이 현재를 설명하고, 현재의 언행이 미래를 예고한다는 원리를 적용한다.
+  - 당사자의 과거 유사 사례와 이번 사건을 연결한다
+  - 현재 언행 패턴에서 향후 행동을 예측한다
+  - 반복되는 심리 구조를 드러낸다`,
+
+  '관계 선택론 — 주변 인물 구도 분석': `【관계 선택론 분석】
+  "어떤 사람을 곁에 두느냐가 그 사람의 심리를 보여준다"는 원리를 적용한다.
+  - 당사자가 선택한 주변 인물의 특성을 분석한다
+  - 관계 구도(충성형/이익형/두려움형)를 파악한다
+  - 관계 변화(측근 교체, 단절 등)의 심리적 의미를 해석한다`,
+
+  '언행 불일치 균열 탐지': `【언행 불일치 균열 탐지】
+  말과 행동이 어긋나는 지점에서 심리의 본질이 드러난다는 원리를 적용한다.
+  - 발언과 실제 행동 사이의 시간적·내용적 괴리를 측정한다
+  - 불일치가 발생한 시점의 외부 압력·내부 갈등을 분석한다
+  - "왜 지킬 수 없는 말을 했을까"라는 질문으로 심리 동기를 해명한다`,
+
+  '조직·국가 단위 확장 분석': `【조직·국가 단위 확장 분석】
+  개인 언행 분석을 조직·집단·국가 차원으로 확장한다.
+  - 개인의 언행 패턴이 조직 문화에 어떻게 투영되는지 분석한다
+  - 집단의 집단심리와 개인 심리의 상호작용을 해석한다
+  - 이 사건이 조직/사회에 미치는 언행심리학적 파급 효과를 분석한다`
+};
+
+// ───────────────────────────────────────────────
+// 형식별 출력 지침 — 훅 구간 명시 포함
+// ───────────────────────────────────────────────
+const fmtInstructions = {
+
+  column: `【출력 형식: 프로파일러 칼럼 스타일】
+
+▣ 구조 순서
+
+  [제목]
+  사건의 본질을 관통하는 날카로운 제목 (부제 1줄 포함)
+
+  ══ 훅(Hook) 구간 ① — 모순 포착 ══
+  첫 문장은 반드시 이 사건에서 가장 이상하거나 모순된 지점 하나를 단도직입으로 제시한다.
+  예: "그가 '절대'라는 단어를 쓴 순간, 이미 모든 것이 결정되어 있었다."
+  → 독자가 "어, 왜?"라는 의문을 품도록 유도. 배경 설명은 아직 하지 않는다.
+
+  ══ 훅(Hook) 구간 ② — 반전 질문 ══
+  도입부 끝에서 독자의 통념을 뒤집는 질문 한 줄로 본문 진입을 촉진한다.
+  예: "우리는 그를 거짓말쟁이라고 부르지만, 언행심리학은 다른 질문을 던진다."
+
+  [본문]
+  프로파일러처럼 행동 단서 → 심리 동기 → 숨겨진 의도 순으로 냉정하게 분석.
+  감정 없이 증거와 패턴 중심으로 서술한다.
+
+  [마무리]
+  이 사건이 드러내는 인간 심리의 본질과 향후 행동 예측.
+
+▣ 추가 지침
+  - 전체 어조: 수사관·프로파일러처럼 건조하고 논리적이되, 독자가 "소름 돋는다"고 느낄 만큼 날카로운 문체
+  - 분량: 3,000자 이상`,
+
+  report: `【출력 형식: 심층 분석 보고서 스타일】
+
+▣ 구조 순서
+
+  [보고서 제목 + 분석 일자]
+
+  ══ 훅(Hook) 구간 ① — 핵심 발견 선공개 ══
+  보고서 최상단에 "핵심 분석 결론" 박스를 별도로 배치한다.
+  이 사건에서 언행심리학이 도출한 가장 중요한 발견 한 줄을 먼저 제시한다.
+  예: "▶ 핵심 결론: 이번 언행 패턴은 3년 전 동일 유형의 전조와 일치하며, 향후 ○○ 행동이 예측된다."
+  → "이 판단의 근거는 아래 분석에 있다"는 문장으로 독자를 본문으로 유인.
+
+  ══ 훅(Hook) 구간 ② — 데이터 역설 ══
+  사건 개요 섹션 말미에 핵심 팩트(날짜·발언·수치)를 나열하되,
+  마지막 줄: "그렇다면, 왜 그는 이 시점에 이 말을 골랐는가?"라는 역설 질문으로 마감.
+
+  [섹션별 분석]
+  각 언행심리 원리마다 별도 섹션으로 분석.
+  언론 단서 → 심리 해석 → 예측의 3단 구조를 유지.
+  전문적이고 논리적인 보고서 어조.
+
+  [종합 판단 및 향후 행동 예측]
+  마지막 섹션에서 종합 판단과 행동 예측을 제시.
+
+▣ 추가 지침
+  - 소제목으로 섹션 구분, 번호 체계 사용`,
+
+  qa: `【출력 형식: Q&A 풀이 스타일】
+
+▣ 구조 순서
+
+  ══ 훅(Hook) 구간 ① — 도발적 1번 질문 ══
+  Q1은 반드시 이 사건에서 가장 핵심적이고 자극적인 질문이어야 한다.
+  예: "Q1. 왜 그는 스스로 무너지는 말을 골랐을까?"
+  → 독자가 "나도 그게 궁금했어"라고 느끼는 질문. 가장 자극적인 것을 맨 앞에.
+
+  ══ 훅(Hook) 구간 ② — 반전 답변 ══
+  A1은 독자가 예상한 답을 의도적으로 뒤집는 해석으로 시작한다.
+  예: "많은 사람이 그를 거짓말쟁이라 부르지만, 언행심리학의 대답은 정반대입니다."
+  → 이후 Q&A 전체를 읽게 만드는 기대감 형성.
+
+  [Q2~Q7]
+  대중이 궁금해하는 질문 추가 4~6개를 언행심리학으로 명쾌하게 답변.
+  "왜 그랬을까?" "무슨 의미일까?" 형식의 질문. 쉬운 말로, 하지만 날카롭게.
+
+▣ 추가 지침
+  - 총 5~7개 질문-답변 구성
+  - 마지막 질문은 미래 예측형으로 마무리`,
+
+  sns: `【출력 형식: SNS/숏폼 해설 스타일】
+
+▣ 구조 순서
+
+  ══ 훅(Hook) 구간 ① — 3초 멈춤 훅 ══
+  첫 줄은 단독 배치. 숫자·날짜·충격 발언 원문 인용 중 하나를 활용해
+  스크롤을 멈추게 하는 한 문장을 쓴다. 마침표 없이 끝낸다.
+  예: "그가 '절대'라는 말을 쓴 날로부터 정확히 72시간 후"
+  → 다음 줄까지 읽지 않으면 문장이 완성되지 않는 구조.
+
+  ══ 훅(Hook) 구간 ② — 공백 낙차 훅 ══
+  첫 줄 다음 한 줄 공백으로 리듬을 끊은 뒤,
+  "그런데" 또는 "하지만" 으로 반전 시작.
+
+  [핵심 포인트 3~5개]
+  짧고 강렬하게, 각 포인트에 언행심리 이론 적용.
+  리듬감 있는 짧은 문장 구조.
+
+  ══ 훅(Hook) 구간 ③ — 마지막 한 줄 훅 ══
+  결론 뒤에 한 줄 공백 후, 저장·공유 욕구를 자극하는 클로징 문장 1줄.
+  예: "말은 거짓말해도, 패턴은 거짓말하지 않는다."
+
+▣ 추가 지침
+  - 전체 리듬감을 최우선으로 유지
+  - 해시태그 또는 저장 유도 문구 포함 가능`,
+
+  script: `【출력 형식: 분석가 1인칭 방송 스크립트 스타일】
+  형식: 언행심리 분석가가 카메라를 보며 직접 말하는 1인칭 단독 스크립트.
+  MC 없이 분석가 혼자 처음부터 끝까지 진행.
+
+▣ 구조 순서
+
+  ══ 훅(Hook) 구간 ① — 개인 시선 오프닝 훅 ══
+  분석가의 솔직한 개인 반응으로 시작한다.
+  예: "저는 이 사건을 처음 접했을 때, 단 한 가지가 계속 마음에 걸렸습니다."
+  → 시청자와 감정 동기화. 사건 설명은 아직 하지 않는다.
+  이어서: "제가 걸린 건 바로 이 말이었습니다. [발언 인용]"
+  (자막: 핵심 발언 원문)
+
+  [본문 분석]
+  분석가가 시청자에게 직접 설명하듯 언행심리 분석을 전개.
+  "여기서 주목해야 할 건~", "제가 이 말에서 읽은 건~" 등 1인칭 구어체 유지.
+  각 분석 포인트마다 "(자막: ○○○)" 형태로 자막 지문 포함.
+
+  ══ 훅(Hook) 구간 ② — 중반 시청자 참여 훅 ══
+  본문 중반 핵심 분석 직후에 한 번 삽입한다.
+  예: "여기서 잠깐, 여러분이라면 어떻게 하셨겠습니까?"
+  → 몰입감 재점화. 2~3초 침묵 후 분석가가 직접 답한다.
+
+  ══ 훅(Hook) 구간 ③ — 클로징 여운 훅 ══
+  최종 해석 후 시청자에게 열린 질문을 던지며 마무리.
+  단정하지 않아 댓글·토론 욕구를 유발.
+  예: "저는 이 사건에서 한 가지를 배웠습니다. 말은 사람의 가장 솔직한 얼굴입니다."
+
+▣ 추가 지침
+  - 어조: 차분하고 확신에 찬 분석가의 목소리. 단정하지 않되 설득력 있게
+  - 분량: 3,000자 이상 (실제 방송 5~7분 분량)`
+};
+
+function buildPrompt(eventText, person, category, pillars, fmt) {
+  const personLine   = person   ? `\n▪ 주요 당사자: ${person}` : '';
+  const categoryLine = category ? `\n▪ 사건 유형: ${category}` : '';
+
+  const pillarsBlock = pillars.length > 0
+    ? pillars.map((p, i) => `${i+1}. ${p}`).join('\n')
+    : '전체 원리 종합 적용';
+
+  const pillarDetailsBlock = pillars.length > 0
+    ? pillars.map(p => pillarDescriptions[p] || `- ${p}`).join('\n\n')
+    : Object.values(pillarDescriptions).join('\n\n');
+
+  return `당신은 언행심리학(言行心理學) 전문 분석가입니다.
+
+══════════════════════════════════════
+언행심리학 핵심 이론
+══════════════════════════════════════
+
+[3대 공리]
+• 공리 1: 생각은 말이다 — 언어를 분석하면 생각이 드러난다
+• 공리 2: 말은 행동의 예고다 — 언어 패턴으로 다음 행동을 예측할 수 있다
+• 공리 3: 행동에는 반드시 이유가 있다 — 이해 불가한 행동도 심리·관계로 해명된다
+
+[분석 철학]
+언론에 드러난 단서만 사용하되, 언행심리이론으로 새롭게 독해한다.
+단정이 아닌 '언행심리학적 해석'으로 제시한다.
+
+══════════════════════════════════════
+분석 대상 사건
+══════════════════════════════════════
+${eventText}${personLine}${categoryLine}
+
+══════════════════════════════════════
+적용할 언행심리 분석 원리 (${pillars.length > 0 ? pillars.length : '전체'}개)
+══════════════════════════════════════
+${pillarsBlock}
+
+각 원리별 분석 지침:
+
+${pillarDetailsBlock}
+
+══════════════════════════════════════
+${fmtInstructions[fmt]}
+══════════════════════════════════════
+
+[주의사항]
+• 언론에 공개된 단서만 활용
+• 단정이 아닌 언행심리학적 해석임을 명시
+• 대중이 "아, 그래서 그랬구나!" 할 수 있도록 풀어쓰기
+• 기존 프로파일러·심리학 분석과 차별되는 언행심리학만의 관점 강조
+• 이론 원칙명(인연법, 제로 베이스, 복기 등)을 자연스럽게 녹여 사용
+• 반드시 훅(Hook) 구간을 지침대로 구현할 것 — 훅은 독자/시청자의 집중도를 만드는 핵심 장치임`;
+}
+
+function renderMd(text) {
+  return text
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*?<\/li>\n?)+/gs, m => `<ul>${m}</ul>`)
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/(인연법|제로 베이스|복기|생각-말-행동|언행심리|과거-현재-미래|관계 선택론|언행 불일치)/g, '<span class="tag">$1</span>');
+}
+
+function generate() {
+  const eventText = document.getElementById('eventInput').value.trim();
+  if (!eventText) { alert('사건 내용을 입력해 주세요.'); return; }
+
+  const person   = document.getElementById('personInput').value.trim();
+  const category = document.getElementById('categoryInput').value.trim();
+  const pillars  = getPillars();
+  const promptBox  = document.getElementById('promptBox');
+  const outputArea = document.getElementById('outputArea');
+
+  const prompt = buildPrompt(eventText, person, category, pillars, selectedFmt);
+
+  promptBox.style.whiteSpace = 'pre-wrap';
+  promptBox.textContent = prompt;
+  window._lastPrompt = prompt;
+
+  outputArea.classList.add('show');
+  outputArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function copyPrompt() {
+  const text = window._lastPrompt || document.getElementById('promptBox').innerText;
+  try {
+    await navigator.clipboard.writeText(text);
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '✓ 복사됨';
+    setTimeout(() => btn.textContent = '복사', 1500);
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '✓ 복사됨';
+    setTimeout(() => btn.textContent = '복사', 1500);
+  }
+}
+</script>
+</body>
+</html>
