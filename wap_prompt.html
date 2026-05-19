@@ -3,237 +3,768 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>언행심리 분석 프롬프트 생성기</title>
+<title>언행심리 분석 프롬프트 생성기 — 리경(理鏡) 엔진</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
-  *, *::before, *::after { box-sizing: border-box; }
-  :root {
-    --color-text-primary: #1a1208;
-    --color-text-secondary: #6b5b3e;
-    --color-border-tertiary: #e5ddd0;
-    --color-border-secondary: #c8baa4;
-    --color-background-primary: #fdf9f3;
-    --color-hook: #8b1a1a;
-    --color-hook-bg: rgba(139,26,26,0.06);
-    --color-hook-border: rgba(139,26,26,0.3);
-  }
-  body { margin: 0; background: #f5efe6; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; }
-  .wrap { font-family: 'Noto Sans KR', sans-serif; color: var(--color-text-primary); max-width: 680px; width: 100%; background: var(--color-background-primary); border-radius: 8px; box-shadow: 0 4px 24px rgba(26,18,8,0.10); overflow: hidden; }
-  .hdr { text-align: center; padding: 2rem 1rem 1.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
-  .hdr-sub { font-size: 10px; letter-spacing: 6px; color: #c4922a; margin-bottom: 8px; }
-  .hdr h1 { font-family: 'Noto Serif KR', serif; font-size: 22px; font-weight: 700; line-height: 1.4; margin: 0 0 6px; }
-  .hdr p { font-size: 12px; color: var(--color-text-secondary); margin: 0; }
-  .body { padding: 1.5rem 1.5rem; }
-  .step-label { font-size: 10px; letter-spacing: 3px; color: #8b1a1a; margin-bottom: 6px; }
-  .ig { margin-bottom: 1.5rem; }
-  .ig label { display: block; font-family: 'Noto Serif KR', serif; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--color-text-primary); }
-  .ig label span { font-size: 11px; font-weight: 300; color: var(--color-text-secondary); margin-left: 5px; font-family: 'Noto Sans KR', sans-serif; }
-  textarea, input[type=text] { width: 100%; border: 0.5px solid var(--color-border-secondary); border-radius: 4px; padding: 10px 12px; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: var(--color-text-primary); background: var(--color-background-primary); resize: vertical; outline: none; }
-  textarea:focus, input[type=text]:focus { border-color: #c4922a; box-shadow: 0 0 0 2px rgba(196,146,42,0.15); }
-  .char-count { text-align: right; font-size: 10px; color: var(--color-text-secondary); margin-top: 4px; }
-  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
-  /* 원리 안내 박스 */
-  .principle-box { border: 0.5px solid var(--color-border-secondary); border-left: 3px solid #c4922a; border-radius: 4px; background: rgba(196,146,42,0.04); padding: 14px 16px; }
-  .principle-box-header { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
-  .principle-icon { font-size: 20px; color: #c4922a; line-height: 1; min-width: 22px; padding-top: 1px; }
-  .principle-title { font-family: 'Noto Serif KR', serif; font-size: 13px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px; }
-  .principle-desc { font-size: 11px; color: var(--color-text-secondary); line-height: 1.7; }
-  .principle-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
-  .principle-pill { display: inline-block; font-size: 10px; padding: 3px 9px; border: 0.5px solid rgba(139,26,26,0.25); border-radius: 20px; color: #8b1a1a; background: rgba(139,26,26,0.05); }
-  .principle-note { margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--color-border-tertiary); font-size: 11px; color: var(--color-text-secondary); line-height: 1.7; }
-  .principle-note strong { color: var(--color-text-primary); font-weight: 500; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .fmt-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-  .fmt-tab { padding: 6px 14px; border: 0.5px solid var(--color-border-secondary); border-radius: 3px; font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-primary); transition: all 0.15s; user-select: none; }
-  .fmt-tab:hover { border-color: #c4922a; }
-  .fmt-tab.on { background: #1a1208; color: #f5f0e8; border-color: #1a1208; }
+:root {
+  --ink:        #0e0b07;
+  --ink-soft:   #3d3322;
+  --ink-muted:  #7a6e5f;
+  --gold:       #b8882a;
+  --gold-light: #d4a843;
+  --gold-pale:  rgba(184,136,42,0.08);
+  --gold-line:  rgba(184,136,42,0.25);
+  --crimson:    #8b1a1a;
+  --crimson-pale: rgba(139,26,26,0.07);
+  --crimson-line: rgba(139,26,26,0.3);
+  --paper:      #faf6ef;
+  --paper-deep: #f3ede3;
+  --border:     rgba(14,11,7,0.12);
+  --border-soft: rgba(14,11,7,0.07);
+}
 
-  /* 훅 미리보기 카드 */
-  .hook-preview { display: none; margin-top: 12px; border: 0.5px solid var(--color-hook-border); border-left: 3px solid var(--color-hook); border-radius: 4px; background: var(--color-hook-bg); padding: 12px 14px; }
-  .hook-preview.show { display: block; }
-  .hook-preview-label { font-size: 9px; letter-spacing: 3px; color: var(--color-hook); font-weight: 600; margin-bottom: 8px; }
-  .hook-item { display: flex; gap: 8px; margin-bottom: 6px; }
-  .hook-item:last-child { margin-bottom: 0; }
-  .hook-num { font-size: 10px; color: var(--color-hook); font-weight: 700; min-width: 16px; padding-top: 1px; }
-  .hook-desc { font-size: 11px; line-height: 1.7; color: var(--color-text-secondary); }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--paper-deep);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2.5rem 1rem 3rem;
+}
 
-  .btn-gen { width: 100%; padding: 14px; background: #1a1208; color: #f5f0e8; border: none; border-radius: 4px; font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; cursor: pointer; letter-spacing: 1px; transition: background 0.2s; margin-top: 6px; }
-  .btn-gen:hover { background: #8b1a1a; }
-  .btn-gen:disabled { background: #9e9488; cursor: not-allowed; }
-  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
-  .out { display: none; }
-  .out.show { display: block; }
-  .out-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .out-title { font-family: 'Noto Serif KR', serif; font-size: 16px; font-weight: 700; color: #8b1a1a; }
-  .btn-copy { padding: 6px 12px; border: 0.5px solid #c4922a; border-radius: 3px; font-size: 12px; cursor: pointer; color: #c4922a; background: transparent; transition: all 0.15s; }
-  .btn-copy:hover { background: #c4922a; color: white; }
-  .badge { display: inline-block; background: rgba(196,146,42,0.12); color: #7a5b12; border: 0.5px solid rgba(196,146,42,0.3); border-radius: 3px; padding: 2px 7px; font-size: 11px; font-weight: 500; margin-bottom: 12px; }
-  .prompt-box { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-left: 3px solid #8b1a1a; border-radius: 4px; padding: 20px; font-size: 13px; line-height: 1.9; color: var(--color-text-primary); white-space: pre-wrap; word-break: break-word; }
-  .regen-toast { display: none; font-size: 11px; color: #c4922a; margin-bottom: 8px; }
-  .regen-toast.show { display: block; }
-  .footer { text-align: center; font-size: 11px; color: var(--color-text-secondary); margin-top: 0; border-top: 0.5px solid var(--color-border-tertiary); padding: 1rem; }
-  @media (max-width: 500px) { .row2 { grid-template-columns: 1fr; } }
+/* ── WRAP ── */
+.wrap {
+  width: 100%;
+  max-width: 700px;
+  background: var(--paper);
+  border-radius: 2px;
+  box-shadow:
+    0 0 0 0.5px var(--border),
+    0 8px 40px rgba(14,11,7,0.12),
+    0 2px 8px rgba(14,11,7,0.06);
+  overflow: hidden;
+}
+
+/* ── HEADER ── */
+.hdr {
+  position: relative;
+  padding: 2.8rem 2.4rem 2.2rem;
+  border-bottom: 0.5px solid var(--border);
+  background: var(--ink);
+  overflow: hidden;
+}
+.hdr::before {
+  content: '理鏡';
+  position: absolute;
+  right: -10px;
+  top: -20px;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 120px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  letter-spacing: -4px;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.hdr-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.hdr-eyebrow-line {
+  width: 28px;
+  height: 0.5px;
+  background: var(--gold);
+}
+.hdr-eyebrow-text {
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  font-weight: 500;
+}
+.hdr h1 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #f5f0e6;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.hdr-sub {
+  font-size: 12px;
+  color: rgba(245,240,230,0.5);
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+/* ── ENGINE BADGE ── */
+.engine-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-top: 22px;
+  border: 0.5px solid rgba(184,136,42,0.4);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.engine-badge {
+  background: rgba(184,136,42,0.15);
+  border-right: 0.5px solid rgba(184,136,42,0.4);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.engine-badge-icon {
+  font-size: 16px;
+  color: var(--gold-light);
+}
+.engine-badge-label {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-light);
+  white-space: nowrap;
+}
+.engine-axioms {
+  display: flex;
+  flex: 1;
+  padding: 8px 14px;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.axiom-pill {
+  font-size: 10px;
+  color: rgba(245,240,230,0.6);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+.axiom-pill strong {
+  color: rgba(245,240,230,0.9);
+  font-weight: 500;
+}
+.axiom-sep {
+  width: 0.5px;
+  height: 12px;
+  background: rgba(245,240,230,0.2);
+  flex-shrink: 0;
+}
+
+/* ── BODY ── */
+.body {
+  padding: 2rem 2.4rem;
+}
+
+/* ── STEP LABEL ── */
+.step-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.step-num {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  font-weight: 600;
+}
+.step-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+/* ── INPUT GROUP ── */
+.ig {
+  margin-bottom: 1.8rem;
+}
+.ig > label {
+  display: block;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.ig > label .hint {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--ink-muted);
+  margin-left: 6px;
+}
+
+textarea, input[type=text] {
+  width: 100%;
+  border: 0.5px solid rgba(14,11,7,0.2);
+  border-radius: 2px;
+  padding: 11px 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--paper);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  resize: vertical;
+}
+textarea:focus, input[type=text]:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-pale);
+}
+textarea::placeholder, input::placeholder {
+  color: var(--ink-muted);
+  font-weight: 300;
+}
+.char-count {
+  text-align: right;
+  font-size: 10px;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ── RIGYEONG BOX ── */
+.rigyeong-box {
+  border: 0.5px solid var(--gold-line);
+  border-left: 3px solid var(--gold);
+  border-radius: 2px;
+  background: var(--gold-pale);
+  padding: 16px 18px;
+}
+.rigyeong-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.rigyeong-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(184,136,42,0.15);
+  border: 0.5px solid var(--gold-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 14px;
+  color: var(--gold);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.rigyeong-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.rigyeong-desc {
+  font-size: 11px;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+.rigyeong-layers {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.layer-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: 0.5px solid var(--gold-line);
+  border-radius: 2px;
+  background: rgba(184,136,42,0.06);
+}
+.layer-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+.layer-text {
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.rigyeong-formula {
+  border-top: 0.5px solid var(--gold-line);
+  padding-top: 12px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  line-height: 1.8;
+}
+.rigyeong-formula .formula-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.formula-row:last-child { margin-bottom: 0; }
+.formula-arrow {
+  color: var(--gold);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.formula-text strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ── PRINCIPLES ── */
+.principles-box {
+  border: 0.5px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.principles-header {
+  background: var(--paper-deep);
+  border-bottom: 0.5px solid var(--border);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.principles-header-left {
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.principles-header-right {
+  font-size: 10px;
+  color: var(--ink-muted);
+}
+.principles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.principle-item {
+  padding: 9px 14px;
+  border-bottom: 0.5px solid var(--border-soft);
+  border-right: 0.5px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.principle-item:nth-child(2n) { border-right: none; }
+.principle-item:nth-last-child(-n+2) { border-bottom: none; }
+.principle-num {
+  font-size: 9px;
+  color: var(--crimson);
+  font-weight: 700;
+  min-width: 14px;
+}
+.principle-name {
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+/* ── FORMAT TABS ── */
+.fmt-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.fmt-tab {
+  padding: 7px 14px;
+  border: 0.5px solid var(--border);
+  border-radius: 2px;
+  font-size: 12px;
+  cursor: pointer;
+  background: var(--paper);
+  color: var(--ink-soft);
+  transition: all 0.15s;
+  user-select: none;
+  font-weight: 400;
+}
+.fmt-tab:hover { border-color: var(--gold); color: var(--ink); }
+.fmt-tab.on {
+  background: var(--ink);
+  color: #f5f0e6;
+  border-color: var(--ink);
+  font-weight: 500;
+}
+
+/* ── HOOK PREVIEW ── */
+.hook-preview {
+  display: none;
+  margin-top: 12px;
+  border: 0.5px solid var(--crimson-line);
+  border-left: 3px solid var(--crimson);
+  border-radius: 2px;
+  background: var(--crimson-pale);
+  padding: 12px 16px;
+}
+.hook-preview.show { display: block; }
+.hook-preview-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--crimson);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.hook-item { display: flex; gap: 8px; margin-bottom: 8px; }
+.hook-item:last-child { margin-bottom: 0; }
+.hook-num { font-size: 10px; color: var(--crimson); font-weight: 700; min-width: 16px; padding-top: 1px; }
+.hook-desc { font-size: 11px; line-height: 1.7; color: var(--ink-soft); }
+.hook-desc strong { color: var(--ink); font-weight: 600; }
+
+/* ── DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 0.5px solid var(--border);
+  margin: 1.8rem 0;
+}
+
+/* ── GENERATE BUTTON ── */
+.btn-gen {
+  width: 100%;
+  padding: 16px;
+  background: var(--ink);
+  color: #f5f0e6;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1.5px;
+  transition: background 0.2s;
+  margin-top: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.btn-gen::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 3px; height: 100%;
+  background: var(--gold);
+  transition: width 0.2s;
+}
+.btn-gen:hover { background: var(--crimson); }
+.btn-gen:hover::after { width: 100%; opacity: 0.1; }
+.btn-gen:disabled { background: #9e9488; cursor: not-allowed; }
+.btn-gen:disabled::after { display: none; }
+
+/* ── OUTPUT ── */
+.out { display: none; }
+.out.show { display: block; }
+
+.out-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.out-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--crimson);
+}
+.btn-copy {
+  padding: 6px 14px;
+  border: 0.5px solid var(--gold);
+  border-radius: 2px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--gold);
+  background: transparent;
+  transition: all 0.15s;
+  font-weight: 500;
+}
+.btn-copy:hover { background: var(--gold); color: white; }
+
+.out-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(184,136,42,0.1);
+  color: #7a5b12;
+  border: 0.5px solid var(--gold-line);
+  border-radius: 2px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.prompt-box {
+  background: var(--paper);
+  border: 0.5px solid var(--border);
+  border-left: 3px solid var(--crimson);
+  border-radius: 2px;
+  padding: 22px 20px;
+  font-size: 13px;
+  line-height: 2;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+}
+
+.regen-toast {
+  display: none;
+  font-size: 11px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.regen-toast.show { display: block; }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-muted);
+  border-top: 0.5px solid var(--border);
+  padding: 1.2rem;
+  background: var(--paper-deep);
+}
+.footer strong { color: var(--ink-soft); font-weight: 600; }
+.footer .ver { color: var(--crimson); font-weight: 700; }
+
+@media (max-width: 520px) {
+  .row2 { grid-template-columns: 1fr; }
+  .principles-grid { grid-template-columns: 1fr; }
+  .principle-item:nth-child(2n) { border-right: 0.5px solid var(--border-soft); }
+  .principle-item:last-child { border-bottom: none; }
+  .body { padding: 1.6rem 1.4rem; }
+  .hdr { padding: 2rem 1.4rem 1.8rem; }
+  .engine-axioms { flex-direction: column; gap: 4px; }
+  .axiom-sep { display: none; }
+}
 </style>
 </head>
 <body>
 <div class="wrap">
+
+  <!-- ── HEADER ── -->
   <div class="hdr">
-    <div class="hdr-sub">言行心理學</div>
+    <div class="hdr-eyebrow">
+      <div class="hdr-eyebrow-line"></div>
+      <div class="hdr-eyebrow-text">言行心理學 · 理鏡 ENGINE</div>
+      <div class="hdr-eyebrow-line"></div>
+    </div>
     <h1>언행심리 분석 프롬프트 생성기</h1>
-    <p>사건을 입력하면 언행심리학 관점의 분석 프롬프트를 자동으로 생성합니다</p>
+    <p class="hdr-sub">리경(理鏡) 엔진으로 언행 속 인과를 읽어내고, 남들이 보지 못한 본질을 드러냅니다</p>
+
+    <div class="engine-row">
+      <div class="engine-badge">
+        <div class="engine-badge-icon">◈</div>
+        <div class="engine-badge-label">리경(理鏡)</div>
+      </div>
+      <div class="engine-axioms">
+        <div class="axiom-pill"><strong>공리 1</strong> 생각은 말이다</div>
+        <div class="axiom-sep"></div>
+        <div class="axiom-pill"><strong>공리 2</strong> 말은 행동의 예고다</div>
+        <div class="axiom-sep"></div>
+        <div class="axiom-pill"><strong>공리 3</strong> 행동에는 반드시 이유가 있다</div>
+      </div>
+    </div>
   </div>
+
+  <!-- ── BODY ── -->
   <div class="body">
 
     <!-- STEP 01 -->
     <div class="ig">
-      <div class="step-label">STEP 01</div>
-      <label>사건 내용 <span>분석할 사건이나 현상</span></label>
-      <textarea id="eventInput" rows="4" placeholder="예) 정치인 A가 국회에서 '절대 사퇴하지 않겠다'고 발언했지만, 3일 후 전격 사퇴를 발표했다... ※ 음성 기록·전사본(STT)도 그대로 붙여넣기 가능합니다"></textarea>
+      <div class="step-label"><span class="step-num">STEP 01</span><span class="step-dot"></span></div>
+      <label>사건 내용 <span class="hint">분석할 사건 · 현상 · 발언 · STT 전사본</span></label>
+      <textarea id="eventInput" rows="5" placeholder="예) 정치인 A가 '절대 사퇴하지 않겠다'고 발언했지만 72시간 후 전격 사퇴했다.&#10;※ 음성 기록·전사본(STT)도 그대로 붙여넣기 가능합니다"></textarea>
       <div class="char-count"><span id="charCount">0</span>자</div>
     </div>
 
     <!-- STEP 02 / 03 -->
     <div class="row2">
       <div class="ig">
-        <div class="step-label">STEP 02</div>
-        <label>주요 당사자 <span>분석 대상 인물</span></label>
+        <div class="step-label"><span class="step-num">STEP 02</span><span class="step-dot"></span></div>
+        <label>주요 당사자 <span class="hint">분석 대상</span></label>
         <input type="text" id="personInput" placeholder="예) 정치인 A, 배우자 B">
       </div>
       <div class="ig">
-        <div class="step-label">STEP 03</div>
-        <label>사건 유형 <span>맥락 분류</span></label>
+        <div class="step-label"><span class="step-num">STEP 03</span><span class="step-dot"></span></div>
+        <label>사건 유형 <span class="hint">맥락 분류</span></label>
         <input type="text" id="categoryInput" placeholder="예) 정치, 범죄, 기업, 연예">
       </div>
     </div>
 
-    <!-- STEP 04 — 원리 안내 (선택 없음, 고정 내장) -->
+    <!-- STEP 04 — 리경 엔진 -->
     <div class="ig">
-      <div class="step-label">STEP 04</div>
-      <label>언행심리 분석 원리 <span>10가지 원리 고정 내장 · AI 자동 감지 적용</span></label>
-      <div class="principle-box">
-        <div class="principle-box-header">
-          <div class="principle-icon">◈</div>
+      <div class="step-label"><span class="step-num">STEP 04</span><span class="step-dot"></span></div>
+      <label>분석 엔진 — 리경(理鏡) <span class="hint">자동 내장 · 항상 작동</span></label>
+      <div class="rigyeong-box">
+        <div class="rigyeong-header">
+          <div class="rigyeong-icon">理</div>
           <div>
-            <div class="principle-title">10가지 원리는 모두 기본값으로 내장되어 있습니다</div>
-            <div class="principle-desc">별도 선택 없이, AI가 사건 내용을 읽고 실제로 관련 있는 원리만 골라 자연스러운 문장 흐름으로 분석에 녹입니다. 관련 없는 원리는 자동으로 제외됩니다.</div>
+            <div class="rigyeong-title">리경(理鏡) — 통합 인과 독해 엔진</div>
+            <div class="rigyeong-desc">심리학 · 명리학 · 행동과학을 아우르는 통합 렌즈로 언행 속에 내재된 인과관계를 읽어내는 고유 방법론</div>
           </div>
         </div>
-        <div class="principle-list">
-          <span class="principle-pill">생각-말-행동 연쇄</span>
-          <span class="principle-pill">인연법</span>
-          <span class="principle-pill">제로 베이스 독해</span>
-          <span class="principle-pill">복기</span>
-          <span class="principle-pill">과거-현재-미래 투영</span>
-          <span class="principle-pill">관계 선택론</span>
-          <span class="principle-pill">언행 불일치 균열</span>
-          <span class="principle-pill">조직·국가 단위 확장</span>
-          <span class="principle-pill">비언어·신체 신호</span>
-          <span class="principle-pill">정체성 공백</span>
+        <div class="rigyeong-layers">
+          <div class="layer-item"><div class="layer-dot"></div><div class="layer-text">심리학 — 내면 동기 독해</div></div>
+          <div class="layer-item"><div class="layer-dot"></div><div class="layer-text">명리학 — 운명 · 인연 패턴</div></div>
+          <div class="layer-item"><div class="layer-dot"></div><div class="layer-text">행동과학 — 행동 예측 · 패턴 추적</div></div>
         </div>
-        <div class="principle-note">
-          <strong>적용 방식:</strong> 감지된 원리는 소제목이나 목록이 아닌 <strong>분석 문장 흐름 안에</strong> 자연스럽게 녹아듭니다. 하나의 문장 안에서 여러 원리가 동시에 작동할 수 있으며, 이론 용어(인연법·복기·제로 베이스 등)는 독자에게 개념을 전달할 때에만 문장 내 자연스럽게 사용됩니다.
+        <div class="rigyeong-formula">
+          <div class="formula-row">
+            <div class="formula-arrow">→</div>
+            <div class="formula-text"><strong>시작:</strong> 공리 1 적용 — 언어 선택에서 내면의 생각을 읽는 것으로 분석을 시작</div>
+          </div>
+          <div class="formula-row">
+            <div class="formula-arrow">→</div>
+            <div class="formula-text"><strong>전개:</strong> 공리 3 적용 — 이해 불가한 행동도 심리 · 관계 · 인연으로 인과를 해명</div>
+          </div>
+          <div class="formula-row">
+            <div class="formula-arrow">→</div>
+            <div class="formula-text"><strong>결론:</strong> 공리 2 적용 — 언행 패턴에서 다음 행동을 예측하고, 남들이 못 본 본질을 도출</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- STEP 05 -->
+    <!-- STEP 05 — 원리 -->
     <div class="ig">
-      <div class="step-label">STEP 05</div>
+      <div class="step-label"><span class="step-num">STEP 05</span><span class="step-dot"></span></div>
+      <label>10대 분석 원리 <span class="hint">AI가 사건에 맞는 원리만 자동 선택 · 문장 흐름에 녹임</span></label>
+      <div class="principles-box">
+        <div class="principles-header">
+          <div class="principles-header-left">10가지 원리 고정 내장</div>
+          <div class="principles-header-right">관련 없는 원리는 자동 제외</div>
+        </div>
+        <div class="principles-grid">
+          <div class="principle-item"><div class="principle-num">01</div><div class="principle-name">생각-말-행동 연쇄</div></div>
+          <div class="principle-item"><div class="principle-num">02</div><div class="principle-name">인연법(因緣法)</div></div>
+          <div class="principle-item"><div class="principle-num">03</div><div class="principle-name">제로 베이스 독해</div></div>
+          <div class="principle-item"><div class="principle-num">04</div><div class="principle-name">복기(復棋)</div></div>
+          <div class="principle-item"><div class="principle-num">05</div><div class="principle-name">과거-현재-미래 투영</div></div>
+          <div class="principle-item"><div class="principle-num">06</div><div class="principle-name">관계 선택론</div></div>
+          <div class="principle-item"><div class="principle-num">07</div><div class="principle-name">언행 불일치 균열</div></div>
+          <div class="principle-item"><div class="principle-num">08</div><div class="principle-name">조직·국가 단위 확장</div></div>
+          <div class="principle-item"><div class="principle-num">09</div><div class="principle-name">비언어·신체 신호</div></div>
+          <div class="principle-item"><div class="principle-num">10</div><div class="principle-name">정체성 공백 탐지</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 06 — 형식 -->
+    <div class="ig">
+      <div class="step-label"><span class="step-num">STEP 06</span><span class="step-dot"></span></div>
       <label>분석 글 형식</label>
       <div class="fmt-tabs">
         <div class="fmt-tab on" data-fmt="column">칼럼 형식</div>
         <div class="fmt-tab" data-fmt="report">심층 분석 보고서</div>
-        <div class="fmt-tab" data-fmt="qa">Q&A 풀이 형식</div>
-        <div class="fmt-tab" data-fmt="sns">SNS 쇼츠 해설</div>
+        <div class="fmt-tab" data-fmt="qa">Q&A 풀이</div>
+        <div class="fmt-tab" data-fmt="sns">SNS 숏폼</div>
         <div class="fmt-tab" data-fmt="script">방송 스크립트</div>
       </div>
       <div class="hook-preview" id="hookPreview">
-        <div class="hook-preview-label">▸ 이 형식의 훅(Hook) 구조</div>
+        <div class="hook-preview-label">▸ 이 형식의 훅(HOOK) 구조</div>
         <div id="hookPreviewContent"></div>
       </div>
     </div>
 
-    <button class="btn-gen" id="generateBtn">언행심리 분석 프롬프트 생성하기</button>
+    <button class="btn-gen" id="generateBtn">리경(理鏡) 엔진으로 분석 프롬프트 생성</button>
+
     <hr class="divider">
+
     <div class="out" id="outputArea">
       <div class="regen-toast" id="regenToast">✓ 프롬프트가 재생성되었습니다</div>
       <div class="out-hdr">
         <div class="out-title">생성된 분석 프롬프트</div>
         <button class="btn-copy" id="copyBtn">복사</button>
       </div>
-      <div class="badge">✦ Claude에게 이 프롬프트를 붙여넣어 분석을 시작하세요</div>
+      <div class="out-badge">✦ Claude에게 이 프롬프트를 붙여넣어 분석을 시작하세요</div>
       <div class="prompt-box" id="promptBox"></div>
     </div>
+
   </div>
-  <div class="footer">언행심리학 이론 — <strong>도현(道賢) 언행심리마스터</strong> · 2026 · <span style="color:#8b1a1a;font-weight:600;">v2.2</span></div>
+
+  <div class="footer">
+    언행심리학 이론 — <strong>도현(道賢) 언행심리마스터</strong> · 2026 · <span class="ver">v3.0</span>
+  </div>
 </div>
 
 <script>
-// ─────────────────────────────────────────
-// 상태
-// ─────────────────────────────────────────
+// ── 상태 ──
 let selectedFmt = 'column';
 let lastPrompt = '';
 let isFirstGenerate = true;
 
-// ─────────────────────────────────────────
-// 훅 미리보기 데이터
-// ─────────────────────────────────────────
+// ── 훅 미리보기 데이터 ──
 const hookPreviews = {
   column: [
-    { n: '①', t: '모순 포착 훅', d: '첫 문장에서 이 사건의 가장 이상한 점을 단도직입으로 제시해 독자가 고개를 갸웃하게 만드는 모순 하나를 던진다.' },
-    { n: '②', t: '반전 질문 훅', d: '독자가 "당연하다"고 여기는 통념을 뒤집는 질문으로 도입부를 닫고 본문으로 진입한다.' }
+    { n: '①', t: '모순 포착 훅', d: '첫 문장에서 이 사건의 가장 이상한 점을 단도직입으로 제시 — 독자가 "왜?"라는 의문을 품도록 유도한다.' },
+    { n: '②', t: '반전 질문 훅', d: '도입부 끝에서 통념을 뒤집는 질문 한 줄로 본문 진입을 촉진한다.' }
   ],
   report: [
-    { n: '①', t: '핵심 발견 선공개 훅', d: '보고서 첫머리에 가장 충격적인 분석 결론 한 줄을 먼저 제시하고, "이 판단의 근거는 아래에 있다"로 독자를 본문으로 끌어당긴다.' },
-    { n: '②', t: '데이터 역설 훅', d: '수치·날짜·발언문 등 팩트를 나열하되, 마지막 줄에서 "그렇다면 왜 이 시점에 이 말을 골랐는가?"라는 역설 질문으로 분석 욕구를 자극한다.' }
+    { n: '①', t: '핵심 결론 선공개 훅', d: '보고서 상단에 리경 분석의 가장 날카로운 결론 한 줄을 먼저 제시한다.' },
+    { n: '②', t: '데이터 역설 훅', d: '팩트 나열 후 "그렇다면 왜 이 시점에 이 말을 골랐는가?"로 분석 욕구를 자극한다.' }
   ],
   qa: [
-    { n: '①', t: '도발적 1번 질문 훅', d: 'Q1을 가장 자극적이고 핵심적인 질문으로 배치해 "왜 그는 스스로 무너졌을까?" 류의 질문으로 이후 전체 Q&A 집중도를 설정한다.' },
-    { n: '②', t: '반전 답변 훅', d: 'A1에서 독자 예상을 완전히 뒤집는 해석을 제시해 "다음 질문도 읽어야 한다"는 기대감을 형성한다.' }
+    { n: '①', t: '도발적 1번 질문 훅', d: '가장 핵심적이고 자극적인 질문을 Q1으로 배치해 집중도를 설정한다.' },
+    { n: '②', t: '반전 답변 훅', d: 'A1에서 독자 예상을 완전히 뒤집는 리경 해석을 제시한다.' }
   ],
   sns: [
-    { n: '①', t: '3초 멈춤 훅', d: '첫 줄 단독 배치: 숫자·날짜·충격 발언 원문 인용으로 스크롤을 멈추게 하는 한 문장. 마침표 없이 끝내 궁금증을 유발한다.' },
-    { n: '②', t: '공백 낙차 훅', d: '첫 줄 다음 의도적 짧은 공백으로 리듬을 끊고, 이어지는 두 번째 줄에서 "그런데"로 반전을 시작한다.' },
-    { n: '③', t: '마지막 한 줄 훅', d: '결론 뒤 한 줄 공백 후, 저장·공유 욕구를 자극하는 클로징 한 줄로 마무리한다.' }
+    { n: '①', t: '3초 멈춤 훅', d: '첫 줄: 숫자·날짜·발언 인용으로 스크롤을 멈추게 하는 단독 문장. 마침표 없이 끝낸다.' },
+    { n: '②', t: '공백 낙차 훅', d: '한 줄 공백 후 "그런데"로 반전 — 리듬감으로 끌어당긴다.' },
+    { n: '③', t: '저장 유도 클로징', d: '결론 뒤 공백 후, 공유 욕구를 자극하는 한 줄로 마무리한다.' }
   ],
   script: [
-    { n: '①', t: '개인 시선 오프닝 훅', d: '분석가의 솔직한 개인 반응으로 시작해 시청자와 감정을 동기화한다. "저는 이 사건을 보고 단 한 가지만 계속 머릿속에서 떠나지 않았습니다."' },
-    { n: '②', t: '시청자 참여 훅', d: '본문 중반에 한 번 "여기서 잠깐, 여러분이라면 어떻게 하셨겠습니까?"로 몰입감을 재점화한다.' },
-    { n: '③', t: '클로징 여운 훅', d: '최종 분석 후 시청자에게 열린 질문을 던지며 마무리. 단정하지 않아 댓글·토론 욕구를 유발한다.' }
+    { n: '①', t: '개인 시선 오프닝 훅', d: '분석가의 솔직한 개인 반응으로 시작 — 시청자와 감정을 동기화한다.' },
+    { n: '②', t: '시청자 참여 훅', d: '중반에 한 번 "여러분이라면 어떻게 하셨겠습니까?"로 몰입을 재점화한다.' },
+    { n: '③', t: '클로징 여운 훅', d: '최종 분석 후 열린 질문으로 마무리 — 댓글·토론 욕구를 유발한다.' }
   ]
 };
 
-// ─────────────────────────────────────────
-// 형식별 출력 지침
-// ─────────────────────────────────────────
+// ── 형식별 출력 지침 ──
 const fmtInstructions = {
   column: `【출력 형식: 프로파일러 칼럼 스타일】
 
 ▣ 구조 순서
 
   [제목]
-  사건의 본질을 관통하는 날카로운 제목 (부제 1줄 포함)
+  사건의 본질을 관통하는 제목 (부제 1줄 포함)
 
-  ══ 훅(Hook) 구간 ① — 모순 포착 ══
-  첫 문장은 반드시 이 사건에서 가장 이상하거나 모순된 지점 하나를 단도직입으로 제시한다.
-  예: "그가 '절대'라는 단어를 쓴 순간, 이미 모든 것이 결정되어 있었다."
-  → 독자가 "어, 왜?"라는 의문을 품도록 유도. 배경 설명은 아직 하지 않는다.
+  ══ 훅 ① — 모순 포착 ══
+  첫 문장: 이 사건에서 가장 이상하거나 모순된 지점 하나를 단도직입으로 제시한다.
+  예: "그가 '절대'라는 단어를 고른 순간, 이미 모든 것이 결정되어 있었다."
+  → 배경 설명 없이 곧바로 모순을 던진다. 독자가 고개를 갸웃하게 만든다.
 
-  ══ 훅(Hook) 구간 ② — 반전 질문 ══
-  도입부 끝에서 독자의 통념을 뒤집는 질문 한 줄로 본문 진입을 촉진한다.
-  예: "우리는 그를 거짓말쟁이라고 부르지만, 언행심리학은 다른 질문을 던진다."
+  ══ 훅 ② — 반전 질문 ══
+  도입부 마지막 줄: 독자 통념을 뒤집는 질문으로 본문 진입을 촉진한다.
 
   [본문]
-  프로파일러처럼 행동 단서 → 심리 동기 → 숨겨진 의도 순으로 냉정하게 분석.
-  감정 없이 증거와 패턴 중심으로 서술한다.
+  리경(理鏡) 분석 흐름:
+  공리 1 → 언어 선택에서 내면 생각 독해
+  공리 3 → 이해 불가한 행동의 인과 해명
+  공리 2 → 패턴에서 다음 행동 예측
 
   [마무리]
-  이 사건이 드러내는 인간 심리의 본질과 향후 행동 예측.
+  공리 2로 향후 행동 예측 + 사건이 드러내는 인간 언행의 본질
 
 ▣ 추가 지침
-  - 전체 어조: 수사관·프로파일러처럼 건조하고 논리적이되, 독자가 "소름 돋는다"고 느낄 만큼 날카로운 문체
+  - 어조: 수사관·프로파일러처럼 건조하고 논리적이되 소름 돋을 만큼 날카롭게
   - 분량: 3,000자 이상`,
 
   report: `【출력 형식: 심층 분석 보고서 스타일】
@@ -242,23 +773,18 @@ const fmtInstructions = {
 
   [보고서 제목 + 분석 일자]
 
-  ══ 훅(Hook) 구간 ① — 핵심 발견 선공개 ══
-  보고서 최상단에 "핵심 분석 결론" 박스를 별도로 배치한다.
-  이 사건에서 언행심리학이 도출한 가장 중요한 발견 한 줄을 먼저 제시한다.
-  예: "▶ 핵심 결론: 이번 언행 패턴은 3년 전 동일 유형의 전조와 일치하며, 향후 ○○ 행동이 예측된다."
-  → "이 판단의 근거는 아래 분석에 있다"는 문장으로 독자를 본문으로 유인.
+  ══ 훅 ① — 핵심 결론 선공개 ══
+  최상단 "리경 핵심 결론" 박스:
+  예: "▶ 리경 결론: 이번 언행 패턴은 ○○의 심리 구조를 드러내며, 향후 ○○ 행동이 예측된다."
+  → "이 판단의 근거는 아래 분석에 있다"로 본문 유인.
 
-  ══ 훅(Hook) 구간 ② — 데이터 역설 ══
-  사건 개요 섹션 말미에 핵심 팩트(날짜·발언·수치)를 나열하되,
-  마지막 줄: "그렇다면, 왜 그는 이 시점에 이 말을 골랐는가?"라는 역설 질문으로 마감.
+  ══ 훅 ② — 데이터 역설 ══
+  사건 개요 말미: 팩트 나열 후 "그렇다면 왜 이 시점에 이 말을 골랐는가?"로 마감.
 
-  [섹션별 분석]
-  각 분석 포인트를 별도 섹션으로 구성.
-  단서 → 심리 해석 → 예측의 3단 구조를 각 섹션에서 유지.
-  전문적이고 논리적인 보고서 어조.
+  [섹션별 리경 분석]
+  공리 1 → 공리 3 → 공리 2 흐름으로 각 섹션 구성.
 
-  [종합 판단 및 향후 행동 예측]
-  마지막 섹션에서 종합 판단과 행동 예측을 제시.
+  [종합 판단 및 행동 예측]
 
 ▣ 추가 지침
   - 소제목으로 섹션 구분, 번호 체계 사용`,
@@ -267,173 +793,187 @@ const fmtInstructions = {
 
 ▣ 구조 순서
 
-  ══ 훅(Hook) 구간 ① — 도발적 1번 질문 ══
-  Q1은 반드시 이 사건에서 가장 핵심적이고 자극적인 질문이어야 한다.
+  ══ 훅 ① — 도발적 Q1 ══
+  Q1: 이 사건에서 가장 핵심적이고 자극적인 질문.
   예: "Q1. 왜 그는 스스로 무너지는 말을 골랐을까?"
-  → 독자가 "나도 그게 궁금했어"라고 느끼는 질문. 가장 자극적인 것을 맨 앞에.
 
-  ══ 훅(Hook) 구간 ② — 반전 답변 ══
-  A1은 독자가 예상한 답을 의도적으로 뒤집는 해석으로 시작한다.
-  예: "많은 사람이 그를 거짓말쟁이라 부르지만, 언행심리학의 대답은 정반대입니다."
-  → 이후 Q&A 전체를 읽게 만드는 기대감 형성.
+  ══ 훅 ② — 반전 A1 ══
+  A1: 독자 예상을 뒤집는 리경 해석으로 시작.
+  예: "많은 사람이 거짓말이라 부르지만, 리경은 정반대의 답을 내놓습니다."
 
   [Q2~Q7]
-  대중이 궁금해하는 질문 추가 4~6개를 언행심리학으로 명쾌하게 답변.
-  "왜 그랬을까?" "무슨 의미일까?" 형식의 질문. 쉬운 말로, 하지만 날카롭게.
+  대중이 궁금해하는 질문 4~6개를 공리 1·3·2 흐름으로 풀이.
+  마지막 질문은 반드시 미래 행동 예측형.
 
 ▣ 추가 지침
-  - 총 5~7개 질문-답변 구성
-  - 마지막 질문은 미래 예측형으로 마무리`,
+  - 총 5~7개 질문-답변
+  - 쉽고 날카롭게`,
 
   sns: `【출력 형식: SNS/숏폼 해설 스타일】
 
 ▣ 구조 순서
 
-  ══ 훅(Hook) 구간 ① — 3초 멈춤 훅 ══
-  첫 줄은 단독 배치. 숫자·날짜·충격 발언 원문 인용 중 하나를 활용해
-  스크롤을 멈추게 하는 한 문장을 쓴다. 마침표 없이 끝낸다.
+  ══ 훅 ① — 3초 멈춤 ══
+  첫 줄 단독 배치. 숫자·날짜·발언 원문 인용. 마침표 없이 끝낸다.
   예: "그가 '절대'라는 말을 쓴 날로부터 정확히 72시간 후"
-  → 다음 줄까지 읽지 않으면 문장이 완성되지 않는 구조.
 
-  ══ 훅(Hook) 구간 ② — 공백 낙차 훅 ══
-  첫 줄 다음 한 줄 공백으로 리듬을 끊은 뒤,
-  "그런데" 또는 "하지만"으로 반전 시작.
+  ══ 훅 ② — 공백 낙차 ══
+  첫 줄 다음 한 줄 공백 → "그런데" 또는 "하지만"으로 반전.
 
   [핵심 포인트 3~5개]
-  짧고 강렬하게, 각 포인트에 언행심리 이론 적용.
-  리듬감 있는 짧은 문장 구조.
+  리경 공리(1→3→2) 흐름으로 짧고 강렬하게 전개.
 
-  ══ 훅(Hook) 구간 ③ — 마지막 한 줄 훅 ══
-  결론 뒤에 한 줄 공백 후, 저장·공유 욕구를 자극하는 클로징 문장 1줄.
-  예: "말은 거짓말해도, 패턴은 거짓말하지 않는다."
+  ══ 훅 ③ — 클로징 ══
+  결론 후 한 줄 공백 → 저장·공유 욕구를 자극하는 한 줄.
 
 ▣ 추가 지침
-  - 전체 리듬감을 최우선으로 유지
+  - 리듬감 최우선
   - 해시태그 또는 저장 유도 문구 포함 가능`,
 
-  script: `【출력 형식: 분석가 1인칭 방송 스크립트 스타일】
-형식: 언행심리 분석가가 카메라를 보며 직접 말하는 1인칭 단독 스크립트.
-MC 없이 분석가 혼자 처음부터 끝까지 진행.
+  script: `【출력 형식: 분석가 1인칭 방송 스크립트】
+형식: 언행심리 분석가가 카메라를 보며 직접 말하는 단독 스크립트.
 
 ▣ 구조 순서
 
-  ══ 훅(Hook) 구간 ① — 개인 시선 오프닝 훅 ══
-  분석가의 솔직한 개인 반응으로 시작한다.
+  ══ 훅 ① — 개인 시선 오프닝 ══
+  분석가 개인 반응으로 시작. 사건 설명 전에 감정 동기화.
   예: "저는 이 사건을 처음 접했을 때, 단 한 가지가 계속 마음에 걸렸습니다."
-  → 시청자와 감정 동기화. 사건 설명은 아직 하지 않는다.
   이어서: "제가 걸린 건 바로 이 말이었습니다. [발언 인용]"
   (자막: 핵심 발언 원문)
 
-  [본문 분석]
-  분석가가 시청자에게 직접 설명하듯 언행심리 분석을 전개.
-  "여기서 주목해야 할 건~", "제가 이 말에서 읽은 건~" 등 1인칭 구어체 유지.
-  각 분석 포인트마다 "(자막: ○○○)" 형태로 자막 지문 포함.
+  [본문]
+  리경 공리 1→3→2 흐름으로 1인칭 구어체 전개.
+  각 포인트마다 (자막: ○○○) 지문 포함.
 
-  ══ 훅(Hook) 구간 ② — 중반 시청자 참여 훅 ══
-  본문 중반 핵심 분석 직후에 한 번 삽입한다.
-  예: "여기서 잠깐, 여러분이라면 어떻게 하셨겠습니까?"
-  → 몰입감 재점화. 2~3초 침묵 후 분석가가 직접 답한다.
+  ══ 훅 ② — 중반 참여 ══
+  핵심 분석 직후: "여기서 잠깐, 여러분이라면 어떻게 하셨겠습니까?"
+  → 2~3초 침묵 후 분석가가 직접 답한다.
 
-  ══ 훅(Hook) 구간 ③ — 클로징 여운 훅 ══
-  최종 해석 후 시청자에게 열린 질문을 던지며 마무리.
-  단정하지 않아 댓글·토론 욕구를 유발.
-  예: "저는 이 사건에서 한 가지를 배웠습니다. 말은 사람의 가장 솔직한 얼굴입니다."
+  ══ 훅 ③ — 클로징 ══
+  공리 2 기반 예측 후 열린 질문으로 마무리.
 
 ▣ 추가 지침
-  - 어조: 차분하고 확신에 찬 분석가의 목소리. 단정하지 않되 설득력 있게
-  - 분량: 3,000자 이상 (실제 방송 5~7분 분량)`
+  - 분량: 3,000자 이상 (방송 5~7분 분량)`
 };
 
-// ─────────────────────────────────────────
-// 프롬프트 빌더
-// ─────────────────────────────────────────
+// ── 프롬프트 빌더 (리경 엔진 + 공리 공식 기반) ──
 function buildPrompt(eventText, person, category, fmt) {
   const personLine   = person   ? `\n▪ 주요 당사자: ${person}` : '';
   const categoryLine = category ? `\n▪ 사건 유형: ${category}` : '';
 
   return `당신은 언행심리학(言行心理學) 전문 분석가입니다.
+분석 도구는 리경(理鏡)입니다.
 
-══════════════════════════════════════
-언행심리학 핵심 이론
-══════════════════════════════════════
+══════════════════════════════════════════
+【리경(理鏡) — 통합 인과 독해 엔진】
+══════════════════════════════════════════
 
-[3대 공리]
-• 공리 1: 생각은 말이다 — 언어를 분석하면 생각이 드러난다
-• 공리 2: 말은 행동의 예고다 — 언어 패턴으로 다음 행동을 예측할 수 있다
-• 공리 3: 행동에는 반드시 이유가 있다 — 이해 불가한 행동도 심리·관계로 해명된다
+리경은 심리학·명리학·행동과학을 아우르는 통합적 시각으로,
+언행 속에 내재된 인과관계를 읽어내는 고유한 방법론입니다.
 
-[분석 철학]
-언론에 드러난 단서만 사용하되, 언행심리이론으로 새롭게 독해한다.
-단정이 아닌 '언행심리학적 해석'으로 제시한다.
+리경의 목적은 단 하나입니다.
+→ 남들이 보지 못하는 것을 보는 것.
+→ 표면의 언어와 행동 너머에 숨겨진 본질과 인과를 드러내는 것.
 
-══════════════════════════════════════
-분석 대상 사건
-══════════════════════════════════════
+══════════════════════════════════════════
+【언행심리 3대 공리 — 분석의 시작과 결론을 지배하는 법칙】
+══════════════════════════════════════════
+
+이 공리들은 단순한 이론이 아닙니다.
+분석의 시작·전개·결론이 반드시 이 공식의 흐름을 따라야 합니다.
+
+▶ 공리 1 — 생각은 말이다
+  인간의 모든 생각은 언어를 통해 표현된다.
+  언어를 분석하면 생각이 드러난다.
+  → 분석은 반드시 "왜 하필 그 말을 골랐는가"라는 질문으로 시작한다.
+  → 언어 선택 자체가 내면 상태의 직접 증거다.
+
+▶ 공리 2 — 말은 행동의 예고다
+  언어 패턴을 읽으면 그 사람의 다음 행동을 예측할 수 있다.
+  → 분석의 결론은 반드시 "이 언행 패턴이 예고하는 다음 행동"으로 끝맺는다.
+  → 과거 발언이 현재 행동을 어떻게 예고했는지를 역추적하고,
+     현재 발언이 미래 행동을 어떻게 예고하는지를 도출한다.
+
+▶ 공리 3 — 행동에는 반드시 이유가 있다
+  이해 불가한 행동도 그 사람의 심리와 관계를 분석하면 논리적으로 해명된다.
+  → 모든 "왜 저럴까?"라는 의문에 리경은 반드시 인과로 답한다.
+  → 설명 불가능해 보이는 행동일수록 더 깊은 인과가 숨겨져 있다.
+
+【공리 적용 공식】
+  시작: 공리 1 → 언어 선택에서 내면 생각을 읽는다
+  전개: 공리 3 → 이해 불가한 행동의 심리·관계 인과를 해명한다
+  결론: 공리 2 → 언행 패턴에서 다음 행동을 예측하고 본질을 도출한다
+
+이 공식에서 벗어난 분석은 언행심리학이 아닙니다.
+
+══════════════════════════════════════════
+【분석 대상 사건】
+══════════════════════════════════════════
 ${eventText}${personLine}${categoryLine}
 
-══════════════════════════════════════
-언행심리 분석 원리 — 10가지 체화된 기반 지식
-══════════════════════════════════════
+══════════════════════════════════════════
+【리경의 10대 분석 원리 — 체화된 기반 지식】
+══════════════════════════════════════════
 
-아래 10가지 원리는 분석가의 내면에 이미 체화된 기본 지식이다.
-사건을 읽으며 실제로 감지되는 원리만 글 흐름 속에 자연스럽게 녹여 적용한다.
-관련 없는 원리는 언급하지 않는다.
+아래 10가지는 분석가의 내면에 이미 체화된 기본 지식입니다.
+사건을 읽으며 실제로 감지되는 원리만 분석 문장 흐름 안에 자연스럽게 녹여 적용합니다.
+관련 없는 원리는 언급하지 않습니다.
 
-[핵심 적용 원칙 — 반드시 준수]
-• 원리명을 소제목이나 목록으로 쓰지 않는다. 분석 문장의 흐름 안에 녹여낸다.
-• 하나의 문장 안에 여러 원리가 동시에 작동할 수 있다. 분리하지 말고 통합해서 서술한다.
-• 이론 용어(인연법·복기·제로 베이스 등)는 독자에게 개념을 전달할 때 문장 안에 자연스럽게 쓸 수 있다.
-• 원리가 겹치면 하나의 해석으로 통합한다. 같은 현상을 원리별로 분리 설명하지 않는다.
-
-[체화된 원리 목록]
+[핵심 적용 원칙]
+• 원리명을 소제목이나 목록으로 나열하지 않습니다. 문장 흐름 안에 녹여냅니다.
+• 이론 용어(인연법·복기·제로 베이스 등)는 독자에게 개념을 전달할 때 자연스럽게 씁니다.
+• 하나의 문장 안에 여러 원리가 동시에 작동할 수 있습니다. 분리하지 말고 통합합니다.
+• 원리가 아무리 많아도, 분석의 시작·결론은 반드시 공리 공식(1→3→2)을 따릅니다.
 
 ◆ 생각-말-행동 연쇄 분석
-공리 1·2를 적용한다. 언어 표현에서 내면의 생각을 독해하고, 과거 발언이 이번 행동을 어떻게 예고했는지 추적한다. "왜 하필 그 말을 썼을까"라는 관점으로 언어 선택을 분석한다. 장소 선택도 심리의 외현(外顯)으로 해석한다.
+공리 1·2를 실전 적용합니다. "왜 하필 그 말을 골랐는가"를 추적하고, 언어 선택에서 내면 상태를 읽으며, 과거 발언이 이번 행동을 어떻게 예고했는지를 역추적합니다. 장소 선택도 심리의 외현(外顯)으로 해석합니다.
 
 ◆ 인연법(因緣法) — 조력자·배우자 영향력 분석
-이해하기 어려운 행동 뒤에는 반드시 그 생각을 심어준 조력자가 있다는 원리를 적용한다. 핵심 인물(배우자·참모·멘토)을 식별하고, 그 영향을 분석한다. 조력자 유형(기획형·생존보장형·이념공급형·충동부추김형)을 해당할 경우 명시한다.
+이해하기 어려운 행동 뒤에는 반드시 그 생각을 심어준 조력자가 있다는 원리입니다. 핵심 인물을 식별하고, 조력자 유형(기획형·생존보장형·이념공급형·충동부추김형)을 해당 시 명시합니다.
 
 ◆ 제로 베이스 독해법
-당사자의 사회적 지위·권력·명성을 0으로 초기화하고, 태도와 언행 자체만으로 평가한다. "이 말과 행동을 일반인이 했다면 어떻게 평가받았을까?"라는 질문을 적용한다.
+당사자의 사회적 지위·권력·명성을 0으로 초기화하고, 태도와 언행 자체만으로 평가합니다. "이 말을 일반인이 했다면 어떻게 평가받았을까?"라는 질문을 적용합니다.
 
 ◆ 복기(復棋) — 언행 패턴 재구성
-사건의 언행 패턴을 시간순으로 재구성한다. 반복 패턴과 변곡점을 찾고, "그때 그 말이 이미 신호였다"는 관점으로 역추적한다. 감정 반응이 나타나지 않는 타이밍도 결정적 단서로 포착한다.
+사건의 언행 패턴을 시간순으로 재구성합니다. "그때 그 말이 이미 신호였다"는 관점으로 역추적하고, 감정 반응이 없는 타이밍도 결정적 단서로 포착합니다.
 
 ◆ 과거-현재-미래 투영 원리
-과거 언행 패턴이 현재를 설명하고, 현재 언행이 미래를 예고한다는 원리를 적용한다. 과거 유사 사례와 이번 사건을 연결하고, 향후 행동을 예측한다.
+과거 언행 패턴이 현재를 설명하고, 현재 언행이 미래를 예고합니다. 과거 유사 사례와 이번 사건을 연결하여 향후 행동을 예측합니다.
 
 ◆ 관계 선택론 — 주변 인물 구도 분석
-어떤 사람을 곁에 두느냐가 그 사람의 심리를 보여준다는 원리를 적용한다. 관계 구도(충성형·이익형·두려움형)를 파악하고, 관계 변화의 심리적 의미를 해석한다.
+어떤 사람을 곁에 두느냐가 그 사람의 심리를 보여줍니다. 관계 구도(충성형·이익형·두려움형)를 파악하고, 관계 변화의 심리적 의미를 해석합니다.
 
 ◆ 언행 불일치 균열 탐지
-말과 행동이 어긋나는 지점에서 심리의 본질이 드러난다. 발언과 실제 행동 사이의 괴리를 측정하고, "왜 지킬 수 없는 말을 했을까"라는 질문으로 심리 동기를 해명한다. 신체 부위별 불일치(표정·자세·손동작)도 균열로 간주한다.
+말과 행동이 어긋나는 지점에서 심리의 본질이 드러납니다. "왜 지킬 수 없는 말을 했는가"라는 질문으로 심리 동기를 해명합니다.
 
 ◆ 조직·국가 단위 확장 분석
-개인 언행 분석을 조직·집단·국가 차원으로 확장한다. 개인의 언행 패턴이 조직 문화에 어떻게 투영되는지, 사건이 사회에 미치는 파급 효과를 분석한다.
+개인 언행 분석을 조직·집단·국가 차원으로 확장합니다. 개인의 언행 패턴이 조직 문화에 어떻게 투영되는지를 분석합니다.
 
 ◆ 비언어·신체 신호 독해법
-말이 아닌 몸의 언어에서 억압된 심리를 읽는다. "의도한 신체 언어"와 "누설된 신체 언어"를 구별하고, 신체 부위 간 불일치를 포착한다. 첫인상 직관 독해를 분석의 출발 단서로 활용한다.
+말이 아닌 몸의 언어에서 억압된 심리를 읽습니다. "의도한 신체 언어"와 "누설된 신체 언어"를 구별하고, 신체 부위 간 불일치를 포착합니다.
 
 ◆ 정체성 공백 탐지 — 자기 언어 vs 반사 언어
-이 사람의 말과 행동이 진짜 자신에서 나오는가, 타인의 욕망을 반사하는가를 분석한다. 시기별 언어 스타일 변화를 추적하고, "아바타 심리"(실세 조력자의 기획을 실행하는 배우)를 해독한다.
+이 사람의 말과 행동이 진짜 자신에서 나오는가, 타인의 욕망을 반사하는가를 분석합니다. "아바타 심리"(실세 조력자의 기획을 실행하는 배우)를 해독합니다.
 
-══════════════════════════════════════
+══════════════════════════════════════════
 ${fmtInstructions[fmt]}
-══════════════════════════════════════
+══════════════════════════════════════════
 
-[주의사항]
-• 언론에 공개된 단서만 활용
-• 단정이 아닌 언행심리학적 해석임을 명시
-• 대중이 "아, 그래서 그랬구나!" 할 수 있도록 풀어쓰기
-• 기존 프로파일러·심리학 분석과 차별되는 언행심리학만의 관점 강조
-• 원리 이름을 소제목이나 목록으로 나열하지 말 것 — 분석 문장 흐름 안에서만 사용
-• 반드시 훅(Hook) 구간을 지침대로 구현할 것 — 훅은 독자/시청자의 집중도를 만드는 핵심 장치임
-• 구어 발화(대화·인터뷰·즉흥 발언 등)를 원문 인용할 때는 구어체 어색함을 제거하되 핵심 의미는 그대로 유지하여 정제된 문어체로 표현할 것`;
+【최종 요구사항】
+
+1. 분석의 시작은 반드시 공리 1 — 언어 선택에서 내면 생각을 읽는 것으로 출발합니다.
+2. 분석의 결론은 반드시 공리 2 — 언행 패턴이 예고하는 다음 행동과 본질로 끝맺습니다.
+3. 공리 3 — 이해 불가한 행동의 인과 해명이 전개의 핵심 축입니다.
+4. 리경의 목적: 남들이 보지 못한 것을 보여줍니다. 표면 해석을 넘어 숨겨진 인과를 드러냅니다.
+5. 기존 심리학 분석과 명확히 다른, 언행심리학만의 관점을 강조합니다.
+6. 언론에 공개된 단서만 활용하며, 단정이 아닌 "리경 해석"임을 명시합니다.
+7. 원리 이름을 소제목이나 목록으로 나열하지 않습니다 — 문장 흐름 안에서만 사용합니다.
+8. 훅(Hook) 구간을 지침대로 반드시 구현합니다.
+9. 구어 발화 인용 시, 핵심 의미를 유지하면서 문어체로 정제합니다.
+10. 대중이 "아, 그래서 그랬구나!"를 느끼도록, 그러나 남들이 미처 보지 못한 지점을 드러내도록 씁니다.`;
 }
 
-// ─────────────────────────────────────────
-// 훅 미리보기 렌더
-// ─────────────────────────────────────────
+// ── 훅 미리보기 렌더 ──
 function renderHookPreview(fmt) {
   const items = hookPreviews[fmt] || [];
   const container = document.getElementById('hookPreviewContent');
@@ -446,15 +986,10 @@ function renderHookPreview(fmt) {
   document.getElementById('hookPreview').classList.add('show');
 }
 
-// ─────────────────────────────────────────
-// 이벤트 바인딩
-// ─────────────────────────────────────────
+// ── 이벤트 바인딩 ──
 document.addEventListener('DOMContentLoaded', () => {
-
-  // 초기 훅 미리보기
   renderHookPreview(selectedFmt);
 
-  // 형식 탭
   document.querySelectorAll('.fmt-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.fmt-tab').forEach(t => t.classList.remove('on'));
@@ -464,30 +999,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 글자 수 카운터
   const eventInput = document.getElementById('eventInput');
   const charCount  = document.getElementById('charCount');
   eventInput.addEventListener('input', () => {
     charCount.textContent = eventInput.value.length.toLocaleString();
   });
 
-  // 생성 버튼
   document.getElementById('generateBtn').addEventListener('click', generate);
-
-  // 복사 버튼
   document.getElementById('copyBtn').addEventListener('click', copyPrompt);
 });
 
-// ─────────────────────────────────────────
-// 생성
-// ─────────────────────────────────────────
+// ── 생성 ──
 function generate() {
   const eventText = document.getElementById('eventInput').value.trim();
   if (!eventText) { alert('사건 내용을 입력해 주세요.'); return; }
 
   const btn = document.getElementById('generateBtn');
   btn.disabled = true;
-  btn.textContent = '생성 중...';
+  btn.textContent = '리경 엔진 가동 중...';
 
   const person   = document.getElementById('personInput').value.trim();
   const category = document.getElementById('categoryInput').value.trim();
@@ -510,27 +1039,25 @@ function generate() {
   }
 
   btn.disabled = false;
-  btn.textContent = '언행심리 분석 프롬프트 생성하기';
+  btn.textContent = '리경(理鏡) 엔진으로 분석 프롬프트 생성';
 }
 
-// ─────────────────────────────────────────
-// 복사
-// ─────────────────────────────────────────
+// ── 복사 ──
 async function copyPrompt() {
   const btn = document.getElementById('copyBtn');
+  const text = lastPrompt || document.getElementById('promptBox').textContent;
   try {
-    await navigator.clipboard.writeText(lastPrompt || document.getElementById('promptBox').textContent);
-    btn.textContent = '✓ 복사됨';
+    await navigator.clipboard.writeText(text);
   } catch {
     const ta = document.createElement('textarea');
-    ta.value = lastPrompt || document.getElementById('promptBox').textContent;
+    ta.value = text;
     ta.style.cssText = 'position:fixed;opacity:0';
     document.body.appendChild(ta);
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    btn.textContent = '✓ 복사됨';
   }
+  btn.textContent = '✓ 복사됨';
   setTimeout(() => btn.textContent = '복사', 1500);
 }
 </script>
