@@ -110,6 +110,109 @@
       color: white !important;
     }
 
+    /* ── 햄버거 메뉴 ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .hamburger:hover {
+      background: rgba(61, 43, 31, 0.07);
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--deep);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 99;
+      background: rgba(247, 243, 238, 0.98);
+      backdrop-filter: blur(16px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 80px 40px 40px;
+    }
+
+    .mobile-nav.open {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--deep);
+      text-decoration: none;
+      padding: 18px 0;
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid var(--mist);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .mobile-nav a:first-child {
+      border-top: 1px solid var(--mist);
+    }
+
+    .mobile-nav a:hover,
+    .mobile-nav a.active {
+      color: var(--accent);
+    }
+
+    .mobile-nav-cta {
+      margin-top: 32px;
+      background: var(--deep) !important;
+      color: white !important;
+      padding: 16px 40px !important;
+      border-radius: 100px !important;
+      font-size: 16px !important;
+      border-bottom: none !important;
+      border-top: none !important;
+      width: auto !important;
+    }
+
+    .mobile-nav-cta:hover {
+      background: var(--accent) !important;
+    }
+
     /* ── PAGES ── */
     .page {
       display: none;
@@ -157,10 +260,10 @@
       z-index: 2;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 80px 60px;
+      padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 60px);
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 80px;
+      gap: clamp(32px, 5vw, 80px);
       align-items: center;
     }
 
@@ -361,6 +464,7 @@
 
     .book-cover-img {
       width: 260px;
+      max-width: 100%;
       border-radius: 4px 14px 14px 4px;
       display: block;
     }
@@ -392,7 +496,7 @@
     .section {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 100px 60px;
+      padding: clamp(48px, 8vw, 100px) clamp(20px, 5vw, 60px);
     }
 
     .section-label {
@@ -423,7 +527,7 @@
     /* Big quote */
     .big-quote-section {
       background: var(--deep);
-      padding: 100px 60px;
+      padding: clamp(48px, 8vw, 100px) clamp(20px, 5vw, 60px);
       text-align: center;
     }
 
@@ -839,7 +943,7 @@
 
     .services-hero {
       background: var(--deep);
-      padding: 80px 60px;
+      padding: clamp(48px, 7vw, 80px) clamp(20px, 5vw, 60px);
       text-align: center;
     }
 
@@ -862,7 +966,7 @@
     .services-grid-section {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 80px 60px;
+      padding: clamp(48px, 7vw, 80px) clamp(20px, 5vw, 60px);
     }
 
     .services-grid {
@@ -1105,7 +1209,6 @@
     /* Value section */
     .value-section {
       background: var(--soft);
-      padding: 80px 60px;
     }
 
     .value-inner {
@@ -1892,6 +1995,100 @@
       transform: translateY(0);
     }
 
+    /* ── 이미지 전역 max-width ── */
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* ── 터치 타겟 최소 44px ── */
+    .nav-links a,
+    .footer-links a,
+    .store-btn,
+    .gender-btn,
+    .topic-btn,
+    .want-btn,
+    .method-btn,
+    .btn-back,
+    .btn-next,
+    .btn-primary,
+    .btn-secondary,
+    .nav-cta {
+      min-height: 44px;
+    }
+    .nav-links a,
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    /* ── 고정 패딩 → clamp ── */
+    .cta-section {
+      padding: clamp(48px, 8vw, 100px) clamp(20px, 5vw, 60px);
+    }
+    .value-section {
+      padding: clamp(48px, 7vw, 80px) clamp(20px, 5vw, 60px);
+    }
+    .process-section {
+      padding: clamp(48px, 7vw, 80px) clamp(20px, 5vw, 60px);
+    }
+
+    /* ── 태블릿 (769px ~ 1024px) ── */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      nav {
+        padding: 16px 28px;
+      }
+
+      .hero-inner {
+        padding: clamp(40px, 6vw, 60px) clamp(20px, 4vw, 40px);
+        gap: 40px;
+      }
+
+      .hero-text h1 {
+        font-size: clamp(30px, 3.5vw, 44px);
+      }
+
+      .author-layout {
+        grid-template-columns: 200px 1fr;
+        gap: 40px;
+      }
+
+      .book-detail-grid {
+        gap: 32px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .learn-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .target-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .service-card-full {
+        grid-template-columns: 200px 1fr;
+      }
+
+      .qr-usage-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .section {
+        padding: clamp(48px, 7vw, 80px) clamp(20px, 4vw, 40px);
+      }
+
+      .services-hero,
+      .services-grid-section {
+        padding: clamp(48px, 6vw, 72px) clamp(20px, 4vw, 40px);
+      }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       nav {
@@ -1960,6 +2157,110 @@
       .qr-page {
         padding: 40px 20px 80px;
       }
+
+      /* value-table 모바일 카드형 변환 */
+      .value-table thead {
+        display: none;
+      }
+
+      .value-table,
+      .value-table tbody,
+      .value-table tr,
+      .value-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .value-table tr {
+        border: 1px solid var(--mist);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        overflow: hidden;
+        background: white;
+      }
+
+      .value-table tr:nth-child(even) td {
+        background: white;
+      }
+
+      .value-table td {
+        padding: 10px 16px;
+        font-size: 13px;
+        border-bottom: 1px solid var(--mist);
+        position: relative;
+      }
+
+      .value-table td:last-child {
+        border-bottom: none;
+      }
+
+      .value-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 10px;
+        letter-spacing: 1px;
+        color: var(--warm);
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        font-weight: 600;
+      }
+
+      /* 인라인 학문 테이블 모바일 카드형 */
+      .responsive-table thead {
+        display: none;
+      }
+      .responsive-table,
+      .responsive-table tbody,
+      .responsive-table tr,
+      .responsive-table td {
+        display: block;
+        width: 100%;
+      }
+      .responsive-table tr {
+        border: 1px solid var(--mist);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        overflow: hidden;
+        background: white;
+      }
+      .responsive-table td {
+        padding: 10px 16px !important;
+        font-size: 13px;
+        border-bottom: 1px solid var(--mist);
+      }
+      .responsive-table td:last-child {
+        border-bottom: none;
+      }
+      .responsive-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 10px;
+        letter-spacing: 1px;
+        color: var(--warm);
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        font-weight: 600;
+      }
+      .responsive-table tfoot tr {
+        background: var(--deep) !important;
+        border-color: rgba(200,169,126,0.3);
+      }
+      .responsive-table tfoot td {
+        border-bottom: none;
+        color: rgba(255,255,255,0.85) !important;
+      }
+      .responsive-table tfoot td:first-child {
+        color: var(--warm) !important;
+        font-weight: 700;
+      }
+      .table-responsive-wrap {
+        overflow-x: visible !important;
+      }
+
+      /* 햄버거 표시 */
+      .hamburger {
+        display: flex;
+      }
     }
   </style>
 </head>
@@ -1976,7 +2277,21 @@
       <li><a onclick="showPage('qr')" id="nav-qr">QR 코드</a></li>
       <li><a onclick="showPage('consult')" class="nav-cta">상담 접수하기</a></li>
     </ul>
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
+
+  <!-- 모바일 풀스크린 메뉴 -->
+  <div class="mobile-nav" id="mobileNav">
+    <a onclick="showPage('book');closeMenu()" id="mnav-book">책 소개</a>
+    <a onclick="showPage('services');closeMenu()" id="mnav-services">서비스</a>
+    <a onclick="showPage('consult');closeMenu()" id="mnav-consult">상담 신청</a>
+    <a onclick="showPage('qr');closeMenu()" id="mnav-qr">QR 코드</a>
+    <a onclick="showPage('consult');closeMenu()" class="mobile-nav-cta">상담 접수하기</a>
+  </div>
 
   <!-- ══════════════════════
      PAGE 1: BOOK
@@ -2129,8 +2444,8 @@
     </section>
 
     <!-- 언행심리학의 학문적 위치 -->
-    <section class="section" style="background:var(--soft);padding-top:80px;padding-bottom:80px;max-width:100%;">
-      <div style="max-width:1100px;margin:0 auto;padding:0 60px;">
+    <section style="background:var(--soft);">
+      <div class="section" style="padding-top:80px;padding-bottom:80px;">
         <span class="section-label">학문적 토대</span>
         <h2 class="section-title">언행심리학의 학문적 위치</h2>
         <div class="section-divider"></div>
@@ -2139,8 +2454,8 @@
           말과 행동의 패턴에서 인간의 본질과 미래를 읽어냅니다.
         </p>
 
-        <div style="overflow-x:auto;">
-          <table style="width:100%;border-collapse:collapse;font-size:14px;min-width:560px;">
+        <div style="overflow-x:auto;" class="table-responsive-wrap">
+          <table class="responsive-table" style="width:100%;border-collapse:collapse;font-size:14px;">
             <thead>
               <tr style="background:var(--deep);">
                 <th
@@ -2156,29 +2471,29 @@
             </thead>
             <tbody>
               <tr style="background:white;border-bottom:1px solid var(--mist);">
-                <td style="padding:16px 20px;font-weight:600;color:var(--deep);">심리학</td>
-                <td style="padding:16px 20px;color:#7a6e65;">내면 메커니즘 분석</td>
-                <td style="padding:16px 20px;color:#5a5047;">현장 언행 패턴으로 확장</td>
+                <td data-label="학문" style="padding:16px 20px;font-weight:600;color:var(--deep);">심리학</td>
+                <td data-label="강점" style="padding:16px 20px;color:#7a6e65;">내면 메커니즘 분석</td>
+                <td data-label="언행심리학과의 관계" style="padding:16px 20px;color:#5a5047;">현장 언행 패턴으로 확장</td>
               </tr>
               <tr style="background:var(--soft);border-bottom:1px solid var(--mist);">
-                <td style="padding:16px 20px;font-weight:600;color:var(--deep);">명리학</td>
-                <td style="padding:16px 20px;color:#7a6e65;">타고난 기질과 시간의 흐름</td>
-                <td style="padding:16px 20px;color:#5a5047;">살아온 패턴과 통합</td>
+                <td data-label="학문" style="padding:16px 20px;font-weight:600;color:var(--deep);">명리학</td>
+                <td data-label="강점" style="padding:16px 20px;color:#7a6e65;">타고난 기질과 시간의 흐름</td>
+                <td data-label="언행심리학과의 관계" style="padding:16px 20px;color:#5a5047;">살아온 패턴과 통합</td>
               </tr>
               <tr style="background:white;border-bottom:1px solid var(--mist);">
-                <td style="padding:16px 20px;font-weight:600;color:var(--deep);">사회학</td>
-                <td style="padding:16px 20px;color:#7a6e65;">집단과 구조 분석</td>
-                <td style="padding:16px 20px;color:#5a5047;">개인 언행으로 구체화</td>
+                <td data-label="학문" style="padding:16px 20px;font-weight:600;color:var(--deep);">사회학</td>
+                <td data-label="강점" style="padding:16px 20px;color:#7a6e65;">집단과 구조 분석</td>
+                <td data-label="언행심리학과의 관계" style="padding:16px 20px;color:#5a5047;">개인 언행으로 구체화</td>
               </tr>
               <tr style="background:var(--soft);border-bottom:1px solid var(--mist);">
-                <td style="padding:16px 20px;font-weight:600;color:var(--deep);">행동과학</td>
-                <td style="padding:16px 20px;color:#7a6e65;">행동 패턴 연구</td>
-                <td style="padding:16px 20px;color:#5a5047;">언어 패턴과 통합</td>
+                <td data-label="학문" style="padding:16px 20px;font-weight:600;color:var(--deep);">행동과학</td>
+                <td data-label="강점" style="padding:16px 20px;color:#7a6e65;">행동 패턴 연구</td>
+                <td data-label="언행심리학과의 관계" style="padding:16px 20px;color:#5a5047;">언어 패턴과 통합</td>
               </tr>
               <tr style="background:white;border-bottom:1px solid var(--mist);">
-                <td style="padding:16px 20px;font-weight:600;color:var(--deep);">포렌식·법심리학</td>
-                <td style="padding:16px 20px;color:#7a6e65;">언행에서 진실 판별</td>
-                <td style="padding:16px 20px;color:#5a5047;">일상의 영역으로 확장</td>
+                <td data-label="학문" style="padding:16px 20px;font-weight:600;color:var(--deep);">포렌식·법심리학</td>
+                <td data-label="강점" style="padding:16px 20px;color:#7a6e65;">언행에서 진실 판별</td>
+                <td data-label="언행심리학과의 관계" style="padding:16px 20px;color:#5a5047;">일상의 영역으로 확장</td>
               </tr>
             </tbody>
             <tfoot>
@@ -2700,38 +3015,44 @@
         <span class="section-label">투자 가치</span>
         <h2 class="section-title">상담료는 비용이 아닌<br>보험입니다</h2>
         <div class="section-divider"></div>
-        <table class="value-table">
-          <tr>
-            <th>잘못된 판단의 비용</th>
-            <th>실제 손실 규모</th>
-            <th>상담료 대비</th>
-          </tr>
-          <tr>
-            <td>잘못된 동업 파트너 선택</td>
-            <td>수천만 ~ 수억원</td>
-            <td class="highlight">상담료의 100배+</td>
-          </tr>
-          <tr>
-            <td>핵심 인재 이직 (기업)</td>
-            <td>연봉의 150~200%</td>
-            <td class="highlight">상담료의 수십 배</td>
-          </tr>
-          <tr>
-            <td>관계 갈등으로 인한 이직</td>
-            <td>기회비용 수년치</td>
-            <td class="highlight">상담료의 10배+</td>
-          </tr>
-          <tr>
-            <td>잘못된 배우자 선택</td>
-            <td>이혼 비용 + 수십년 인생</td>
-            <td class="highlight">환산 불가</td>
-          </tr>
-          <tr>
-            <td>협상·계약 실패</td>
-            <td>계약 규모의 10~30%</td>
-            <td class="highlight">상담료의 수백 배</td>
-          </tr>
-        </table>
+        <div class="table-responsive-wrap" style="overflow-x:auto;">
+          <table class="value-table">
+            <thead>
+              <tr>
+                <th>잘못된 판단의 비용</th>
+                <th>실제 손실 규모</th>
+                <th>상담료 대비</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="잘못된 판단의 비용">잘못된 동업 파트너 선택</td>
+                <td data-label="실제 손실 규모">수천만 ~ 수억원</td>
+                <td data-label="상담료 대비" class="highlight">상담료의 100배+</td>
+              </tr>
+              <tr>
+                <td data-label="잘못된 판단의 비용">핵심 인재 이직 (기업)</td>
+                <td data-label="실제 손실 규모">연봉의 150~200%</td>
+                <td data-label="상담료 대비" class="highlight">상담료의 수십 배</td>
+              </tr>
+              <tr>
+                <td data-label="잘못된 판단의 비용">관계 갈등으로 인한 이직</td>
+                <td data-label="실제 손실 규모">기회비용 수년치</td>
+                <td data-label="상담료 대비" class="highlight">상담료의 10배+</td>
+              </tr>
+              <tr>
+                <td data-label="잘못된 판단의 비용">잘못된 배우자 선택</td>
+                <td data-label="실제 손실 규모">이혼 비용 + 수십년 인생</td>
+                <td data-label="상담료 대비" class="highlight">환산 불가</td>
+              </tr>
+              <tr>
+                <td data-label="잘못된 판단의 비용">협상·계약 실패</td>
+                <td data-label="실제 손실 규모">계약 규모의 10~30%</td>
+                <td data-label="상담료 대비" class="highlight">상담료의 수백 배</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -3026,82 +3347,37 @@
     <div class="qr-page">
 
       <div class="qr-hero">
-        <span class="section-label">배포용 QR 코드</span>
-        <h2 class="section-title">QR 코드로<br>유입시키기</h2>
+        <span class="section-label">상담 안내</span>
+        <h2 class="section-title">주변에 알려주세요</h2>
         <div class="section-divider" style="margin:20px auto;"></div>
         <p style="font-size:15px;color:#7a6e65;line-height:1.8;max-width:480px;margin:0 auto;">
-          책 띠지, SNS 포스팅, 명함, 카드뉴스에 삽입하여<br>
-          독자를 상담 사이트로 바로 연결하세요.
+          이 책이 도움이 되셨나요?<br>
+          주변에 상담을 권하고 싶을 때, QR 코드나 주소를 보내주세요.<br>
+          스캔 한 번으로 바로 상담 신청까지 이어집니다.
         </p>
       </div>
 
+      <!-- QR 라이브러리 로드 -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
       <div class="qr-grid">
         <div class="qr-card">
-          <img
-            src="data:image/png;base64,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"
-            alt="QR 코드 (밝은 버전)">
+          <div id="qr-light" style="width:200px;height:200px;margin:0 auto 20px;border-radius:12px;overflow:hidden;background:white;display:flex;align-items:center;justify-content:center;"></div>
           <div class="qr-card-title">밝은 배경용 QR</div>
           <div class="qr-card-desc">흰 배경, 책 내지, 밝은 SNS 카드에 적합합니다.</div>
-          <a class="qr-download"
-            href="data:image/png;base64,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"
-            download="언행심리학_QR_밝은버전.png">
-            ⬇ PNG 다운로드
-          </a>
+          <a class="qr-download" id="qr-light-download" href="#" download="언행심리학_QR_밝은버전.png" onclick="downloadQR('qr-light','언행심리학_QR_밝은버전.png');return false;">⬇ PNG 다운로드</a>
         </div>
         <div class="qr-card dark">
-          <img
-            src="data:image/png;base64,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"
-            alt="QR 코드 (어두운 버전)">
+          <div id="qr-dark" style="width:200px;height:200px;margin:0 auto 20px;border-radius:12px;overflow:hidden;background:#3d2b1f;display:flex;align-items:center;justify-content:center;"></div>
           <div class="qr-card-title">어두운 배경용 QR</div>
           <div class="qr-card-desc">책 표지 뒷면, 어두운 디자인 카드에 적합합니다.</div>
-          <a class="qr-download"
-            href="data:image/png;base64,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"
-            download="언행심리학_QR_어두운버전.png">
+          <a class="qr-download" href="#" download="언행심리학_QR_어두운버전.png" onclick="downloadQR('qr-dark','언행심리학_QR_어두운버전.png');return false;">
             ⬇ PNG 다운로드
           </a>
         </div>
       </div>
 
-      <div class="qr-usage-section">
-        <div class="qr-usage-title">어디에 활용하면 좋을까요?</div>
-        <div class="qr-usage-grid">
-          <div class="qr-use-item">
-            <div class="qr-use-icon">📚</div>
-            <div class="qr-use-title">책 띠지 / 내지</div>
-            <div class="qr-use-desc">
-              책 뒷면 하단이나 첫 페이지에 삽입.<br>
-              "더 깊은 이야기는 여기서" 문구와 함께.
-            </div>
-          </div>
-          <div class="qr-use-item">
-            <div class="qr-use-icon">📱</div>
-            <div class="qr-use-title">SNS 카드뉴스</div>
-            <div class="qr-use-desc">
-              책 문구 카드 하단에 삽입.<br>
-              인스타그램, 블로그 포스팅에 첨부.
-            </div>
-          </div>
-          <div class="qr-use-item">
-            <div class="qr-use-icon">🤝</div>
-            <div class="qr-use-title">명함 / 소개 카드</div>
-            <div class="qr-use-desc">
-              명함 뒷면에 QR 인쇄.<br>
-              처음 만나는 분께 책 대신 건네는 명함.
-            </div>
-          </div>
-        </div>
 
-        <div style="margin-top:36px;padding:28px;background:white;border-radius:16px;text-align:center;">
-          <p style="font-size:13px;color:#9e9087;margin-bottom:12px;letter-spacing:1px;">QR 코드가 연결되는 주소</p>
-          <p
-            style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--deep);font-weight:600;margin-bottom:16px;">
-            https://dohyeon-consulting.kr
-          </p>
-          <p style="font-size:13px;color:#7a6e65;line-height:1.7;">
-            사이트를 실제 서버에 배포한 후, QR 코드의 연결 주소를<br>실제 URL로 교체하시면 됩니다.
-          </p>
-        </div>
-      </div>
 
     </div>
   </div><!-- /page-qr -->
@@ -3122,6 +3398,30 @@
 
 
   <script>
+    // ── 햄버거 메뉴 ──
+    function toggleMenu() {
+      const btn = document.getElementById('hamburgerBtn');
+      const nav = document.getElementById('mobileNav');
+      const isOpen = btn.classList.toggle('open');
+      nav.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    function closeMenu() {
+      const btn = document.getElementById('hamburgerBtn');
+      const nav = document.getElementById('mobileNav');
+      btn.classList.remove('open');
+      nav.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    // ESC 키로 닫기
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeMenu();
+    });
+
     // ── NAVIGATION ──
     function showPage(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -3131,6 +3431,7 @@
       if (navEl) navEl.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       observeFadeIns();
+      closeMenu();
     }
 
     function scrollToSection(id) {
@@ -3336,6 +3637,37 @@
 
     updateProgress(1);
 
+
+    // ── QR 코드 생성 ──
+    const QR_URL = 'https://shstrategylab.github.io/wapmaster/index.html';
+    function initQRCodes() {
+      if (typeof QRCode === 'undefined') {
+        setTimeout(initQRCodes, 200);
+        return;
+      }
+      // 밝은 버전
+      new QRCode(document.getElementById('qr-light'), {
+        text: QR_URL, width: 200, height: 200,
+        colorDark: '#1a1614', colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      // 어두운 버전
+      new QRCode(document.getElementById('qr-dark'), {
+        text: QR_URL, width: 200, height: 200,
+        colorDark: '#f7f3ee', colorLight: '#3d2b1f',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+    initQRCodes();
+
+    function downloadQR(divId, filename) {
+      const canvas = document.querySelector('#' + divId + ' canvas');
+      if (!canvas) { alert('QR 코드가 아직 로드 중입니다. 잠시 후 다시 시도해 주세요.'); return; }
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
 
     // Renamed submit to avoid conflict
     function submitForm() { submit(); }
