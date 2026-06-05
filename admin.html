@@ -467,7 +467,7 @@ function renderDetail(app) {
         </div>
         <div style="font-family:monospace;font-size:13px;color:var(--warm);font-weight:600;margin-bottom:4px;">
           📋 접수번호: ${escHtml(app.접수번호 || '—')}
-          <button onclick="alert('순번: ' + decodeSeq('${(app.접수번호||'').split('-')[1]||'0'}') + '번째 접수')" style="margin-left:10px;font-size:10px;padding:2px 8px;border:1px solid rgba(200,169,126,0.3);border-radius:10px;background:rgba(200,169,126,0.1);color:var(--warm);cursor:pointer;font-family:inherit;">순번 확인</button>
+          <span style="margin-left:10px;font-size:11px;padding:2px 10px;border:1px solid rgba(200,169,126,0.3);border-radius:10px;background:rgba(200,169,126,0.1);color:var(--warm);">당일 ${app._순번 || '?'}번째</span>
         </div>
         <div class="detail-sub">${escHtml(app.성별 || '')} · ${escHtml(app.나이대 || '')} · ${escHtml(app.거주지역 || '')} · 접수: ${escHtml(app.접수시각 || '')}</div>
       </div>
@@ -488,6 +488,7 @@ function renderDetail(app) {
       <div class="info-card">
         <div class="info-card-title">기본 정보</div>
         <div class="info-row"><span class="k">접수번호</span><span class="v" style="font-family:monospace;color:var(--accent);">${escHtml(app.접수번호 || '—')}</span></div>
+        <div class="info-row"><span class="k">당일 순번</span><span class="v">${app._순번 ? app._순번 + '번째' : '—'}</span></div>
         <div class="info-row"><span class="k">이름</span><span class="v">${escHtml(app.이름 || '—')}</span></div>
         <div class="info-row"><span class="k">나이대</span><span class="v">${escHtml(app.나이대 || '—')}</span></div>
         <div class="info-row"><span class="k">성별</span><span class="v">${escHtml(app.성별 || '—')}</span></div>
@@ -559,9 +560,6 @@ function renderDetail(app) {
     </div>
   `;
 }
-
-function encodeSeq(n) { return n.toString(36).toUpperCase().padStart(3,'0'); }
-function decodeSeq(s) { return s ? parseInt(s, 36) : 0; }
 
 function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
