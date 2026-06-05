@@ -1058,14 +1058,12 @@
       border: 1px solid rgba(122, 140, 126, 0.3);
     }
 
-    /* Full-width service cards */
+    /* Full-width service cards — 재구성 */
     .service-card-full {
       background: white;
       border-radius: 24px;
       border: 1.5px solid var(--mist);
-      margin-bottom: 28px;
-      display: grid;
-      grid-template-columns: 260px 1fr;
+      margin-bottom: 32px;
       overflow: hidden;
       transition: all 0.3s;
       box-shadow: 0 4px 20px rgba(61, 43, 31, 0.05);
@@ -1077,34 +1075,52 @@
       transform: translateY(-3px);
     }
 
-    .scf-left {
+    /* 상단 헤더 */
+    .scf-header {
       background: var(--deep);
-      padding: 36px 28px;
+      padding: 28px 36px;
       display: flex;
-      flex-direction: column;
-      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
     }
 
-    .scf-icon {
-      font-size: 36px;
+    .scf-header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
+
+    .scf-icon { font-size: 36px; line-height: 1; }
 
     .scf-name {
       font-family: 'Noto Serif KR', serif;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       color: white;
       line-height: 1.3;
     }
 
-    .scf-price-box {
-      border-top: 1px solid rgba(200, 169, 126, 0.25);
-      padding-top: 16px;
+    .scf-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
     }
+
+    .scf-tags-row .service-tag {
+      background: rgba(200,169,126,0.12);
+      border-color: rgba(200,169,126,0.25);
+      color: rgba(200,169,126,0.85);
+      font-size: 11px;
+    }
+
+    .scf-header-right { text-align: right; flex-shrink: 0; }
 
     .scf-price {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 34px;
+      font-size: 36px;
       font-weight: 600;
       color: var(--warm);
       line-height: 1.1;
@@ -1112,98 +1128,99 @@
 
     .scf-unit {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.45);
+      color: rgba(255,255,255,0.45);
       margin-top: 4px;
       letter-spacing: 0.5px;
     }
 
-    .scf-left .scf-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: auto;
-      padding-top: 12px;
+    /* 바디 — 2컬럼 그리드 */
+    .scf-body {
+      padding: 32px 36px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
     }
 
-    .scf-left .service-tag {
-      background: rgba(200, 169, 126, 0.12);
-      border-color: rgba(200, 169, 126, 0.25);
-      color: rgba(200, 169, 126, 0.85);
-      font-size: 11px;
-    }
-
-    .scf-right {
-      padding: 36px 36px 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .scf-sit-label,
-    .scf-what-label {
+    .scf-block-label {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 3px;
       color: var(--warm);
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scf-block-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(200,169,126,0.3), transparent);
     }
 
     .scf-sit-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .scf-sit-list li {
       font-size: 14px;
       color: #5a5047;
-      line-height: 1.6;
-      padding-left: 18px;
+      line-height: 1.65;
+      padding-left: 22px;
       position: relative;
     }
 
     .scf-sit-list li::before {
-      content: '›';
+      content: '✓';
       position: absolute;
       left: 0;
       color: var(--warm);
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 700;
-      line-height: 1.4;
+      top: 1px;
     }
 
     .scf-what {
       background: var(--soft);
       border-radius: 14px;
-      padding: 20px 22px;
+      padding: 24px 26px;
       border-left: 3px solid var(--warm);
     }
 
     .scf-what-body {
       font-size: 14px;
       color: #5a5047;
-      line-height: 1.9;
+      line-height: 2;
+    }
+
+    /* 하단 푸터 */
+    .scf-footer {
+      padding: 0 36px 26px;
     }
 
     .scf-note {
       font-size: 12px;
       color: var(--sage);
-      background: rgba(122, 140, 126, 0.08);
+      background: rgba(122,140,126,0.08);
       border-radius: 10px;
-      padding: 10px 16px;
-      border: 1px solid rgba(122, 140, 126, 0.2);
+      padding: 12px 18px;
+      border: 1px solid rgba(122,140,126,0.2);
     }
 
-    @media (max-width: 768px) {
-      .service-card-full {
-        grid-template-columns: 1fr;
-      }
+    /* 구버전 클래스 숨김 */
+    .scf-left, .scf-right, .scf-price-box, .scf-left .scf-tags { display: none !important; }
 
-      .scf-right {
-        padding: 24px 24px 28px;
-      }
+    @media (max-width: 768px) {
+      .scf-header { padding: 22px 20px; flex-direction: column; align-items: flex-start; }
+      .scf-header-right { text-align: left; }
+      .scf-unit { text-align: left; }
+      .scf-body { grid-template-columns: 1fr; padding: 24px 20px; gap: 20px; }
+      .scf-footer { padding: 0 20px 22px; }
     }
 
     /* Value section */
@@ -2342,22 +2359,28 @@
     <!-- WHAT YOU LEARN -->
     <section class="section">
       <span class="section-label">이 책에서 배우는 것</span>
-      <h2 class="section-title">사람을 읽는<br>세 가지 렌즈</h2>
+      <h2 class="section-title">사람을 읽는<br>세 가지 리경(理鏡) 렌즈</h2>
       <div class="section-divider"></div>
       <div class="learn-grid">
         <div class="learn-card fade-in">
-          <div class="learn-num">01</div>
-          <div class="learn-title">언어 패턴 읽기</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <span class="learn-num" style="margin-bottom:0;">01</span>
+            <div class="learn-title" style="font-size:20px;margin-bottom:0;">언어 패턴 읽기</div>
+          </div>
           <div class="learn-desc">말의 내용이 아닌 구조와 패턴을 분석한다. 반복되는 단어, 회피하는 표현, 강조하는 방식에서 진짜 의도가 드러난다.</div>
         </div>
         <div class="learn-card fade-in">
-          <div class="learn-num">02</div>
-          <div class="learn-title">관계의 흐름 읽기</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <span class="learn-num" style="margin-bottom:0;">02</span>
+            <div class="learn-title" style="font-size:20px;margin-bottom:0;">관계의 흐름 읽기</div>
+          </div>
           <div class="learn-desc">인연에는 패턴이 있다. 누가 먼저 연락하는지, 어떤 상황에서 멀어지는지. 관계의 리듬이 그 사람의 본질을 보여준다.</div>
         </div>
         <div class="learn-card fade-in">
-          <div class="learn-num">03</div>
-          <div class="learn-title">행동 신호 읽기</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <span class="learn-num" style="margin-bottom:0;">03</span>
+            <div class="learn-title" style="font-size:20px;margin-bottom:0;">행동 신호 읽기</div>
+          </div>
           <div class="learn-desc">좋은 사람도, 나쁜 사람도 처음부터 신호를 보낸다. 다만 우리가 그 신호를 읽는 법을 배운 적이 없을 뿐이다.</div>
         </div>
       </div>
@@ -2378,8 +2401,8 @@
           <div class="learn-card fade-in" style="border-left:3px solid var(--warm);background:var(--soft);">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
               <span
-                style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--mist);line-height:1;">1단계</span>
-              <span style="font-size:11px;letter-spacing:2px;color:var(--warm);">보이는 현상</span>
+                style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--accent);line-height:1;">1단계</span>
+              <span style="font-size:16px;letter-spacing:0.5px;color:var(--warm);">보이는 현상</span>
             </div>
             <div class="learn-title">인물의 행동과 움직임 읽기</div>
             <div class="learn-desc">개인의 언행과 행동 패턴을 파악한다. 단순한 개인 운기나 일반 관계는 보이는 현상만으로도 풀 수 있다.</div>
@@ -2388,8 +2411,8 @@
           <div class="learn-card fade-in" style="border-left:3px solid var(--warm);background:var(--soft);">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
               <span
-                style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--mist);line-height:1;">2단계</span>
-              <span style="font-size:11px;letter-spacing:2px;color:var(--warm);">보이지 않는 세력</span>
+                style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--accent);line-height:1;">2단계</span>
+              <span style="font-size:16px;letter-spacing:0.5px;color:var(--warm);">보이지 않는 세력</span>
             </div>
             <div class="learn-title">뒤에 숨겨진 세력 찾기</div>
             <div class="learn-desc">보이는 인물 뒤에 있는 실질 세력을 읽어야 한다. 이 세력을 놓치면 보이는 현상만으로는 결론이 틀릴 수 있다. 조직이 클수록 이 단계가 중요하다.
@@ -2399,8 +2422,8 @@
           <div class="learn-card fade-in" style="border-left:3px solid var(--warm);background:var(--soft);">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
               <span
-                style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--mist);line-height:1;">3단계</span>
-              <span style="font-size:11px;letter-spacing:2px;color:var(--warm);">세력의 운기 분석</span>
+                style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--accent);line-height:1;">3단계</span>
+              <span style="font-size:16px;letter-spacing:0.5px;color:var(--warm);">세력의 운기 분석</span>
             </div>
             <div class="learn-title">뒤에 있는 세력의 흐름 읽기</div>
             <div class="learn-desc">그 세력의 조직 운을 풀어야 한다. 운기가 좋은 세력이 뒤에 있으면 앞에 나선 인물도 함께 흐른다. 나쁜 세력이 뒤에 있으면 원하는 자리를 얻지
@@ -2410,8 +2433,8 @@
           <div class="learn-card fade-in" style="border-left:3px solid var(--warm);background:var(--soft);">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
               <span
-                style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--mist);line-height:1;">4단계</span>
-              <span style="font-size:11px;letter-spacing:2px;color:var(--warm);">국운(國運)과 연계</span>
+                style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--accent);line-height:1;">4단계</span>
+              <span style="font-size:16px;letter-spacing:0.5px;color:var(--warm);">국운(國運)과 연계</span>
             </div>
             <div class="learn-title">나라 전체의 기운 흐름과 함께 읽기</div>
             <div class="learn-desc">국운이 밝으면 나쁜 세력의 기운이 억제되고, 국운이 어두우면 나쁜 세력의 기운이 더 활발해진다. 최고 지도자의 자리도 국운의 흐름과 함께 결정된다.
@@ -2806,25 +2829,27 @@
 
       <!-- 서비스 카드 1: 단회 심층 상담 -->
       <div class="service-card-full fade-in" style="border-color:rgba(184,134,11,0.3);">
-        <div class="scf-left">
-          <div
-            style="display:inline-block;background:linear-gradient(135deg,#b8860b,#d4a843);color:#1a1614;font-size:10px;font-weight:700;letter-spacing:3px;padding:4px 12px;border-radius:100px;margin-bottom:14px;">
-            TOP 0.1% EXCLUSIVE</div>
-          <div class="scf-icon">🔍</div>
-          <div class="scf-name">단회 심층 상담</div>
-          <div class="scf-price-box">
-            <div class="scf-price">50만원</div>
-            <div class="scf-unit">90분 1회</div>
+        <div class="scf-header">
+          <div class="scf-header-left">
+            <div class="scf-icon">🔍</div>
+            <div>
+              <div style="display:inline-block;background:linear-gradient(135deg,#b8860b,#d4a843);color:#1a1614;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 10px;border-radius:100px;margin-bottom:8px;">TOP 0.1% EXCLUSIVE</div>
+              <div class="scf-name">단회 심층 상담</div>
+              <div class="scf-tags-row">
+                <span class="service-tag">전화 또는 대면</span>
+                <span class="service-tag">90분 집중</span>
+                <span class="service-tag">즉각 인사이트</span>
+              </div>
+            </div>
           </div>
-          <div class="scf-tags">
-            <span class="service-tag">전화 또는 대면</span>
-            <span class="service-tag">90분 집중</span>
-            <span class="service-tag">즉각 인사이트</span>
+          <div class="scf-header-right">
+            <div class="scf-price">50만원</div>
+            <div class="scf-unit">90분 · 1회</div>
           </div>
         </div>
-        <div class="scf-right">
-          <div class="scf-situation">
-            <div class="scf-sit-label">이런 분께 맞습니다</div>
+        <div class="scf-body">
+          <div>
+            <div class="scf-block-label">이런 분께 맞습니다</div>
             <ul class="scf-sit-list">
               <li>지금 당장 결정해야 할 중요한 선택 앞에 서 있는 분</li>
               <li>특정 사람의 말과 행동이 이해되지 않아 막혀 있는 분</li>
@@ -2833,41 +2858,42 @@
             </ul>
           </div>
           <div class="scf-what">
-            <div class="scf-what-label">상담에서 일어나는 일</div>
+            <div class="scf-block-label">상담에서 일어나는 일</div>
             <div class="scf-what-body">
-              90분 동안 지금 상황의 핵심 언행 패턴을 집중 분석합니다.
-              상대방이 왜 그런 말을 했는지, 그 행동 뒤에 무엇이 있는지,
-              지금 이 상황에서 어떻게 반응하는 것이 최선인지를 함께 읽어냅니다.
+              90분 동안 지금 상황의 핵심 언행 패턴을 집중 분석합니다.<br><br>
+              상대방이 왜 그런 말을 했는지, 그 행동 뒤에 무엇이 있는지, 지금 이 상황에서 어떻게 반응하는 것이 최선인지를 함께 읽어냅니다.<br><br>
               상담이 끝날 때쯤, 흐릿하게 보이던 것이 선명해지는 경험을 하게 됩니다.
             </div>
           </div>
-          <div class="scf-note">
-            📋 상담 후 상담내용 정리 제공(원하면) · 비밀 보장
-          </div>
+        </div>
+        <div class="scf-footer">
+          <div class="scf-note">📋 상담 후 상담내용 정리 제공(원하면) · 비밀 보장</div>
         </div>
       </div>
 
       <!-- 서비스 카드 2: 월 정기 상담 -->
       <div class="service-card-full fade-in" style="border-color:rgba(184,134,11,0.3);">
-        <div class="scf-left">
-          <div
-            style="display:inline-block;background:linear-gradient(135deg,#b8860b,#d4a843);color:#1a1614;font-size:10px;font-weight:700;letter-spacing:3px;padding:4px 12px;border-radius:100px;margin-bottom:14px;">
-            TOP 0.1% EXCLUSIVE</div>
-          <div class="scf-icon">🌱</div>
-          <div class="scf-name">월 정기 상담</div>
-          <div class="scf-price-box">
-            <div class="scf-price">150만원</div>
-            <div class="scf-unit">월 4회 (주 1회)</div>
+        <div class="scf-header">
+          <div class="scf-header-left">
+            <div class="scf-icon">🌱</div>
+            <div>
+              <div style="display:inline-block;background:linear-gradient(135deg,#b8860b,#d4a843);color:#1a1614;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 10px;border-radius:100px;margin-bottom:8px;">TOP 0.1% EXCLUSIVE</div>
+              <div class="scf-name">월 정기 상담</div>
+              <div class="scf-tags-row">
+                <span class="service-tag">주 1회 60분</span>
+                <span class="service-tag">패턴 심층 분석</span>
+                <span class="service-tag">지속적 변화</span>
+              </div>
+            </div>
           </div>
-          <div class="scf-tags">
-            <span class="service-tag">주 1회 60분</span>
-            <span class="service-tag">패턴 심층 분석</span>
-            <span class="service-tag">지속적 변화</span>
+          <div class="scf-header-right">
+            <div class="scf-price">150만원</div>
+            <div class="scf-unit">월 4회 · 주 1회</div>
           </div>
         </div>
-        <div class="scf-right">
-          <div class="scf-situation">
-            <div class="scf-sit-label">이런 분께 맞습니다</div>
+        <div class="scf-body">
+          <div>
+            <div class="scf-block-label">이런 분께 맞습니다</div>
             <ul class="scf-sit-list">
               <li>같은 유형의 사람에게 반복적으로 상처받는 패턴을 끊고 싶은 분</li>
               <li>관계에서 늘 같은 실수를 반복하는데, 왜인지 스스로 모르는 분</li>
@@ -2876,42 +2902,42 @@
             </ul>
           </div>
           <div class="scf-what">
-            <div class="scf-what-label">한 달 동안 일어나는 일</div>
+            <div class="scf-block-label">한 달 동안 일어나는 일</div>
             <div class="scf-what-body">
-              첫 주는 현재 상황과 반복 패턴의 뿌리를 함께 파악합니다.
-              둘째·셋째 주는 구체적인 관계별 언행 패턴을 해석하고,
-              실제 상황에서 어떻게 다르게 반응할 수 있는지를 연습합니다.
+              첫 주는 현재 상황과 반복 패턴의 뿌리를 함께 파악합니다.<br><br>
+              둘째·셋째 주는 구체적인 관계별 언행 패턴을 해석하고, 실제 상황에서 어떻게 다르게 반응할 수 있는지를 연습합니다.<br><br>
               넷째 주엔 한 달의 변화를 정리하고 앞으로의 방향을 잡습니다.
-              패턴 하나가 바뀌면, 앞으로의 10년이 달라집니다.
             </div>
           </div>
-          <div class="scf-note">
-            📋 상담내용 리포트 제공(원하면) · 비밀 보장
-          </div>
+        </div>
+        <div class="scf-footer">
+          <div class="scf-note">📋 상담내용 리포트 제공(원하면) · 비밀 보장</div>
         </div>
       </div>
 
       <!-- 서비스 카드 3: 기업 임원 코칭 -->
       <div class="service-card-full fade-in" style="border-color:rgba(184,134,11,0.3);">
-        <div class="scf-left">
-          <div
-            style="display:inline-block;background:linear-gradient(135deg,#b8860b,#d4a843);color:#1a1614;font-size:10px;font-weight:700;letter-spacing:3px;padding:4px 12px;border-radius:100px;margin-bottom:14px;">
-            TOP 0.1% EXCLUSIVE</div>
-          <div class="scf-icon">🏢</div>
-          <div class="scf-name">기업 임원 코칭</div>
-          <div class="scf-price-box">
+        <div class="scf-header">
+          <div class="scf-header-left">
+            <div class="scf-icon">🏢</div>
+            <div>
+              <div style="display:inline-block;background:linear-gradient(135deg,#b8860b,#d4a843);color:#1a1614;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 10px;border-radius:100px;margin-bottom:8px;">TOP 0.1% EXCLUSIVE</div>
+              <div class="scf-name">기업 임원 코칭</div>
+              <div class="scf-tags-row">
+                <span class="service-tag">비공개 운영</span>
+                <span class="service-tag">임원 전용</span>
+                <span class="service-tag">조직 최적화</span>
+              </div>
+            </div>
+          </div>
+          <div class="scf-header-right">
             <div class="scf-price">300~500만원</div>
             <div class="scf-unit">월 2~4회</div>
           </div>
-          <div class="scf-tags">
-            <span class="service-tag">비공개 운영</span>
-            <span class="service-tag">임원 전용</span>
-            <span class="service-tag">조직 최적화</span>
-          </div>
         </div>
-        <div class="scf-right">
-          <div class="scf-situation">
-            <div class="scf-sit-label">이런 상황에 맞습니다</div>
+        <div class="scf-body">
+          <div>
+            <div class="scf-block-label">이런 상황에 맞습니다</div>
             <ul class="scf-sit-list">
               <li>핵심 인재가 왜 떠나는지 이유를 모르겠는 CEO·임원</li>
               <li>팀 내 갈등이 반복되는데 원인을 짚기 어려운 리더</li>
@@ -2920,88 +2946,68 @@
             </ul>
           </div>
           <div class="scf-what">
-            <div class="scf-what-label">코칭에서 다루는 것</div>
+            <div class="scf-block-label">코칭에서 다루는 것</div>
             <div class="scf-what-body">
-              조직에서 발생하는 문제의 대부분은 '사람을 잘못 읽는 것'에서 시작됩니다.
-              언행심리학 기반으로 핵심 인물들의 언행 패턴을 분석하고,
-              이탈 신호·갈등 전조·진짜 충성 여부를 사전에 파악합니다.
+              조직 문제의 대부분은 '사람을 잘못 읽는 것'에서 시작됩니다.<br><br>
+              언행심리학 기반으로 핵심 인물들의 언행 패턴을 분석하고, 이탈 신호·갈등 전조·진짜 충성 여부를 사전에 파악합니다.<br><br>
               채용 인터뷰 동행 자문, 협상 전 상대방 언행 분석도 가능합니다.
-              모든 내용은 철저히 비공개로 진행됩니다.
             </div>
           </div>
-          <div class="scf-note">
-            📋 상담내용 리포트 제공(원하면) · 완전 비공개
-          </div>
+        </div>
+        <div class="scf-footer">
+          <div class="scf-note">📋 상담내용 리포트 제공(원하면) · 완전 비공개</div>
         </div>
       </div>
 
       <!-- 서비스 카드 4: 정치인 개인 심층 상담 -->
       <div class="service-card-full fade-in"
         style="border:1.5px solid rgba(184,134,11,0.5);background:linear-gradient(135deg,#1a1614 0%,#2d1f14 100%);position:relative;overflow:hidden;">
-        <!-- 배경 패턴 -->
-        <div
-          style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 30px,rgba(200,169,126,0.02) 30px,rgba(200,169,126,0.02) 31px);pointer-events:none;">
-        </div>
-        <div
-          style="position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(184,134,11,0.1),transparent 70%);pointer-events:none;">
-        </div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 30px,rgba(200,169,126,0.02) 30px,rgba(200,169,126,0.02) 31px);pointer-events:none;"></div>
+        <div style="position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(184,134,11,0.1),transparent 70%);pointer-events:none;"></div>
 
-        <div class="scf-left"
-          style="background:transparent;border-right:1px solid rgba(184,134,11,0.2);position:relative;z-index:1;">
-          <div
-            style="display:inline-block;background:linear-gradient(135deg,#b8860b,#d4a843);color:#1a1614;font-size:10px;font-weight:700;letter-spacing:3px;padding:4px 12px;border-radius:100px;margin-bottom:14px;">
-            TOP 0.1% EXCLUSIVE</div>
-          <div class="scf-icon">🔏</div>
-          <div class="scf-name" style="font-size:22px;line-height:1.3;">정치인<br>개인 심층 상담</div>
-          <div class="scf-price-box">
+        <div class="scf-header" style="background:transparent;border-bottom:1px solid rgba(184,134,11,0.2);position:relative;z-index:1;">
+          <div class="scf-header-left">
+            <div class="scf-icon">🔏</div>
+            <div>
+              <div style="display:inline-block;background:linear-gradient(135deg,#b8860b,#d4a843);color:#1a1614;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 10px;border-radius:100px;margin-bottom:8px;">TOP 0.1% EXCLUSIVE</div>
+              <div class="scf-name" style="font-size:22px;">정치인 개인 심층 상담</div>
+              <div class="scf-tags-row">
+                <span class="service-tag" style="background:rgba(184,134,11,0.15);border-color:rgba(184,134,11,0.35);color:#d4a843;">완전 시크릿</span>
+                <span class="service-tag" style="background:rgba(184,134,11,0.15);border-color:rgba(184,134,11,0.35);color:#d4a843;">1:1 개인 상담</span>
+                <span class="service-tag" style="background:rgba(184,134,11,0.15);border-color:rgba(184,134,11,0.35);color:#d4a843;">언행 심리분석</span>
+              </div>
+            </div>
+          </div>
+          <div class="scf-header-right">
             <div class="scf-price" style="font-size:26px;">비공개 협의</div>
             <div class="scf-unit">완전 비밀 · 1:1 개별 진행</div>
           </div>
-          <div class="scf-tags">
-            <span class="service-tag"
-              style="background:rgba(184,134,11,0.15);border-color:rgba(184,134,11,0.35);color:#d4a843;">완전 시크릿</span>
-            <span class="service-tag"
-              style="background:rgba(184,134,11,0.15);border-color:rgba(184,134,11,0.35);color:#d4a843;">1:1 개인
-              상담</span>
-            <span class="service-tag"
-              style="background:rgba(184,134,11,0.15);border-color:rgba(184,134,11,0.35);color:#d4a843;">언행 심리분석</span>
-          </div>
         </div>
 
-        <div class="scf-right" style="background:transparent;position:relative;z-index:1;">
-          <div class="scf-situation">
-            <div class="scf-sit-label" style="color:#d4a843;">이런 분께 맞습니다</div>
+        <div class="scf-body" style="position:relative;z-index:1;">
+          <div>
+            <div class="scf-block-label" style="color:#d4a843;">이런 분께 맞습니다</div>
             <ul class="scf-sit-list">
-              <li style="color:rgba(255,255,255,0.75);">함께하는 핵심 인물 참모, 보좌진, 파트너의 진심과 속의를 정확히 읽고 싶은 분</li>
-              <li style="color:rgba(255,255,255,0.75);">상대 진영 혹은 연대 상대의 언행 패턴에서 신뢰도와 위험 신호를 파악하고 싶은 분</li>
-              <li style="color:rgba(255,255,255,0.75);">공적 발언·대화·회의에서 상대가 보내는 무의식적 신호를 해석하고 싶은 분</li>
-              <li style="color:rgba(255,255,255,0.75);">중요한 결정 앞에서, 아무에게도 말할 수 없는 상황을 혼자 정리하고 싶은 분</li>
+              <li style="color:rgba(255,255,255,0.75);">함께하는 핵심 인물(참모, 보좌진, 파트너)의 진심을 정확히 읽고 싶은 분</li>
+              <li style="color:rgba(255,255,255,0.75);">상대 진영 또는 연대 상대의 언행 패턴에서 신뢰도·위험 신호를 파악하고 싶은 분</li>
+              <li style="color:rgba(255,255,255,0.75);">공적 발언·회의에서 상대가 보내는 무의식적 신호를 해석하고 싶은 분</li>
+              <li style="color:rgba(255,255,255,0.75);">아무에게도 말할 수 없는 상황을 조용히 정리하고 싶은 분</li>
             </ul>
           </div>
-
-          <div class="scf-what" style="background:rgba(255,255,255,0.05);border-left:3px solid #d4a843;">
-            <div class="scf-what-label" style="color:#d4a843;">상담에서 다루는 것</div>
-            <div class="scf-what-body" style="color:rgba(255,255,255,0.7);">
-              컨설팅이나 전략 수립이 아닙니다. 오직 <strong style="color:#d4a843;">사람을 읽는 것</strong>에 집중합니다.<br>
-              상대의 말투·표현 방식·행동 패턴에서 실제 의도와 감정의 흐름을 해석합니다.
-              '이 사람, 지금 진심인가' '저 발언 뒤에 무엇이 있는가'를
-              언행심리학적 시각으로 함께 들여다봅니다.
-              결론은 오롯이 당신이 내립니다. 상담은 그 판단을 선명하게 하는 과정입니다.
+          <div>
+            <div class="scf-what" style="background:rgba(255,255,255,0.05);border-left:3px solid #d4a843;margin-bottom:16px;">
+              <div class="scf-block-label" style="color:#d4a843;">상담에서 다루는 것</div>
+              <div class="scf-what-body" style="color:rgba(255,255,255,0.7);">
+                컨설팅이나 전략 수립이 아닙니다. 오직 <strong style="color:#d4a843;">사람을 읽는 것</strong>에 집중합니다.<br><br>
+                상대의 말투·표현 방식·행동 패턴에서 실제 의도와 감정의 흐름을 해석합니다. 결론은 오롯이 당신이 내립니다.
+              </div>
             </div>
-          </div>
-
-          <!-- 시크릿 안내 박스 -->
-          <div
-            style="background:rgba(184,134,11,0.08);border:1px solid rgba(184,134,11,0.25);border-radius:14px;padding:18px 22px;display:flex;align-items:flex-start;gap:14px;">
-            <span style="font-size:20px;flex-shrink:0;margin-top:2px;">🔒</span>
-            <div>
-              <div style="font-size:12px;font-weight:700;color:#d4a843;letter-spacing:2px;margin-bottom:6px;">STRICTLY
-                CONFIDENTIAL</div>
-              <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.8;margin:0;">
-                상담 사실, 내용, 대상 모든 것은 철저히 비공개입니다.<br>
-                기록을 남기지 않으며, 신청 경로 역시 완전히 비밀이 보장됩니다.<br>
-                문의는 상담 신청 폼의 비고란을 통해 개별 접수합니다.
-              </p>
+            <div style="background:rgba(184,134,11,0.08);border:1px solid rgba(184,134,11,0.25);border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;">
+              <span style="font-size:18px;flex-shrink:0;margin-top:2px;">🔒</span>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#d4a843;letter-spacing:2px;margin-bottom:6px;">STRICTLY CONFIDENTIAL</div>
+                <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.8;margin:0;">상담 사실·내용·대상 모두 철저히 비공개입니다. 기록을 남기지 않으며, 신청 경로 역시 완전히 비밀이 보장됩니다.</p>
+              </div>
             </div>
           </div>
         </div>
