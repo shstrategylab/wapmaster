@@ -2740,18 +2740,6 @@
 ══════════════════════ -->
   <div class="page" id="page-services">
 
-    <!-- 1% 선언 배너 -->
-    <div
-      style="background:linear-gradient(135deg,#b8860b,#d4a843,#b8860b);padding:14px 40px;text-align:center;position:relative;overflow:hidden;">
-      <div
-        style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(255,255,255,0.05) 60px,rgba(255,255,255,0.05) 61px);">
-      </div>
-      <p
-        style="position:relative;font-family:'Noto Serif KR',serif;font-size:14px;font-weight:700;color:#1a1614;letter-spacing:4px;margin:0;">
-        ✦ &nbsp; 대한민국 상위 1%만이 경험하는 프리미엄 상담 &nbsp; ✦
-      </p>
-    </div>
-
     <section class="services-hero" style="padding:100px 60px 80px;position:relative;overflow:hidden;">
       <div
         style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(184,134,11,0.18) 0%,transparent 65%);pointer-events:none;">
@@ -2913,52 +2901,6 @@
         </div>
         <div class="scf-footer">
           <div class="scf-note">📋 상담 후 내용 정리 제공(원하면) · 비밀 보장</div>
-        </div>
-      </div>
-
-      <!-- 서비스 카드 2: 월 정기 상담 -->
-      <div class="service-card-full fade-in" style="border-color:rgba(184,134,11,0.3);">
-        <div class="scf-header">
-          <div class="scf-header-left">
-            <div class="scf-icon">🌱</div>
-            <div>
-              <div style="display:inline-block;background:linear-gradient(135deg,#b8860b,#d4a843);color:#1a1614;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 10px;border-radius:100px;margin-bottom:8px;">일반인 상담</div>
-              <div class="scf-name">월 정기 상담</div>
-              <div class="scf-tags-row">
-                <span class="service-tag">50분 · 주 1회</span>
-                <span class="service-tag">전화 또는 대면</span>
-                <span class="service-tag">패턴 심층 분석</span>
-              </div>
-            </div>
-          </div>
-          <div class="scf-header-right">
-            <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
-              <div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:1px;margin-bottom:2px;">전화 상담 (월 4회)</div>
-                <div class="scf-price" style="font-size:28px;">80만원</div>
-              </div>
-              <div style="width:100%;height:1px;background:rgba(200,169,126,0.2);"></div>
-              <div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:1px;margin-bottom:2px;">대면 상담 (월 4회)</div>
-                <div class="scf-price" style="font-size:28px;">200만원<span style="font-size:14px;color:rgba(200,169,126,0.6);">~</span></div>
-                <div class="scf-unit">협의</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="scf-body" style="grid-template-columns:1fr;">
-          <div>
-            <div class="scf-block-label">이런 분께 맞습니다</div>
-            <ul class="scf-sit-list" style="display:grid;grid-template-columns:1fr 1fr;gap:10px 32px;">
-              <li>같은 유형의 사람에게 반복적으로 상처받는 패턴을 끊고 싶은 분</li>
-              <li>관계에서 늘 같은 실수를 반복하는데, 왜인지 스스로 모르는 분</li>
-              <li>가족·직장·연인 관계 모두에서 근본적인 변화가 필요한 분</li>
-              <li>1회 상담 후 더 깊이 이어가고 싶어진 분</li>
-            </ul>
-          </div>
-        </div>
-        <div class="scf-footer">
-          <div class="scf-note">📋 상담내용 리포트 제공(원하면) · 비밀 보장 &nbsp;|&nbsp; 1회 상담 후 원하시면 유료 정기 상담 신청 가능합니다</div>
         </div>
       </div>
 
@@ -3201,6 +3143,26 @@
           <div class="step-title">기본 정보를 알려주세요</div>
           <div class="step-sub">상담 연결을 위한 최소한의 정보입니다.</div>
 
+          <!-- 종이책 구매자 무료상담 체크 -->
+          <div class="field" style="margin-bottom:28px;">
+            <label style="margin-bottom:10px;">상담 유형</label>
+            <label id="bookConsultLabel"
+              style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--mist);border-radius:14px;background:var(--soft);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
+              <input type="checkbox" id="bookConsultCheck" onchange="toggleBookConsult()"
+                style="width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:var(--sage);cursor:pointer;">
+              <span>
+                <strong style="display:block;font-size:14px;font-weight:600;color:var(--deep);margin-bottom:3px;">📖 종이책 구매자 무료상담 신청</strong>
+                종이책을 구매하셨나요? 체크 후 사연을 작성해 주시면 마스터가 검토 후 개별 연락드립니다.
+              </span>
+            </label>
+            <!-- 체크 시 나타나는 안내 -->
+            <div id="bookConsultInfo" style="display:none;margin-top:10px;padding:14px 16px;background:rgba(122,140,126,0.08);border:1px solid rgba(122,140,126,0.25);border-radius:12px;font-size:13px;color:var(--sage);line-height:1.8;">
+              📌 <strong>무료상담 신청 안내</strong><br>
+              모든 독자에게 제공되는 상담이 아닙니다. 신청서를 검토 후 상담 가능 여부를 <strong>개별 연락</strong>드립니다.<br>
+              <span style="color:var(--accent);font-weight:500;">종이책 구매자 무료상담 → 마스터 검토 → 개별 연락</span>
+            </div>
+          </div>
+
           <div class="field">
             <label>이름 (익명 가능)</label>
             <input type="text" id="name" placeholder="홍길동 또는 닉네임">
@@ -3438,6 +3400,30 @@
   </div><!-- /page-qr -->
 
 
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCcN6mxeAR3G-eYClmkuucAuji7EHJpAU",
+      authDomain: "wapmaster-4bd13.firebaseapp.com",
+      databaseURL: "https://wapmaster-4bd13-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "wapmaster-4bd13",
+      storageBucket: "wapmaster-4bd13.firebasestorage.app",
+      messagingSenderId: "936763820653",
+      appId: "1:936763820653:web:fb3dde25f49d6412ee0d64",
+      measurementId: "G-W34WTY6ECX"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window._firebaseDb = db;
+    window._firebaseRef = ref;
+    window._firebasePush = push;
+  </script>
+
   <!-- FOOTER -->
   <footer>
     <div class="footer-logo">언행심리<span>마스터</span></div>
@@ -3554,6 +3540,17 @@
       }
     }
 
+    let bookConsultSelected = false;
+
+    function toggleBookConsult() {
+      bookConsultSelected = document.getElementById('bookConsultCheck').checked;
+      const info = document.getElementById('bookConsultInfo');
+      const label = document.getElementById('bookConsultLabel');
+      info.style.display = bookConsultSelected ? 'block' : 'none';
+      label.style.borderColor = bookConsultSelected ? 'var(--sage)' : 'var(--mist)';
+      label.style.background = bookConsultSelected ? 'rgba(122,140,126,0.08)' : 'var(--soft)';
+    }
+
     let currentStep = 1;
     let selectedGender = '';
     let selectedTopics = [];
@@ -3668,6 +3665,7 @@
       }
 
       const data = {
+        무료상담신청: bookConsultSelected ? '종이책 구매자 무료상담' : '해당없음',
         이름: document.getElementById('name').value.trim(),
         나이대: document.getElementById('age').value || '미입력',
         성별: selectedGender || '미입력',
@@ -3684,10 +3682,32 @@
 
       console.log('📋 상담 접수 데이터:', data);
 
-      document.getElementById('progressWrap').style.display = 'none';
-      document.getElementById('formCard').style.display = 'none';
-      document.getElementById('doneScreen').classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Firebase Realtime Database 저장
+      const btn = document.querySelector('#step3 .btn-next:last-child');
+      btn.disabled = true;
+      btn.textContent = '접수 중...';
+
+      function doSave() {
+        if (!window._firebaseDb || !window._firebaseRef || !window._firebasePush) {
+          setTimeout(doSave, 200);
+          return;
+        }
+        const dbRef = window._firebaseRef(window._firebaseDb, 'consultations');
+        window._firebasePush(dbRef, data)
+          .then(() => {
+            document.getElementById('progressWrap').style.display = 'none';
+            document.getElementById('formCard').style.display = 'none';
+            document.getElementById('doneScreen').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          })
+          .catch((err) => {
+            console.error('Firebase 저장 실패:', err);
+            btn.disabled = false;
+            btn.textContent = '접수 완료하기 ✓';
+            alert('접수 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+          });
+      }
+      doSave();
     }
 
     updateProgress(1);
