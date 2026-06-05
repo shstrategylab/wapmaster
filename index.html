@@ -797,32 +797,14 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      /* 배경은 은은한 황토/골드 톤 유지 */
-      background: linear-gradient(135deg, #dfc69f, var(--gold));
+      background: linear-gradient(135deg, var(--warm), var(--gold));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;            /* 글자 크기를 13px에서 14px로 살짝 키움 */
-      font-weight: 800;           /* 글자 두께를 더 두껍게 하여 선명도 확보 */
-      
-      /* [핵심] 배경 위에서 확실히 구별되면서도 튀지 않는 짙은 밤색으로 변경 */
-      color: #2b1e15 !important;  
-      
-      /* 혹시 모를 글자 묻힘 방지를 위해 텍스트 그림자 살짝 추가 */
-      text-shadow: 0px 0.5px 0px rgba(255, 255, 255, 0.3);
-      
+      font-size: 13px;
+      color: var(--deep); /* ◀ 이 부분 때문에 글씨가 어둡게 보입니다 */
+      font-weight: 700;
       margin-top: 1px;
-    }
-
-    .learn-num {
-      font-size: 14px !important;    /* 숫자 크기 살짝 키움 */
-      font-weight: 800 !important;   /* 글자 두께 아주 두껍게 */
-      color: #2b1e15 !important;     /* 배경 위에서 확실히 보이는 짙은 밤색 */
-      
-      /* 숫자가 정중앙에 정확히 오도록 정렬 보정 */
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
     }
 
     .learn-text {
