@@ -433,8 +433,8 @@ function renderList() {
           <span class="status-badge s-${displayStatus}">${displayStatus}</span>
         </div>
         <div class="app-item-meta">
+          <span style="font-family:monospace;font-size:11px;color:var(--accent);font-weight:600;">${escHtml(app.접수번호 || '—')}</span><br>
           ${escHtml(app.성별 || '')} · ${escHtml(app.나이대 || '')} · ${escHtml(app.거주지역 || '')}<br>
-          ${escHtml(app.고민유형 || '')}<br>
           ${escHtml(app.접수시각 || '')}
         </div>
       </div>`;
@@ -465,6 +465,10 @@ function renderDetail(app) {
         <div class="detail-name">${escHtml(app.이름 || '(미입력)')}
           ${isFree ? '<span style="font-size:13px;font-weight:400;color:var(--sage);margin-left:8px;">📖 무료상담</span>' : ''}
         </div>
+        <div style="font-family:monospace;font-size:13px;color:var(--warm);font-weight:600;margin-bottom:4px;">
+          📋 접수번호: ${escHtml(app.접수번호 || '—')}
+          <button onclick="alert('순번: ' + decodeSeq('${(app.접수번호||'').split('-')[1]||'0'}') + '번째 접수')" style="margin-left:10px;font-size:10px;padding:2px 8px;border:1px solid rgba(200,169,126,0.3);border-radius:10px;background:rgba(200,169,126,0.1);color:var(--warm);cursor:pointer;font-family:inherit;">순번 확인</button>
+        </div>
         <div class="detail-sub">${escHtml(app.성별 || '')} · ${escHtml(app.나이대 || '')} · ${escHtml(app.거주지역 || '')} · 접수: ${escHtml(app.접수시각 || '')}</div>
       </div>
       <div class="detail-actions">
@@ -483,6 +487,7 @@ function renderDetail(app) {
       <!-- 기본 정보 -->
       <div class="info-card">
         <div class="info-card-title">기본 정보</div>
+        <div class="info-row"><span class="k">접수번호</span><span class="v" style="font-family:monospace;color:var(--accent);">${escHtml(app.접수번호 || '—')}</span></div>
         <div class="info-row"><span class="k">이름</span><span class="v">${escHtml(app.이름 || '—')}</span></div>
         <div class="info-row"><span class="k">나이대</span><span class="v">${escHtml(app.나이대 || '—')}</span></div>
         <div class="info-row"><span class="k">성별</span><span class="v">${escHtml(app.성별 || '—')}</span></div>
@@ -554,6 +559,9 @@ function renderDetail(app) {
     </div>
   `;
 }
+
+function encodeSeq(n) { return n.toString(36).toUpperCase().padStart(3,'0'); }
+function decodeSeq(s) { return s ? parseInt(s, 36) : 0; }
 
 function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
