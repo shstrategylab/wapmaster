@@ -797,14 +797,20 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
+      /* 배경은 은은한 황토/골드 톤 유지 */
       background: linear-gradient(135deg, #dfc69f, var(--gold));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
-      /* 글자색을 너무 튀는 생흰색 대신, 부드럽고 밝은 크림빛 아이보리로 변경 */
-      color: #fff9f0; 
-      font-weight: 700;
+      font-size: 14px;            /* 글자 크기를 13px에서 14px로 살짝 키움 */
+      font-weight: 800;           /* 글자 두께를 더 두껍게 하여 선명도 확보 */
+      
+      /* [핵심] 배경 위에서 확실히 구별되면서도 튀지 않는 짙은 밤색으로 변경 */
+      color: #2b1e15 !important;  
+      
+      /* 혹시 모를 글자 묻힘 방지를 위해 텍스트 그림자 살짝 추가 */
+      text-shadow: 0px 0.5px 0px rgba(255, 255, 255, 0.3);
+      
       margin-top: 1px;
     }
 
