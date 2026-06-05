@@ -797,21 +797,17 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      /* 배경은 은은한 황토/골드 톤 유지 */
-      background: linear-gradient(135deg, #dfc69f, var(--gold));
+      /* 배경을 조금 더 선명한 골드-라이트 톤으로 매칭 */
+      background: linear-gradient(135deg, var(--gold-light), var(--gold)); 
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;            /* 글자 크기를 13px에서 14px로 살짝 키움 */
-      font-weight: 800;           /* 글자 두께를 더 두껍게 하여 선명도 확보 */
-      
-      /* [핵심] 배경 위에서 확실히 구별되면서도 튀지 않는 짙은 밤색으로 변경 */
-      color: #2b1e15 !important;  
-      
-      /* 혹시 모를 글자 묻힘 방지를 위해 텍스트 그림자 살짝 추가 */
-      text-shadow: 0px 0.5px 0px rgba(255, 255, 255, 0.3);
-      
+      font-size: 13px;
+      color: #ffffff; /* ◀ 흰색(#ffffff)으로 변경하여 가독성을 높입니다 */
+      font-weight: 700;
       margin-top: 1px;
+      /* 번호가 더 명학하게 도드라지도록 얇은 그림자 효과 추가 */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
     }
 
     .learn-text {
