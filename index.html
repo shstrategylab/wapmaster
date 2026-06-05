@@ -564,6 +564,28 @@
       color: white;
     }
 
+    .store-bookk .store-icon {
+      background: #3a7bd5;
+      color: white;
+    }
+
+    .store-coming {
+      opacity: 0.55;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .store-coming-badge {
+      margin-left: auto;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--warm);
+      background: rgba(200,169,126,0.12);
+      padding: 3px 8px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
     /* Author section */
     .author-section {
       background: white;
@@ -2326,6 +2348,10 @@
             <div class="price-display">20,400<span>원</span></div>
             <div class="purchase-note">전국 주요 서점 및 온라인 서점에서 구매 가능</div>
             <div class="store-links">
+              <a href="https://bookk.co.kr/bookStore/6a1d45c4bfeb7b0629e0b393" target="_blank" class="store-btn store-bookk">
+                <div class="store-icon">부</div>
+                부크크에서 구매하기
+              </a>
               <a href="https://www.kyobobook.co.kr" target="_blank" class="store-btn store-kyobo">
                 <div class="store-icon">교</div>
                 교보문고에서 구매하기
@@ -2338,6 +2364,16 @@
                 <div class="store-icon">A</div>
                 알라딘에서 구매하기
               </a>
+              <span class="store-btn store-coming">
+                <div class="store-icon" style="background:#5a6a5a;color:white;">영</div>
+                영풍문고
+                <span class="store-coming-badge">입점 진행중</span>
+              </span>
+              <span class="store-btn store-coming">
+                <div class="store-icon" style="background:#5a6a5a;color:white;">북</div>
+                북센
+                <span class="store-coming-badge">입점 진행중</span>
+              </span>
             </div>
           </div>
         </div>
