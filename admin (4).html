@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>언행심리마스터 — 상담 접수 관리</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1614;
+    --paper: #f7f3ee;
+    --warm: #c8a97e;
+    --deep: #3d2b1f;
+    --mist: #e8e0d5;
+    --sage: #7a8c7e;
+    --accent: #8b5e3c;
+    --soft: #f0ebe4;
+    --gold: #b8860b;
+    --gold-light: #d4a843;
+    --surface: #ffffff;
+    --border: #e8e0d5;
+    --danger: #dc2626;
+    --danger-bg: #fef2f2;
+    --success: #15803d;
+    --success-bg: #f0fdf4;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── 로그인 화면 ── */
+  #login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: var(--deep);
+    background-image: radial-gradient(ellipse at 60% 40%, rgba(200,169,126,0.12) 0%, transparent 60%);
+  }
+  .login-box {
+    background: var(--paper);
+    border: 1px solid rgba(200,169,126,0.3);
+    border-radius: 20px; padding: 3rem 2.5rem;
+    width: 100%; max-width: 400px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+  }
+  .login-icon { text-align: center; font-size: 2.5rem; margin-bottom: 1rem; }
+  .login-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--deep); text-align: center; margin-bottom: 4px;
+  }
+  .login-sub { font-size: 12px; color: var(--sage); text-align: center; margin-bottom: 2rem; letter-spacing: 1px; }
+  .login-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .login-field label { font-size: 12px; color: var(--accent); font-weight: 500; letter-spacing: 0.5px; }
+  .login-field input {
+    font-size: 14px; color: var(--ink); background: var(--soft);
+    border: 1.5px solid var(--mist); border-radius: var(--radius-sm);
+    padding: 11px 14px; width: 100%; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s; font-family: inherit;
+  }
+  .login-field input:focus { border-color: var(--warm); box-shadow: 0 0 0 3px rgba(200,169,126,0.15); }
+  .login-btn {
+    width: 100%; padding: 13px; font-size: 15px; font-weight: 600; color: white;
+    background: var(--deep); border: none; border-radius: var(--radius-sm);
+    cursor: pointer; margin-top: 8px; transition: background 0.2s; font-family: inherit;
+  }
+  .login-btn:hover { background: var(--accent); }
+  .login-btn:disabled { opacity: 0.5; cursor: default; }
+  .login-error {
+    font-size: 12px; color: var(--danger); background: var(--danger-bg);
+    border: 1px solid rgba(220,38,38,0.2); border-radius: var(--radius-sm);
+    padding: 8px 12px; margin-top: 10px; display: none;
+  }
+  .login-error.show { display: block; }
+
+  /* ── 앱 화면 ── */
+  #app-screen { display: none; }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--deep);
+    padding: 0 2rem; display: flex; align-items: center;
+    justify-content: space-between; height: 58px;
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 1px solid rgba(200,169,126,0.2);
+  }
+  .topbar-logo {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px; font-weight: 700; color: white; letter-spacing: 1px;
+  }
+  .topbar-logo span { color: var(--warm); }
+  .topbar-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-left: 10px; letter-spacing: 2px; }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .user-info { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+  /* LAYOUT */
+  .layout { display: grid; grid-template-columns: 320px 1fr; height: calc(100vh - 58px); }
+
+  /* LIST PANEL */
+  .list-panel { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; }
+  .list-header {
+    padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; background: var(--surface); z-index: 10;
+  }
+  .list-header span { font-size: 13px; font-weight: 600; color: var(--deep); }
+  .count-badge {
+    background: rgba(139,94,60,0.1); color: var(--accent);
+    font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px;
+  }
+  .filter-bar { padding: 10px 1.25rem; border-bottom: 1px solid var(--border); display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-btn {
+    font-size: 11px; padding: 3px 11px; border: 1px solid var(--border);
+    border-radius: 20px; cursor: pointer; background: var(--paper);
+    color: var(--sage); transition: all 0.15s; font-family: inherit;
+  }
+  .filter-btn.active { background: var(--deep); color: var(--warm); border-color: var(--deep); }
+
+  .app-item {
+    padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.1s;
+  }
+  .app-item:hover { background: var(--paper); }
+  .app-item.selected { background: rgba(139,94,60,0.06); border-left: 3px solid var(--accent); }
+  .app-item-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; color: var(--deep); }
+  .app-item-meta { font-size: 12px; color: var(--sage); line-height: 1.6; }
+
+  .status-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; white-space: nowrap; }
+  .s-접수완료 { background: rgba(139,94,60,0.12); color: var(--accent); }
+  .s-검토중 { background: rgba(184,134,11,0.12); color: var(--gold); }
+  .s-상담완료 { background: var(--success-bg); color: var(--success); }
+  .s-무료상담 { background: rgba(122,140,126,0.15); color: var(--sage); }
+
+  .empty-list { padding: 3rem 1.25rem; text-align: center; color: var(--sage); font-size: 13px; }
+  .loading { padding: 2rem; text-align: center; color: var(--sage); }
+
+  /* DETAIL PANEL */
+  .detail-panel { overflow-y: auto; padding: 1.5rem 2rem; background: var(--paper); }
+  .detail-empty {
+    display: flex; align-items: center; justify-content: center;
+    height: 100%; color: var(--sage); font-size: 14px;
+    flex-direction: column; gap: 0.75rem;
+  }
+  .detail-empty span { font-size: 2.5rem; }
+
+  .detail-topbar {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px;
+    background: var(--deep); border-radius: 16px; padding: 1.25rem 1.5rem;
+  }
+  .detail-name { font-family: 'Noto Serif KR', serif; font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 4px; }
+  .detail-sub { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .detail-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 7px 14px; font-size: 12px; font-weight: 500;
+    border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+    cursor: pointer; transition: all 0.15s; font-family: inherit;
+  }
+  .btn:hover { background: rgba(255,255,255,0.15); color: white; }
+  .btn-warm { background: var(--warm); color: var(--deep); border-color: var(--warm); font-weight: 700; }
+  .btn-warm:hover { background: var(--gold-light); color: var(--deep); }
+  .btn-danger { background: rgba(220,38,38,0.15); color: #fca5a5; border-color: rgba(220,38,38,0.3); }
+  .btn-danger:hover { background: rgba(220,38,38,0.25); }
+
+  /* 일반 버튼 (상세 패널 내부용) */
+  .btn-plain {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 7px 14px; font-size: 12px; font-weight: 500;
+    border-radius: var(--radius-sm); border: 1px solid var(--border);
+    background: var(--surface); color: var(--sage);
+    cursor: pointer; transition: all 0.15s; font-family: inherit;
+  }
+  .btn-plain:hover { border-color: var(--warm); color: var(--accent); }
+  .btn-plain-accent { background: var(--accent); color: white; border-color: var(--accent); }
+  .btn-plain-accent:hover { background: var(--deep); border-color: var(--deep); color: white; }
+
+  .status-select {
+    font-size: 12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-sm); background: rgba(255,255,255,0.08);
+    color: white; cursor: pointer; font-family: inherit;
+  }
+  .status-select option { background: var(--deep); color: white; }
+
+  /* INFO BLOCKS */
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .info-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.1rem 1.25rem;
+  }
+  .info-card.full { grid-column: 1 / -1; }
+  .info-card-title {
+    font-size: 10px; font-weight: 700; color: var(--warm);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .info-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--mist); }
+  .info-row:last-child { border-bottom: none; }
+  .info-row .k { color: var(--sage); }
+  .info-row .v { font-weight: 500; max-width: 200px; text-align: right; word-break: break-all; color: var(--deep); }
+
+  .text-box {
+    font-size: 13px; line-height: 1.85; color: var(--ink);
+    background: var(--paper); border-radius: var(--radius-sm);
+    padding: 12px 14px; white-space: pre-wrap; border: 1px solid var(--mist);
+  }
+  .situation-box {
+    font-size: 14px; line-height: 1.9; color: var(--ink);
+    background: rgba(200,169,126,0.06); border-left: 3px solid var(--warm);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 14px 16px; white-space: pre-wrap;
+  }
+
+  .free-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(122,140,126,0.12); border: 1px solid rgba(122,140,126,0.3);
+    color: var(--sage); font-size: 12px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px;
+  }
+
+  .memo-area {
+    width: 100%; padding: 10px 12px; font-size: 13px;
+    border: 1.5px solid var(--mist); border-radius: var(--radius-sm);
+    background: var(--soft); color: var(--ink);
+    resize: vertical; min-height: 90px; font-family: inherit; line-height: 1.7;
+    transition: border-color 0.2s;
+  }
+  .memo-area:focus { outline: none; border-color: var(--warm); }
+
+  .json-preview {
+    background: var(--deep); border-radius: var(--radius);
+    padding: 1rem 1.25rem; font-size: 11px; font-family: 'Courier New', monospace;
+    color: rgba(200,169,126,0.9); line-height: 1.7;
+    max-height: 280px; overflow-y: auto; white-space: pre; margin-top: 0.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .list-panel { height: auto; max-height: 38vh; }
+    .info-grid { grid-template-columns: 1fr; }
+    .topbar-sub { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── 로그인 화면 ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-icon">🧠</div>
+    <div class="login-title">관리자 로그인</div>
+    <div class="login-sub">언행심리마스터 · 상담 접수 관리</div>
+    <div class="login-field">
+      <label>이메일</label>
+      <input type="email" id="login-email" placeholder="admin@example.com" onkeydown="if(event.key==='Enter') doLogin()" />
+    </div>
+    <div class="login-field">
+      <label>비밀번호</label>
+      <input type="password" id="login-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()" />
+    </div>
+    <div class="login-error" id="login-error"></div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">로그인</button>
+  </div>
+</div>
+
+<!-- ── 앱 화면 ── -->
+<div id="app-screen">
+
+<div class="topbar">
+  <div style="display:flex; align-items:center;">
+    <div class="topbar-logo">언행심리<span>마스터</span></div>
+    <span class="topbar-sub">ADMIN · 상담 접수 관리</span>
+  </div>
+  <div class="topbar-right">
+    <span class="user-info" id="user-email"></span>
+    <button class="btn" onclick="loadApplications()">🔄 새로고침</button>
+    <button class="btn btn-warm" onclick="downloadAllJson()">전체 내보내기</button>
+    <button class="btn btn-danger" onclick="doLogout()">로그아웃</button>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- 목록 -->
+  <div class="list-panel">
+    <div class="list-header">
+      <span>상담 접수 목록</span>
+      <span class="count-badge" id="countBadge">0</span>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterBy('전체', this)">전체</button>
+      <button class="filter-btn" onclick="filterBy('접수완료', this)">접수완료</button>
+      <button class="filter-btn" onclick="filterBy('검토중', this)">검토중</button>
+      <button class="filter-btn" onclick="filterBy('상담완료', this)">상담완료</button>
+      <button class="filter-btn" onclick="filterBy('무료상담', this)">무료상담</button>
+    </div>
+    <div id="appList"><div class="loading">불러오는 중...</div></div>
+  </div>
+
+  <!-- 상세 -->
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-empty">
+      <span>📋</span>
+      왼쪽 목록에서 접수 건을 선택하세요
+    </div>
+  </div>
+
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBCcN6mxeAR3G-eYClmkuucAuji7EHJpAU",
+  authDomain: "wapmaster-4bd13.firebaseapp.com",
+  databaseURL: "https://wapmaster-4bd13-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "wapmaster-4bd13",
+  storageBucket: "wapmaster-4bd13.firebasestorage.app",
+  messagingSenderId: "936763820653",
+  appId: "1:936763820653:web:fb3dde25f49d6412ee0d64",
+  measurementId: "G-W34WTY6ECX"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const auth = firebase.auth();
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display = 'block';
+    document.getElementById('user-email').textContent = user.email;
+    loadApplications();
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app-screen').style.display = 'none';
+    const btn = document.getElementById('login-btn');
+    btn.disabled = false; btn.textContent = '로그인';
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-pw').value = '';
+    document.getElementById('login-error').classList.remove('show');
+  }
+});
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pw    = document.getElementById('login-pw').value;
+  const errEl = document.getElementById('login-error');
+  const btn   = document.getElementById('login-btn');
+  if (!email || !pw) {
+    errEl.textContent = '이메일과 비밀번호를 입력해 주세요.';
+    errEl.classList.add('show'); return;
+  }
+  btn.disabled = true; btn.textContent = '로그인 중...';
+  errEl.classList.remove('show');
+  try {
+    await auth.signInWithEmailAndPassword(email, pw);
+  } catch(e) {
+    const msgs = {
+      'auth/user-not-found':    '등록되지 않은 이메일입니다.',
+      'auth/wrong-password':    '비밀번호가 올바르지 않습니다.',
+      'auth/invalid-email':     '이메일 형식이 올바르지 않습니다.',
+      'auth/invalid-credential':'이메일 또는 비밀번호가 올바르지 않습니다.',
+      'auth/too-many-requests': '시도 횟수 초과. 잠시 후 다시 시도해 주세요.',
+    };
+    errEl.textContent = msgs[e.code] || '로그인 실패 (' + e.code + ')';
+    errEl.classList.add('show');
+    btn.disabled = false; btn.textContent = '로그인';
+  }
+}
+
+async function doLogout() {
+  if (!confirm('로그아웃 하시겠습니까?')) return;
+  await auth.signOut();
+}
+
+let allApps = [];
+let currentFilter = '전체';
+let selectedId = null;
+
+async function loadApplications() {
+  document.getElementById('appList').innerHTML = '<div class="loading">불러오는 중...</div>';
+  try {
+    const snap = await db.ref('consultations').get();
+    if (!snap.exists()) {
+      allApps = [];
+    } else {
+      const raw = snap.val();
+      allApps = Object.entries(raw).map(([key, val]) => ({ id: key, ...val }));
+      // 최신순 정렬 (접수시각 기준)
+      allApps.sort((a, b) => {
+        const ta = a.접수시각 || '';
+        const tb = b.접수시각 || '';
+        return tb.localeCompare(ta);
+      });
+    }
+    renderList();
+  } catch(e) {
+    document.getElementById('appList').innerHTML = `<div class="loading" style="color:#dc2626;">오류: ${e.message}</div>`;
+  }
+}
+
+function renderList() {
+  const filtered = currentFilter === '전체' ? allApps
+    : currentFilter === '무료상담'
+      ? allApps.filter(a => a.무료상담신청 === '종이책 구매자 무료상담')
+      : allApps.filter(a => (a._status || '접수완료') === currentFilter);
+
+  document.getElementById('countBadge').textContent = filtered.length;
+  const el = document.getElementById('appList');
+  if (filtered.length === 0) {
+    el.innerHTML = '<div class="empty-list">접수 건이 없습니다.</div>';
+    return;
+  }
+  el.innerHTML = filtered.map(app => {
+    const status = app._status || '접수완료';
+    const isFree = app.무료상담신청 === '종이책 구매자 무료상담';
+    const displayStatus = isFree ? '무료상담' : status;
+    return `
+      <div class="app-item ${selectedId === app.id ? 'selected' : ''}" onclick="selectApp('${app.id}')">
+        <div class="app-item-name">
+          ${escHtml(app.이름 || '(미입력)')}
+          <span class="status-badge s-${displayStatus}">${displayStatus}</span>
+        </div>
+        <div class="app-item-meta">
+          ${escHtml(app.성별 || '')} · ${escHtml(app.나이대 || '')} · ${escHtml(app.거주지역 || '')}<br>
+          ${escHtml(app.고민유형 || '')}<br>
+          ${escHtml(app.접수시각 || '')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function filterBy(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+
+function selectApp(id) {
+  selectedId = id;
+  renderList();
+  const app = allApps.find(a => a.id === id);
+  if (app) renderDetail(app);
+}
+
+function renderDetail(app) {
+  const status = app._status || '접수완료';
+  const isFree = app.무료상담신청 === '종이책 구매자 무료상담';
+
+  document.getElementById('detailPanel').innerHTML = `
+    <div class="detail-topbar">
+      <div>
+        <div class="detail-name">${escHtml(app.이름 || '(미입력)')}
+          ${isFree ? '<span style="font-size:13px;font-weight:400;color:var(--sage);margin-left:8px;">📖 무료상담</span>' : ''}
+        </div>
+        <div class="detail-sub">${escHtml(app.성별 || '')} · ${escHtml(app.나이대 || '')} · ${escHtml(app.거주지역 || '')} · 접수: ${escHtml(app.접수시각 || '')}</div>
+      </div>
+      <div class="detail-actions">
+        <select class="status-select" onchange="updateStatus('${app.id}', this.value)">
+          <option ${status === '접수완료' ? 'selected' : ''}>접수완료</option>
+          <option ${status === '검토중'   ? 'selected' : ''}>검토중</option>
+          <option ${status === '상담완료' ? 'selected' : ''}>상담완료</option>
+        </select>
+        <button class="btn" onclick="downloadJson('${app.id}')">📥 저장</button>
+        <button class="btn btn-danger" onclick="deleteApp('${app.id}')">삭제</button>
+      </div>
+    </div>
+
+    <div class="info-grid">
+
+      <!-- 기본 정보 -->
+      <div class="info-card">
+        <div class="info-card-title">기본 정보</div>
+        <div class="info-row"><span class="k">이름</span><span class="v">${escHtml(app.이름 || '—')}</span></div>
+        <div class="info-row"><span class="k">나이대</span><span class="v">${escHtml(app.나이대 || '—')}</span></div>
+        <div class="info-row"><span class="k">성별</span><span class="v">${escHtml(app.성별 || '—')}</span></div>
+        <div class="info-row"><span class="k">거주 지역</span><span class="v">${escHtml(app.거주지역 || '—')}</span></div>
+        <div class="info-row"><span class="k">무료상담 신청</span><span class="v">${isFree ? '📖 종이책 구매자' : '—'}</span></div>
+      </div>
+
+      <!-- 연락처 & 접수 정보 -->
+      <div class="info-card">
+        <div class="info-card-title">연락처</div>
+        <div class="info-row"><span class="k">전화번호</span><span class="v">${escHtml(app.연락처 || '—')}</span></div>
+        <div class="info-row"><span class="k">이메일</span><span class="v">${escHtml(app.이메일 || '—')}</span></div>
+        <div class="info-row"><span class="k">선호 상담방식</span><span class="v">${escHtml(app.상담방식 || '—')}</span></div>
+        <div style="margin-top:1rem;">
+          <div class="info-card-title">접수 정보</div>
+          <div class="info-row"><span class="k">접수일시</span><span class="v">${escHtml(app.접수시각 || '—')}</span></div>
+          <div class="info-row"><span class="k">상태</span><span class="v"><span class="status-badge s-${status}">${status}</span></span></div>
+          <div class="info-row"><span class="k">문서 ID</span><span class="v" style="font-size:10px;">${app.id}</span></div>
+        </div>
+      </div>
+
+      <!-- 고민 유형 -->
+      <div class="info-card">
+        <div class="info-card-title">고민 유형</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+          ${(app.고민유형 || '').split(', ').filter(Boolean).map(t =>
+            `<span style="background:rgba(200,169,126,0.12);border:1px solid rgba(200,169,126,0.3);color:var(--accent);font-size:12px;padding:3px 10px;border-radius:20px;">${escHtml(t)}</span>`
+          ).join('') || '<span style="color:var(--sage);font-size:13px;">—</span>'}
+        </div>
+      </div>
+
+      <!-- 원하는 것 -->
+      <div class="info-card">
+        <div class="info-card-title">상담에서 원하는 것</div>
+        <div style="font-size:14px;color:var(--deep);margin-top:4px;font-weight:500;">${escHtml(app.원하는것 || '—')}</div>
+      </div>
+
+      <!-- 상황 설명 -->
+      <div class="info-card full">
+        <div class="info-card-title">상황 설명</div>
+        <div class="situation-box">${escHtml(app.상황 || '(없음)')}</div>
+      </div>
+
+      <!-- 가장 힘든 부분 -->
+      ${app.힘든부분 && app.힘든부분 !== '미입력' ? `
+      <div class="info-card full">
+        <div class="info-card-title">가장 이해 안 되거나 힘든 부분</div>
+        <div class="text-box">${escHtml(app.힘든부분)}</div>
+      </div>` : ''}
+
+      <!-- 운영자 메모 -->
+      <div class="info-card full">
+        <div class="info-card-title">운영자 메모</div>
+        <textarea class="memo-area" id="memo_${app.id}" placeholder="상담 진행 상황, 특이사항, 메모 등을 기록하세요...">${escHtml(app._adminMemo || '')}</textarea>
+        <div style="margin-top:8px; text-align:right;">
+          <button class="btn-plain btn-plain-accent" onclick="saveMemo('${app.id}')">메모 저장</button>
+        </div>
+      </div>
+
+      <!-- JSON 미리보기 -->
+      <div class="info-card full">
+        <div class="info-card-title">
+          JSON 원본 데이터
+          <button class="btn-plain" onclick="downloadJson('${app.id}')">📥 JSON 다운로드</button>
+        </div>
+        <div class="json-preview">${escHtml(JSON.stringify(app, null, 2))}</div>
+      </div>
+
+    </div>
+  `;
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function updateStatus(id, status) {
+  try {
+    await db.ref(`consultations/${id}/_status`).set(status);
+    const app = allApps.find(a => a.id === id);
+    if (app) { app._status = status; renderList(); }
+  } catch(e) { alert('상태 변경 실패: ' + e.message); }
+}
+
+async function saveMemo(id) {
+  const memo = document.getElementById(`memo_${id}`)?.value || '';
+  try {
+    await db.ref(`consultations/${id}/_adminMemo`).set(memo);
+    const app = allApps.find(a => a.id === id);
+    if (app) app._adminMemo = memo;
+    alert('메모가 저장되었습니다.');
+  } catch(e) { alert('메모 저장 실패: ' + e.message); }
+}
+
+function downloadJson(id) {
+  const app = allApps.find(a => a.id === id);
+  if (!app) return;
+  const filename = `상담접수_${app.이름 || 'unknown'}_${(app.접수시각 || '').slice(0,10)}.json`;
+  const blob = new Blob([JSON.stringify(app, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadAllJson() {
+  if (allApps.length === 0) { alert('다운로드할 데이터가 없습니다.'); return; }
+  const date = new Date().toISOString().slice(0,10);
+  const blob = new Blob([JSON.stringify(allApps, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = `상담접수_전체_${date}.json`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function deleteApp(id) {
+  if (!confirm('이 접수 건을 삭제하시겠습니까? 복구할 수 없습니다.')) return;
+  try {
+    await db.ref(`consultations/${id}`).remove();
+    allApps = allApps.filter(a => a.id !== id);
+    selectedId = null;
+    renderList();
+    document.getElementById('detailPanel').innerHTML = '<div class="detail-empty"><span>🗑️</span>삭제되었습니다.</div>';
+  } catch(e) { alert('삭제 실패: ' + e.message); }
+}
+
+</script>
+</div><!-- /app-screen -->
+</body>
+</html>
