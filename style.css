@@ -2189,11 +2189,11 @@
         border-radius: 12px;
         margin-bottom: 12px;
         overflow: hidden;
-        background: white;
+        background: var(--paper);
       }
 
       .value-table tr:nth-child(even) {
-        background: #faf7f3;
+        background: var(--soft);
       }
 
       .value-table tr:nth-child(even) td {
