@@ -2205,25 +2205,25 @@
       .value-table td {
         padding: 10px 16px;
         font-size: 13px;
-        border-bottom: 1px solid var(--mist);
+        border-bottom: 1px solid rgba(200,169,126,0.2);
         position: relative;
-        background: transparent;
+        background: #f5ede0;
+      }
+
+      .value-table tr:nth-child(even) td {
+        background: #ede0ce;
       }
 
       .value-table td:first-child {
-        background: transparent;
         font-weight: 600;
         color: var(--deep);
         font-size: 14px;
       }
 
-      .value-table td:nth-child(2) {
-        background: transparent;
-      }
+      .value-table td:nth-child(2) { }
 
       .value-table td:last-child {
         border-bottom: none;
-        background: transparent;
       }
 
       .value-table td.highlight {
