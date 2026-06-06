@@ -1040,9 +1040,45 @@
           <div class="step-title">기본 정보를 알려주세요</div>
           <div class="step-sub">상담 연결을 위한 최소한의 정보입니다.</div>
 
+          <!-- 상담 유형 선택: 언행심리상담 / 리경상담 -->
+          <div class="field" style="margin-bottom:28px;">
+            <label style="margin-bottom:10px;">상담 종류 선택</label>
+            <div style="display:flex;flex-direction:column;gap:10px;" id="consultTypeGroup">
+
+              <!-- 언행심리상담 -->
+              <label id="consultTypeLabel_psycho"
+                style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--warm);border-radius:14px;background:rgba(200,169,126,0.07);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
+                <input type="radio" name="consultType" id="consultTypePsycho" value="언행심리상담" onchange="onConsultTypeChange()" checked
+                  style="width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:var(--warm);cursor:pointer;">
+                <span>
+                  <strong style="display:block;font-size:14px;font-weight:600;color:var(--deep);margin-bottom:3px;">🔍 언행심리상담</strong>
+                  말과 행동의 패턴을 읽어 관계·감정·상황을 분석하는 1:1 심층 상담입니다.
+                </span>
+              </label>
+
+              <!-- 리경상담 -->
+              <label id="consultTypeLabel_ligyeong"
+                style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--mist);border-radius:14px;background:var(--soft);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
+                <input type="radio" name="consultType" id="consultTypeLigyeong" value="리경상담" onchange="onConsultTypeChange()"
+                  style="width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:var(--sage);cursor:pointer;">
+                <span>
+                  <strong style="display:block;font-size:14px;font-weight:600;color:var(--deep);margin-bottom:3px;">理鏡 리경상담</strong>
+                  개인을 넘어 조직·세력·흐름을 함께 읽는 리경(理鏡) 풀이 상담입니다.
+                </span>
+              </label>
+            </div>
+
+            <!-- 리경상담 선택 시 안내 -->
+            <div id="ligyeongConsultInfo" style="display:none;margin-top:10px;padding:14px 16px;background:rgba(122,140,126,0.08);border:1px solid rgba(122,140,126,0.25);border-radius:12px;font-size:13px;color:var(--sage);line-height:1.9;">
+              理鏡 <strong style="color:var(--deep);">리경상담 신청 안내</strong><br>
+              리경상담은 일반 심리상담과 다릅니다. 개인의 상황을 넘어 조직·세력·흐름의 구조까지 함께 읽습니다.<br>
+              <span style="color:var(--accent);font-weight:500;">신청서 검토 후 상담 가능 여부를 개별 연락드립니다.</span>
+            </div>
+          </div>
+
           <!-- 종이책 구매자 무료상담 체크 -->
           <div class="field" style="margin-bottom:28px;">
-            <label style="margin-bottom:10px;">상담 유형</label>
+            <label style="margin-bottom:10px;">무료상담 신청</label>
             <label id="bookConsultLabel"
               style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--mist);border-radius:14px;background:var(--soft);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
               <input type="checkbox" id="bookConsultCheck" onchange="toggleBookConsult()"
@@ -1489,6 +1525,24 @@
       }
     }
 
+    function onConsultTypeChange() {
+      const isPsycho = document.getElementById('consultTypePsycho').checked;
+      const ligyeongInfo = document.getElementById('ligyeongConsultInfo');
+
+      // 리경상담 안내 토글
+      ligyeongInfo.style.display = isPsycho ? 'none' : 'block';
+
+      // 언행심리상담 라벨 강조
+      const psychoLabel = document.getElementById('consultTypeLabel_psycho');
+      psychoLabel.style.borderColor = isPsycho ? 'var(--warm)' : 'var(--mist)';
+      psychoLabel.style.background = isPsycho ? 'rgba(200,169,126,0.07)' : 'var(--soft)';
+
+      // 리경상담 라벨 강조
+      const ligyeongLabel = document.getElementById('consultTypeLabel_ligyeong');
+      ligyeongLabel.style.borderColor = isPsycho ? 'var(--mist)' : 'var(--sage)';
+      ligyeongLabel.style.background = isPsycho ? 'var(--soft)' : 'rgba(122,140,126,0.08)';
+    }
+
     let bookConsultSelected = false;
 
     function toggleBookConsult() {
@@ -1669,9 +1723,12 @@
             const seq = result.snapshot.val();
             const 접수번호 = `${today}-${encodeSeq(today, seq)}`;
 
+            const selectedConsultType = document.querySelector('input[name="consultType"]:checked')?.value || '언행심리상담';
+
             const data = {
               접수번호: 접수번호,
               _순번: seq,
+              상담유형: selectedConsultType,
               무료상담신청: bookConsultSelected ? '종이책 구매자 무료상담' : '해당없음',
               이름: document.getElementById('name').value.trim(),
               나이대: document.getElementById('age').value || '미입력',
