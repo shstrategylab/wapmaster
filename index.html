@@ -1042,11 +1042,11 @@
           <!-- 상담 유형 선택: 언행심리상담 / 리경상담 -->
           <div class="field" style="margin-bottom:28px;">
             <label style="margin-bottom:10px;">상담 종류 선택</label>
-            <div style="display:flex;flex-direction:column;gap:10px;" id="consultTypeGroup">
+            <div style="display:flex;flex-direction:row;gap:10px;" id="consultTypeGroup">
 
               <!-- 언행심리상담 -->
               <label id="consultTypeLabel_psycho"
-                style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--warm);border-radius:14px;background:rgba(200,169,126,0.07);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
+                style="flex:1;display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--warm);border-radius:14px;background:rgba(200,169,126,0.07);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
                 <input type="radio" name="consultType" id="consultTypePsycho" value="언행심리상담" onchange="onConsultTypeChange()" checked
                   style="width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:var(--warm);cursor:pointer;">
                 <span>
@@ -1057,7 +1057,7 @@
 
               <!-- 리경상담 -->
               <label id="consultTypeLabel_ligyeong"
-                style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--mist);border-radius:14px;background:var(--soft);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
+                style="flex:1;display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--mist);border-radius:14px;background:var(--soft);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
                 <input type="radio" name="consultType" id="consultTypeLigyeong" value="리경상담" onchange="onConsultTypeChange()"
                   style="width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:var(--sage);cursor:pointer;">
                 <span>
@@ -1079,7 +1079,7 @@
           <div class="field" style="margin-bottom:28px;">
             <label style="margin-bottom:10px;">무료상담 신청</label>
             <label id="bookConsultLabel"
-              style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--mist);border-radius:14px;background:var(--soft);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
+              style="flex:1;display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1.5px solid var(--mist);border-radius:14px;background:var(--soft);cursor:pointer;transition:all 0.2s;font-weight:300;letter-spacing:0;font-size:14px;color:#5a5047;line-height:1.6;">
               <input type="checkbox" id="bookConsultCheck" onchange="toggleBookConsult()"
                 style="width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:var(--sage);cursor:pointer;">
               <span>
