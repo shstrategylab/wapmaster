@@ -1107,7 +1107,17 @@
 <script>
   // 부모 페이지에 iframe 높이 전달
   function sendHeight() {
-    parent.postMessage({ type: 'ligyeong-height', height: document.body.scrollHeight }, '*');
+    const height = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight
+    );
+  
+    parent.postMessage({
+      type:'ligyeong-height',
+      height: height
+    }, '*');
   }
   window.addEventListener('load', sendHeight);
   window.addEventListener('resize', sendHeight);
