@@ -2211,20 +2211,19 @@
       }
 
       .value-table td:first-child {
-        background: rgba(200,169,126,0.1);
+        background: transparent;
         font-weight: 600;
         color: var(--deep);
         font-size: 14px;
-        border-left: 3px solid var(--warm);
       }
 
       .value-table td:nth-child(2) {
-        background: rgba(240,235,228,0.5);
+        background: transparent;
       }
 
       .value-table td:last-child {
         border-bottom: none;
-        background: rgba(139,94,60,0.06);
+        background: transparent;
       }
 
       .value-table td.highlight {
