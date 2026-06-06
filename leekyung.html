@@ -1094,8 +1094,18 @@
         observer.unobserve(e.target);
       }
     });
-  }, { threshold: 0.1 });
-  reveals.forEach(r => observer.observe(r));
+  }, { threshold: 0.1, rootMargin: '0px 0px -0px 0px' });
+  
+  // iframe 환경에서는 부모 스크롤을 감지 못하므로 전체 즉시 표시
+  try {
+    if (window.self !== window.top) {
+      reveals.forEach(r => r.classList.add('visible'));
+    } else {
+      reveals.forEach(r => observer.observe(r));
+    }
+  } catch(e) {
+    reveals.forEach(r => r.classList.add('visible'));
+  }
 
   // Case tabs
   function switchTab(idx) {
