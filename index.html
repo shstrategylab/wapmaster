@@ -1409,6 +1409,12 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeMenu();
     });
+    // 화면 넓어지면 모바일 메뉴 강제 닫기
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        closeMenu();
+      }
+    });
 
     // ── NAVIGATION ──
     function showPage(id) {
