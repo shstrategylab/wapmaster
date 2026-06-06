@@ -9,6 +9,718 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- 리경 페이지 스타일 -->
+    <style>
+    :root {
+      --paper-dark: #ede6d6;
+      --red: #8b1a1a;
+      --muted: #6b5d4f;
+      --line: rgba(26,18,8,0.15);
+    }
+  </style>
+  <style id="ligyeong-styles">
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 999; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(3rem, 8vw, 7rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left::after {
+    content: '理鏡';
+    position: absolute;
+    bottom: -0.1em;
+    right: -0.1em;
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(8rem, 20vw, 18rem);
+    font-weight: 700;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -0.05em;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    border: 1px solid var(--gold);
+    padding: 0.4em 1em;
+    margin-bottom: 2rem;
+    width: fit-content;
+    animation: fadeInUp 0.8s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    animation: fadeInUp 0.8s ease 0.1s both;
+  }
+
+  .hero-title span {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.5em;
+    color: var(--gold-light);
+    letter-spacing: 0.02em;
+    margin-top: 0.5rem;
+  }
+
+  .hero-desc {
+    margin-top: 2rem;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.95rem;
+    max-width: 36ch;
+    animation: fadeInUp 0.8s ease 0.2s both;
+  }
+
+  .hero-right {
+    background: var(--paper-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(3rem, 6vw, 6rem);
+    position: relative;
+  }
+
+  .mirror-diagram {
+    width: min(320px, 90%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: rotateSlow 60s linear infinite;
+  }
+
+  .mirror-diagram::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,134,11,0.3);
+  }
+
+  .mirror-diagram::after {
+    content: '';
+    position: absolute;
+    inset: 28px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(184,134,11,0.12), transparent 60%);
+    border: 1px dashed rgba(184,134,11,0.2);
+  }
+
+  .mirror-center {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    position: relative;
+    z-index: 1;
+    animation: counterRotate 60s linear infinite;
+  }
+
+  .mirror-label {
+    position: absolute;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .mirror-label:nth-child(2) { top: -2rem; }
+  .mirror-label:nth-child(3) { bottom: -2rem; }
+  .mirror-label:nth-child(4) { left: -4rem; writing-mode: vertical-rl; }
+  .mirror-label:nth-child(5) { right: -4rem; writing-mode: vertical-rl; }
+
+  .hero-quote {
+    margin-top: 3rem;
+    text-align: center;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 400;
+    line-height: 2;
+    max-width: 30ch;
+    border-top: 1px solid var(--line);
+    padding-top: 2rem;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem); }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::after {
+    content: '';
+    height: 1px;
+    width: 3rem;
+    background: var(--gold);
+    display: inline-block;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── WHAT IS ── */
+  .what-is {
+    background: var(--ink);
+    color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .what-is .section-title { color: #fff; }
+
+  .what-is-text p {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .highlight-quote {
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.5rem;
+    font-family: 'Noto Serif KR', serif;
+    font-style: italic;
+    color: var(--gold-light);
+    font-size: 1rem;
+    background: rgba(255,255,255,0.04);
+    margin-top: 2rem;
+  }
+
+  .when-needed-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .when-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .when-num {
+    width: 2rem; height: 2rem;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .when-text { font-size: 0.9rem; color: rgba(255,255,255,0.65); }
+
+  /* ── SCOPE TABLE ── */
+  .scope-section { background: var(--paper-dark); }
+
+  .scope-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 3rem;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .scope-card {
+    background: var(--paper);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .scope-card:hover { background: var(--ink); }
+  .scope-card:hover * { color: rgba(255,255,255,0.8) !important; }
+  .scope-card:hover .scope-icon { color: var(--gold-light) !important; border-color: var(--gold) !important; }
+
+  .scope-icon {
+    font-size: 1.5rem;
+    width: 3.5rem; height: 3.5rem;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s;
+  }
+  .scope-level { font-size: 0.65rem; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.5rem; transition: color 0.3s; }
+  .scope-name { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.8rem; transition: color 0.3s; }
+  .scope-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; transition: color 0.3s; }
+
+  /* ── STEPS ── */
+  .steps-section { max-width: 1200px; margin: 0 auto; }
+
+  .steps-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--line);
+    position: relative;
+  }
+
+  .step-card {
+    background: var(--paper);
+    padding: 2.5rem 1.8rem;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: all 0.4s;
+  }
+
+  .step-card:hover {
+    background: var(--ink);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    z-index: 10;
+  }
+  .step-card:hover .step-num,
+  .step-card:hover .step-title,
+  .step-card:hover .step-question,
+  .step-card:hover .step-miss { color: rgba(255,255,255,0.85) !important; }
+  .step-card:hover .step-num { color: var(--gold-light) !important; }
+  .step-card:hover .step-divider { background: rgba(255,255,255,0.15) !important; }
+
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(26,18,8,0.08);
+    line-height: 1;
+    margin-bottom: 1rem;
+    transition: color 0.4s;
+  }
+
+  .step-badge {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-title {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    transition: color 0.4s;
+  }
+
+  .step-divider {
+    height: 1px;
+    background: var(--line);
+    margin-bottom: 1rem;
+    transition: background 0.4s;
+  }
+
+  .step-question {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    transition: color 0.4s;
+  }
+
+  .step-miss {
+    font-size: 0.75rem;
+    color: var(--red);
+    font-style: italic;
+    opacity: 0.8;
+    transition: color 0.4s;
+  }
+
+  /* ── CASE STUDY ── */
+  .case-section {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .case-section .section-title { color: #fff; }
+
+  .case-tabs {
+    display: flex;
+    gap: 0;
+    margin-top: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    overflow-x: auto;
+  }
+
+  .case-tab {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.3s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  .case-tab.active {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold);
+  }
+  .case-tab:hover { color: rgba(255,255,255,0.7); }
+  .tab-short { display: none; }
+  .tab-full { display: inline; }
+
+  .case-panels { margin-top: 3rem; }
+  .case-panel { display: none; }
+  .case-panel.active { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: start; }
+
+  .case-panel-label {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .step-badge-lg {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .case-panel-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .case-panel-sub {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.8;
+  }
+
+  .case-items { display: grid; gap: 1.5rem; }
+
+  .case-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 1.8rem;
+    border-left: 3px solid var(--gold);
+  }
+
+  .case-item-title {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .case-item-text {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.9;
+  }
+
+  /* ── PRINCIPLES ── */
+  .principles-section { background: var(--paper-dark); }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .principle-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 2rem;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    transition: all 0.3s;
+  }
+  .principle-item:hover {
+    border-color: var(--gold);
+    box-shadow: 4px 4px 0 var(--gold);
+    transform: translate(-2px, -2px);
+  }
+
+  .principle-dash {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .principle-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .principle-text strong { display: block; color: var(--red); font-weight: 600; margin-bottom: 0.3rem; font-size: 0.95rem; }
+
+  /* ── ERRORS ── */
+  .errors-section { background: var(--ink); color: #fff; }
+  .errors-section .section-title { color: #fff; }
+
+  .errors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: rgba(255,255,255,0.06);
+    margin-top: 3rem;
+  }
+
+  .error-card {
+    background: #1a1208;
+    padding: 2.5rem 2rem;
+    position: relative;
+  }
+
+  .error-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: rgba(139,26,26,0.2);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .error-type {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .error-name {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .error-symptom {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .error-fix {
+    font-size: 0.82rem;
+    color: var(--gold-light);
+    line-height: 1.8;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    padding: 4rem clamp(1.5rem, 6vw, 5rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-logo {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .footer-logo span {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    display: block;
+    margin-top: 0.2rem;
+  }
+
+  .footer-summary {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 2;
+    max-width: 40ch;
+  }
+
+  .footer-summary em {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 0.5rem;
+  }
+
+  .footer-date {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-align: right;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(1.5rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes rotateSlow {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes counterRotate {
+    to { transform: rotate(-360deg); }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(2rem);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { min-height: auto; padding: clamp(2.5rem, 6vw, 4rem); }
+    .hero-right { min-height: auto; padding: 3rem 2rem; }
+    .what-is { grid-template-columns: 1fr; }
+    .scope-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .case-panel.active { grid-template-columns: 1fr; }
+    .case-panel-label { position: static; }
+    .principles-grid { grid-template-columns: repeat(2, 1fr); }
+    .principle-item[style*="span 2"] { grid-column: span 2; }
+    .errors-grid { grid-template-columns: 1fr; }
+    .mirror-label { display: none; }
+    .mirror-diagram { width: min(260px, 70vw); }
+    .mirror-center { font-size: clamp(2rem, 8vw, 3.5rem); }
+    footer { flex-direction: column; align-items: center; text-align: center; }
+    .steps-header { flex-direction: column; align-items: flex-start; }
+    .steps-header p { text-align: left; }
+  }
+
+  @media (max-width: 600px) {
+    .hero-left { padding: 2.5rem 1.5rem; }
+    .hero-right { padding: 2.5rem 1.5rem; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .case-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .case-tab { font-size: 0.7rem; padding: 0.7rem 0.9rem; flex-shrink: 0; letter-spacing: 0.04em; }
+    .what-is { padding: 3rem 1.5rem; }
+    .scope-section > div,
+    .errors-section > div,
+    .principles-section > div { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .case-section > div { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .principles-grid { grid-template-columns: repeat(2, 1fr); }
+    .principle-item[style*="span 2"] { grid-column: span 2; }
+    .error-num { font-size: 3.5rem; }
+    .case-item { padding: 1.2rem; }
+    .hero-quote { font-size: 0.82rem; }
+    section { padding: clamp(3rem, 8vw, 6rem) clamp(1.2rem, 4vw, 3rem); }
+  }
+
+  @media (max-width: 480px) {
+    .tab-full { display: none; }
+    .tab-short { display: inline; }
+    .case-tab { font-size: 0.75rem; padding: 0.8rem 1.1rem; letter-spacing: 0.05em; }
+    .principles-grid { grid-template-columns: 1fr; }
+    .principle-item[style*="span 2"] { grid-column: span 1; }
+    .principle-item { padding: 1.5rem; }
+  }
+
+  </style>
 </head>
 
 <body>
@@ -18,6 +730,7 @@
     <a class="nav-logo" onclick="showPage('book')">언행심리<span>마스터</span></a>
     <ul class="nav-links">
       <li><a onclick="showPage('book')" id="nav-book" class="active">책 소개</a></li>
+      <li><a onclick="showPage('ligyeong')" id="nav-ligyeong">리경(理鏡)</a></li>
       <li><a onclick="showPage('services')" id="nav-services">서비스</a></li>
       <li><a onclick="showPage('consult')" id="nav-consult">상담 신청</a></li>
       <li><a onclick="showPage('qr')" id="nav-qr">QR 코드</a></li>
@@ -33,6 +746,7 @@
   <!-- 모바일 풀스크린 메뉴 -->
   <div class="mobile-nav" id="mobileNav">
     <a onclick="showPage('book');closeMenu()" id="mnav-book">책 소개</a>
+    <a onclick="showPage('ligyeong');closeMenu()" id="mnav-ligyeong">리경(理鏡)</a>
     <a onclick="showPage('services');closeMenu()" id="mnav-services">서비스</a>
     <a onclick="showPage('consult');closeMenu()" id="mnav-consult">상담 신청</a>
     <a onclick="showPage('qr');closeMenu()" id="mnav-qr">QR 코드</a>
@@ -462,6 +1176,379 @@
     </section>
 
   </div><!-- /page-book -->
+
+  <!-- ══════════════════════
+     PAGE: 리경(理鏡)
+══════════════════════ -->
+  <div class="page" id="page-ligyeong">
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">理鏡 · 풀이법</div>
+    <h1 class="hero-title">
+      리경<br>理鏡
+      <span>이치로 세상을 푸는 독해법</span>
+    </h1>
+    <p class="hero-desc">보이는 현상 너머, 보이지 않는 세력과 국운의 흐름을 함께 읽는다.</p>
+
+  </div>
+  <div class="hero-right">
+    <div class="mirror-diagram">
+      <span class="mirror-label">현상</span>
+      <span class="mirror-label">국운</span>
+      <span class="mirror-label">세력</span>
+      <span class="mirror-label">운기</span>
+      <div class="mirror-center">理</div>
+    </div>
+    <p class="hero-quote">
+      "보이는 대로 풀었는데 결과가 틀리게 나올 때<br>— 그때 리경이 필요하다"
+    </p>
+  </div>
+</header>
+
+<!-- ── WHAT IS 리경 ── -->
+<section class="what-is">
+  <div class="what-is-text reveal">
+    <div class="section-label">개요</div>
+    <h2 class="section-title">리경이란<br>무엇인가</h2>
+    <p>리경(理鏡)은 세상의 이치(理)를 거울(鏡) 삼아 인간과 사회의 문제를 읽어내고 풀어내는 독해법이다.</p>
+    <p>단순히 눈에 보이는 현상을 분석하는 데 그치지 않고, 그 현상 뒤에 숨어 있는 세력과 기운의 흐름을 함께 읽어 결과를 꿰뚫는다.</p>
+    <div class="highlight-quote">
+      거울은 있는 그대로를 비추되, 왜곡 없이 이치에 따라 비춘다. 리경은 그런 거울처럼 세상을 이치로 비추어, 보이는 것 너머의 진실을 드러낸다.
+    </div>
+  </div>
+  <div class="reveal" style="transition-delay: 0.15s">
+    <div class="section-label">리경이 필요한 순간</div>
+    <div class="when-needed-grid">
+      <div class="when-item">
+        <div class="when-num">01</div>
+        <div class="when-text">여론조사·출구조사가 실제 결과와 크게 다를 때</div>
+      </div>
+      <div class="when-item">
+        <div class="when-num">02</div>
+        <div class="when-text">조직 내 실력자가 예상과 달리 힘을 잃을 때</div>
+      </div>
+      <div class="when-item">
+        <div class="when-num">03</div>
+        <div class="when-text">능력 있어 보이는 사람이 계속 실패하거나 갑자기 부상할 때</div>
+      </div>
+      <div class="when-item">
+        <div class="when-num">04</div>
+        <div class="when-text">사회 현상이 논리적으로 이해되지 않는 방향으로 흘러갈 때</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCOPE ── -->
+<section class="scope-section">
+  <div style="max-width:1200px; margin:0 auto">
+    <div class="section-label reveal">적용 범위</div>
+    <h2 class="section-title reveal">세 가지 층위에서<br>읽는다</h2>
+    <div class="scope-grid">
+      <div class="scope-card reveal">
+        <div class="scope-icon">👤</div>
+        <div class="scope-level">Level 01</div>
+        <div class="scope-name">개인</div>
+        <div class="scope-desc">한 사람의 운기 분석. 1~2단계로 비교적 단순하게 풀린다.</div>
+      </div>
+      <div class="scope-card reveal" style="transition-delay:0.1s">
+        <div class="scope-icon">🏢</div>
+        <div class="scope-level">Level 02</div>
+        <div class="scope-name">조직·회사</div>
+        <div class="scope-desc">팀, 부서, 기업의 이해관계 운. 배후 세력(경쟁자, 투자자 등)까지 봐야 한다.</div>
+      </div>
+      <div class="scope-card reveal" style="transition-delay:0.2s">
+        <div class="scope-icon">🏛️</div>
+        <div class="scope-level">Level 03</div>
+        <div class="scope-name">정치·국가</div>
+        <div class="scope-desc">정치인, 선거, 국가 정책의 향방. 반드시 국운(國運)과 함께 풀어야 한다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4 STEPS ── -->
+<section style="background: var(--paper); padding: clamp(4rem,10vw,8rem) clamp(1.5rem,4vw,4rem)">
+  <div style="max-width:1200px; margin:0 auto">
+    <div class="steps-header">
+      <div>
+        <div class="section-label reveal">방법론</div>
+        <h2 class="section-title reveal">4단계 풀이법</h2>
+      </div>
+      <p class="reveal" style="max-width:30ch; font-size:0.88rem; color:var(--muted); text-align:right">단계를 건너뛰면 결과가 틀린다. 순서대로 쌓아가며 읽는다.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <div class="step-badge">1단계</div>
+        <div class="step-title">보이는 현상 파악</div>
+        <div class="step-divider"></div>
+        <div class="step-question">핵심 질문<br>지금 무슨 일이 일어나고 있는가?</div>
+        <div class="step-miss">❌ 표면만 읽고 판단 — 단순 오독</div>
+      </div>
+      <div class="step-card reveal" style="transition-delay:0.1s">
+        <div class="step-num">02</div>
+        <div class="step-badge">2단계</div>
+        <div class="step-title">보이지 않는 세력 확인</div>
+        <div class="step-divider"></div>
+        <div class="step-question">핵심 질문<br>이 현상을 움직이는 배후는 누구인가?</div>
+        <div class="step-miss">❌ 결과가 예측과 반대로 나온다</div>
+      </div>
+      <div class="step-card reveal" style="transition-delay:0.2s">
+        <div class="step-num">03</div>
+        <div class="step-badge">3단계</div>
+        <div class="step-title">세력의 운기 분석</div>
+        <div class="step-divider"></div>
+        <div class="step-question">핵심 질문<br>그 세력의 기운은 오르는가, 내리는가?</div>
+        <div class="step-miss">❌ 세력 존재는 알지만 결과를 틀린다</div>
+      </div>
+      <div class="step-card reveal" style="transition-delay:0.3s">
+        <div class="step-num">04</div>
+        <div class="step-badge">4단계</div>
+        <div class="step-title">국운(國運)과 대조</div>
+        <div class="step-divider"></div>
+        <div class="step-question">핵심 질문<br>이 흐름이 나라의 큰 기운과 맞는가?</div>
+        <div class="step-miss">❌ 미시적 분석에 갇혀 대세를 읽지 못한다</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CASE STUDY ── -->
+<section class="case-section">
+  <div style="max-width:1200px; margin:0 auto">
+    <div class="section-label reveal">실전 사례</div>
+    <h2 class="section-title reveal">2026년 6.3 지방선거<br>리경 풀이</h2>
+    <p class="reveal" style="color:rgba(255,255,255,0.5); font-size:0.9rem; max-width:50ch; margin-top:1rem">
+      여론조사 예측과 실제 결과의 괴리, 보이지 않는 세력의 움직임, 시대정신의 변화가 한꺼번에 드러난 선거.
+    </p>
+
+    <div class="case-tabs">
+      <button class="case-tab active" onclick="switchTab(0)"><span class="tab-full">1단계 · 보이는 현상</span><span class="tab-short">1단계</span></button>
+      <button class="case-tab" onclick="switchTab(1)"><span class="tab-full">2단계 · 배후 세력</span><span class="tab-short">2단계</span></button>
+      <button class="case-tab" onclick="switchTab(2)"><span class="tab-full">3단계 · 운기 분석</span><span class="tab-short">3단계</span></button>
+      <button class="case-tab" onclick="switchTab(3)"><span class="tab-full">4단계 · 국운</span><span class="tab-short">4단계</span></button>
+    </div>
+
+    <div class="case-panels">
+      <!-- 1단계 -->
+      <div class="case-panel active">
+        <div class="case-panel-label">
+          <div class="step-badge-lg">1단계</div>
+          <div class="case-panel-title">보이는 현상</div>
+          <div class="case-panel-sub">여론조사 예측과<br>실제 결과의 괴리</div>
+        </div>
+        <div class="case-items">
+          <div class="case-item">
+            <div class="case-item-title">서울 한강벨트</div>
+            <div class="case-item-text">한강 재개발 수혜 지역(성동·광진·마포·용산 등)에서 오세훈 시장 측 후보들이 압도적 지지를 받았다. 재산 가치 상승에 직접 이해관계를 가진 유권자들의 표심이 집결했다.</div>
+          </div>
+          <div class="case-item">
+            <div class="case-item-title">여론조사 괴리</div>
+            <div class="case-item-text">출구조사·여론조사가 실제 결과와 이례적으로 차이가 났다. 응답자들이 자신의 진짜 투표 의향을 숨긴 것으로 해석된다.</div>
+          </div>
+          <div class="case-item">
+            <div class="case-item-title">기초단체 결과</div>
+            <div class="case-item-text">시장·구청장·기초의원 레벨에서는 '일하는 일꾼'을 뽑는 실용적 판단이 나타났다. 이념보다 체감 성과에 반응한 투표였다.</div>
+          </div>
+          <div class="case-item">
+            <div class="case-item-title">서울시장 — 앞서다 무너진 정원오</div>
+            <div class="case-item-text">이재명 대통령 픽인 정원오는 초반 지지율에서 약 15%p 앞서며 출발했다. 이재명 정부의 지지율이라면 당연히 이길 것으로 여겨졌던 선거였다. 그러나 그 격차를 뒤집고 오세훈에게 패배했다 — 처음부터 15% 가까이 이기고 시작했다가 진 것이니 실질적 낙폭은 컸다. 2030 남성의 70%가 오세훈에게 표를 줬고, 여성 지지층도 10% 이상 민주당에서 이탈했다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">당대표 평가 — 장동혁의 역효과</div>
+            <div class="case-item-text">오세훈(서울)·경남 도지사 등 국힘당 당선자들은 철저히 장동혁과 거리를 뒀다. 반면 장동혁이 직접 유세에 나선 지역 후보들은 줄줄이 낙선했다. 지지자들조차 당 대표의 존재가 부담임을 내부에서 먼저 알아챈 셈이다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">당대표 평가 — 정청래의 실기</div>
+            <div class="case-item-text">민주당은 대통령 지지율과 집권 이미지만으로도 대승이 예정된 선거였다. 그러나 정청래의 이재명 색 지우기 선거 기조, 개떡같은 공천 논란이 겹치며 서울시장까지 내줬다. 숫자상 이겼으나 실질적으로는 패배한 선거.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2단계 -->
+      <div class="case-panel">
+        <div class="case-panel-label">
+          <div class="step-badge-lg">2단계</div>
+          <div class="case-panel-title">배후 세력</div>
+          <div class="case-panel-sub">포장형 정치인과<br>보이지 않는 세력</div>
+        </div>
+        <div class="case-items">
+          <div class="case-item">
+            <div class="case-item-title">포장형 정치인</div>
+            <div class="case-item-text">정원오 전 성동구청장 유형의 정치인들이 대표적이다. 겉으로는 주민 친화적 이미지를 내세우지만, 실제로는 친문 운동권 세력의 이익을 대변하며 조용히 움직였다.</div>
+          </div>
+          <div class="case-item">
+            <div class="case-item-title">친문 운동권 세력</div>
+            <div class="case-item-text">전면에 나서지 않으면서 후보 공천과 선거 전략에 깊이 개입했다. 이념적 연대를 기반으로 결속하되, 외부에는 실용 정치인처럼 포장했다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">정원오 캠프의 자충수 — 페미니즘 전면화</div>
+            <div class="case-item-text">선거 시작과 함께 2030 남성들이 가장 강하게 거부하는 페미니즘 어젠다를 전면에 내세웠다. 단순 실책이 아니라 지도부가 민심의 방향을 전혀 읽지 못하고 있다는 신호였다. 초반 지지율 우위를 스스로 갉아먹는 전략적 자해였다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">친문 세력 연대 이미지 노출</div>
+            <div class="case-item-text">'문조털래유' 등 친문 핵심 세력과 함께하는 사진이 언론에 배포됐다. 이재명 대통령 픽임에도 구(舊)운동권·친문 냄새를 전면에 드러낸 셈이다. 이것이 선거 초기부터 중도·무당층을 망연자실하게 만든 결정적 배후 요인이었다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">정청래 지도부의 권력 계산</div>
+            <div class="case-item-text">민주당 정청래 지도부는 현실 민심이 아닌 이재명 정부 이후의 당내 권력 구도를 보고 있었다. 이재명 색 지우기 + 친문 세력 결집이라는 조합은 선거 전략이 아니라 차기 권력 포석이었다. 유권자에게 필요한 세력이 아닌 자신들에게 필요한 세력을 위해 선거를 치른 것이다.</div>
+          </div>
+          <div class="case-item">
+            <div class="case-item-title">선관위 문제</div>
+            <div class="case-item-text">선거관리위원회의 부실한 관리 행태가 도마에 올랐다. 내부 인사들의 불성실하고 편파적인 업무 처리 의혹이 제기되어 선거 공정성에 대한 불신이 커졌다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">정청래의 당내 세력 작동 방식</div>
+            <div class="case-item-text">정청래는 대표직을 이재명 색 지우기의 수단으로 활용했다. 공천 과정에서 실용 후보보다 계파 논리가 앞섰고, 이는 유권자가 필요로 하는 '일하는 사람'이 아닌 '진영의 사람'을 전면에 내세우는 결과를 낳았다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">장동혁의 자기 세력 파괴</div>
+            <div class="case-item-text">내란 사태로 이미 신뢰를 잃은 국힘당에서 장동혁은 가만히 있었으면 텃밭은 지킬 수 있었다. 그러나 적극적 유세가 오히려 지지층의 거부감을 자극해, 당연히 지켜야 할 땅마저 위협받았다. 대구조차 가까스로 지킨 것은 수비 성공이 아니라 자충수의 결과다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3단계 -->
+      <div class="case-panel">
+        <div class="case-panel-label">
+          <div class="step-badge-lg">3단계</div>
+          <div class="case-panel-title">세력의 운기</div>
+          <div class="case-panel-sub">기득권 세력의<br>기운이 꺾이다</div>
+        </div>
+        <div class="case-items">
+          <div class="case-item">
+            <div class="case-item-title">부동산 기득권</div>
+            <div class="case-item-text">한강벨트 주민들은 자산 가치 상승을 원하고 보유세 인상을 강하게 반대한다. 이 세력의 운은 당장은 세 보이지만, 부동산 불로소득 구조라는 근본 모순을 안고 있다.</div>
+          </div>
+          <div class="case-item">
+            <div class="case-item-title">운동권 세력 ↓</div>
+            <div class="case-item-text">친문 운동권 세력은 표심을 결집시키는 데 실패했다. 이념 동원이 더 이상 예전만큼 작동하지 않는다는 것이 확인됐다. 세력의 기운이 정점을 지나 내리막에 접어들었다.</div>
+          </div>
+          <div class="case-item">
+            <div class="case-item-title">정부와의 기싸움 지속</div>
+            <div class="case-item-text">부동산 정책을 둘러싼 정부와 기득권 세력의 기싸움은 계속된다. 그러나 시대의 흐름은 불로소득 구조에 기댄 세력을 점점 불리하게 만들고 있다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">민주당 운기 ↓ — 가진 기운을 스스로 깎다</div>
+            <div class="case-item-text">대통령 지지율이라는 강력한 상승 기운이 있었음에도 당 대표의 실책으로 그 기운이 유권자에게 전달되지 못했다. 운기는 있었으나 그릇이 막혀 흐르지 못한 케이스. 기본만 해도 서울시장까지 가져올 수 있었던 선거를 스스로 닫아버렸다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">국힘당 운기 ↓ — 이미 내리막인데 자충수까지</div>
+            <div class="case-item-text">내란 사태 이후 국힘당의 기운은 이미 하강 국면이었다. 장동혁이 조용히 있었다면 텃밭만큼은 지킬 수 있는 잔여 운기가 있었다. 그러나 불필요한 전면 등장이 잔여 운기마저 소진시켰다. 두 세력 모두 기운이 내리막 — 누가 덜 잃느냐의 게임이었다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4단계 -->
+      <div class="case-panel">
+        <div class="case-panel-label">
+          <div class="step-badge-lg">4단계</div>
+          <div class="case-panel-title">국운과<br>시대정신</div>
+          <div class="case-panel-sub">먹고 사는 문제로의<br>귀결</div>
+        </div>
+        <div class="case-items">
+          <div class="case-item">
+            <div class="case-item-title">시대정신: 실용과 검증</div>
+            <div class="case-item-text">지금 시대정신은 이념도 아니고 진영도 아니다. 실용이고 검증된 능력이다. 장년층이든 청년층이든 결국 하나의 질문으로 수렴한다 — "이 사람이 내 삶을 더 나아지게 해줄 수 있는가?"</div>
+          </div>
+          <div class="case-item">
+            <div class="case-item-title">소외와 박탈감이 연료</div>
+            <div class="case-item-text">소득·재산 격차에서 비롯된 소외감, 박탈감, 세대 간 증오가 이번 선거의 실제 연료였다. 정책이 이 문제를 해결하면 표는 돌아온다. 이것이 리경이 읽는 민심의 역설이다.</div>
+          </div>
+          <div class="case-item">
+            <div class="case-item-title">결론 — 국운의 방향</div>
+            <div class="case-item-text">잘 먹고 잘살게 해주면 표는 돌아온다. 그것이 지금 국운의 방향이다. 이 흐름에 맞지 않는 정치 세력은 — 이념이 어느 쪽이든 — 결국 도태된다.</div>
+          </div>
+          <div class="case-item" style="border-left-color: var(--red)">
+            <div class="case-item-title" style="color: #e08080">리경의 최종 판정 — 양당 모두 패배</div>
+            <div class="case-item-text">보통 선거에는 이긴 자와 진 자가 있다. 그러나 이번 선거는 양당 모두 욕을 먹은 예외적 결과다. 민주당은 숫자상 이겼으나 가져야 했던 것들을 못 가져와 실질 패배. 국힘당은 지켜야 할 텃밭도 위협받으며 명분과 실리 모두 잃었다. 국운이 이미 실용과 민생을 향해 흐르고 있었는데, 두 당 대표 모두 그 흐름을 읽지 못하고 역행했다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ERRORS ── -->
+<section class="errors-section">
+  <div style="max-width:1200px; margin:0 auto">
+    <div class="section-label reveal">오독 유형</div>
+    <h2 class="section-title reveal">리경을 잘못 읽는<br>3가지 유형</h2>
+    <div class="errors-grid">
+      <div class="error-card reveal">
+        <div class="error-num">I</div>
+        <div class="error-type">오독 유형 01</div>
+        <div class="error-name">현상만 읽는 오독</div>
+        <div class="error-symptom">보이는 것만 보고 결론을 낸다. 여론조사가 민심의 전부라고 믿는다.</div>
+        <div class="error-fix">→ 2단계(세력)를 반드시 확인한다. 현상 뒤에는 항상 무언가가 있다고 전제한다.</div>
+      </div>
+      <div class="error-card reveal" style="transition-delay:0.1s">
+        <div class="error-num">II</div>
+        <div class="error-type">오독 유형 02</div>
+        <div class="error-name">세력만 보는 오독</div>
+        <div class="error-symptom">세력의 존재는 확인했지만 그 세력의 운기가 오르는지 내리는지를 안 본다.</div>
+        <div class="error-fix">→ 세력의 현재 운기 흐름을 3단계에서 분석한다. 과거에 강했다고 지금도 강한 게 아니다.</div>
+      </div>
+      <div class="error-card reveal" style="transition-delay:0.2s">
+        <div class="error-num">III</div>
+        <div class="error-type">오독 유형 03</div>
+        <div class="error-name">미시에 갇히는 오독</div>
+        <div class="error-symptom">개인과 세력은 잘 읽지만 더 큰 국운의 흐름을 놓친다. 시대정신을 거스르는 세력을 과대평가한다.</div>
+        <div class="error-fix">→ 4단계에서 국운·시대정신과 대조한다. 국운을 거스르는 기운은 결국 꺾인다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRINCIPLES ── -->
+<section class="principles-section">
+  <div style="max-width:1200px; margin:0 auto">
+    <div class="section-label reveal">핵심 원칙</div>
+    <h2 class="section-title reveal">리경의 5가지<br>핵심 원칙</h2>
+    <div class="principles-grid">
+      <div class="principle-item reveal">
+        <div class="principle-dash">—</div>
+        <div class="principle-text"><strong>현상은 결과물이 아니다</strong>현상은 더 큰 흐름의 표면일 뿐이다.</div>
+      </div>
+      <div class="principle-item reveal" style="transition-delay:0.1s">
+        <div class="principle-dash">—</div>
+        <div class="principle-text"><strong>세력의 운기는 세력의 의지와 다르다</strong>아무리 강한 세력도 운이 다하면 꺾인다.</div>
+      </div>
+      <div class="principle-item reveal" style="transition-delay:0.2s">
+        <div class="principle-dash">—</div>
+        <div class="principle-text"><strong>국운은 모든 세력의 기운을 관통한다</strong>국운과 맞지 않는 세력은 결국 쇠약해진다.</div>
+      </div>
+      <div class="principle-item reveal" style="transition-delay:0.05s">
+        <div class="principle-dash">—</div>
+        <div class="principle-text"><strong>시대정신이 곧 국운의 언어다</strong>지금 시대는 이념이 아닌 실용과 검증된 능력을 원한다.</div>
+      </div>
+      <div class="principle-item reveal" style="transition-delay:0.15s; grid-column: span 2;">
+        <div class="principle-dash">—</div>
+        <div class="principle-text"><strong>먹고 사는 문제가 모든 정치의 뿌리다</strong>이 문제를 외면한 세력은 도태된다. 결과가 예측과 다를 때 — 아직 읽지 못한 층위가 있다는 신호다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">
+    理鏡
+    <span>리경 풀이법 v3</span>
+  </div>
+  <div class="footer-summary">
+    보이는 현상 + 보이지 않는 세력의 운기 + 국운(시대정신)
+    <em>이 세 층위를 함께 읽을 때, 세상이 비로소 풀린다</em>
+  </div>
+</footer>
+
+
+
+  </div><!-- /page-ligyeong -->
+
 
 
   <!-- ══════════════════════
@@ -1176,6 +2263,7 @@
     <div class="footer-sub">EONHAENG PSYCHOLOGY MASTER</div>
     <div class="footer-links">
       <a onclick="showPage('book')">책 소개</a>
+      <a onclick="showPage('ligyeong')">리경(理鏡)</a>
       <a onclick="showPage('services')">서비스</a>
       <a onclick="showPage('consult')">상담 신청</a>
       <a onclick="showPage('qr')">QR 코드</a>
@@ -1221,6 +2309,12 @@
       closeMenu();
     }
 
+
+    // ── 리경 탭 전환 ──
+    function switchTab(idx) {
+      document.querySelectorAll('.case-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+      document.querySelectorAll('.case-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+    }
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
