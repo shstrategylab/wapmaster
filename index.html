@@ -472,7 +472,7 @@
   <iframe
     id="ligyeong-iframe"
     src="leekyung.html"
-    style="width:100%; height:100vh; border:none; display:block;"
+    style="width:100%; height:5000px; border:none; display:block;" onload="(function(f){try{var h=Math.max(f.contentWindow.document.body.scrollHeight,f.contentWindow.document.documentElement.scrollHeight);if(h>200)f.style.height=h+'px';f.contentWindow.document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('visible');});}catch(e){}})(this)"
     title="리경(理鏡) 풀이법"
   ></iframe>
   </div><!-- /page-ligyeong -->
@@ -1426,6 +1426,37 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       observeFadeIns();
       closeMenu();
+
+      // ── 리경 iframe: 페이지 전환 시 높이 재조정 및 내부 reveal 강제 실행 ──
+      if (id === 'ligyeong') {
+        var iframe = document.getElementById('ligyeong-iframe');
+        if (iframe) {
+          // iframe이 이미 로드된 경우 내부 높이를 직접 계산해 적용
+          function applyIframeHeight() {
+            try {
+              var iDoc = iframe.contentWindow.document;
+              var h = Math.max(
+                iDoc.body.scrollHeight,
+                iDoc.documentElement.scrollHeight,
+                iDoc.body.offsetHeight,
+                iDoc.documentElement.offsetHeight
+              );
+              if (h > 200) iframe.style.height = h + 'px';
+
+              // 내부 .reveal 요소가 숨겨져 있으면 모두 표시
+              iDoc.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+                el.classList.add('visible');
+              });
+            } catch(e) {}
+          }
+
+          if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+            applyIframeHeight();
+          } else {
+            iframe.addEventListener('load', applyIframeHeight, { once: true });
+          }
+        }
+      }
     }
 
 
