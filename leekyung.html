@@ -532,6 +532,8 @@
 
   .principle-text strong { display: block; color: var(--red); font-weight: 600; margin-bottom: 0.3rem; font-size: 0.95rem; }
 
+  .principle-item--wide { grid-column: span 2; }
+
   /* ── ERRORS ── */
   .errors-section { background: var(--ink); color: #fff; }
   .errors-section .section-title { color: #fff; }
@@ -680,7 +682,7 @@
     .case-panel.active { grid-template-columns: 1fr; }
     .case-panel-label { position: static; }
     .principles-grid { grid-template-columns: 1fr; }
-    .principle-item, .principle-item[style*="span 2"] { grid-column: span 1; }
+    .principle-item, .principle-item[style*="span 2"], .principle-item--wide { grid-column: span 1; }
     .errors-grid { grid-template-columns: 1fr; }
     .mirror-label { display: none; }
     .mirror-diagram { width: min(260px, 70vw); }
@@ -702,7 +704,7 @@
     .principles-section > div { padding-left: 1.5rem; padding-right: 1.5rem; }
     .case-section > div { padding-left: 1.5rem; padding-right: 1.5rem; }
     .principles-grid { grid-template-columns: 1fr; }
-    .principle-item, .principle-item[style*="span 2"] { grid-column: span 1; }
+    .principle-item, .principle-item[style*="span 2"], .principle-item--wide { grid-column: span 1; }
     .error-num { font-size: 3.5rem; }
     .case-item { padding: 1.2rem; }
     .hero-quote { font-size: 0.82rem; }
@@ -714,7 +716,7 @@
     .tab-short { display: inline; }
     .case-tab { font-size: 0.75rem; padding: 0.8rem 1.1rem; letter-spacing: 0.05em; }
     .principles-grid { grid-template-columns: 1fr; }
-    .principle-item, .principle-item[style*="span 2"] { grid-column: span 1; }
+    .principle-item, .principle-item[style*="span 2"], .principle-item--wide { grid-column: span 1; }
     .principle-item { padding: 1.5rem; }
   }
 </style>
@@ -1064,7 +1066,7 @@
         <div class="principle-dash">—</div>
         <div class="principle-text"><strong>시대정신이 곧 국운의 언어다</strong>지금 시대는 이념이 아닌 실용과 검증된 능력을 원한다.</div>
       </div>
-      <div class="principle-item reveal" style="transition-delay:0.15s; grid-column: span 2;">
+      <div class="principle-item principle-item--wide reveal" style="transition-delay:0.15s;">
         <div class="principle-dash">—</div>
         <div class="principle-text"><strong>먹고 사는 문제가 모든 정치의 뿌리다</strong>이 문제를 외면한 세력은 도태된다. 결과가 예측과 다를 때 — 아직 읽지 못한 층위가 있다는 신호다.</div>
       </div>
