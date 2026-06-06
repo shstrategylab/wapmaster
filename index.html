@@ -471,7 +471,7 @@
   <div class="page" id="page-ligyeong">
     <iframe
       id="ligyeong-iframe"
-      src="leekyung.html"
+      src="리경.html"
       style="width:100%; height:100vh; border:none; display:block;"
       title="리경(理鏡) 풀이법"
       onload="resizeLigyeongIframe(this)"
@@ -540,6 +540,22 @@
       <span class="section-label">상담 서비스</span>
       <h2 class="section-title">서비스 종류</h2>
       <div class="section-divider"></div>
+
+      <!-- ── 파트 구분 탭 ── -->
+      <div style="display:flex;gap:0;margin-bottom:48px;border:1px solid rgba(184,134,11,0.3);border-radius:14px;overflow:hidden;">
+        <button id="svc-tab-eonhaeng" onclick="switchServiceTab('eonhaeng')"
+          style="flex:1;padding:18px 24px;background:linear-gradient(135deg,#b8860b,#d4a843);border:none;cursor:pointer;font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;color:#1a1614;letter-spacing:1px;transition:all 0.25s;">
+          🔍 언행심리상담
+        </button>
+        <button id="svc-tab-ligyeong" onclick="switchServiceTab('ligyeong')"
+          style="flex:1;padding:18px 24px;background:#1a1208;border:none;cursor:pointer;font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:1px;transition:all 0.25s;border-left:1px solid rgba(184,134,11,0.3);">
+          理鏡 리경상담
+        </button>
+      </div>
+
+      <!-- ══ 언행심리상담 파트 ══ -->
+      <div id="svc-eonhaeng">
+
       <!-- 1% 강조 인포박스 -->
       <div
         style="background:linear-gradient(135deg,#3d2b1f,#2d1f14);border:1px solid rgba(184,134,11,0.4);border-radius:20px;padding:32px 36px;margin-bottom:48px;display:flex;align-items:center;gap:28px;position:relative;overflow:hidden;">
@@ -751,6 +767,139 @@
           </div>
         </div>
       </div>
+
+      </div><!-- /svc-eonhaeng -->
+
+      <!-- ══ 리경상담 파트 ══ -->
+      <div id="svc-ligyeong" style="display:none;">
+
+        <!-- 리경상담 안내 박스 -->
+        <div style="background:linear-gradient(135deg,#0e0c08,#1a1208);border:1px solid rgba(184,134,11,0.5);border-radius:20px;padding:40px 44px;margin-bottom:48px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(184,134,11,0.08),transparent 70%);pointer-events:none;"></div>
+          <div style="position:absolute;bottom:-40px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(139,26,26,0.06),transparent 70%);pointer-events:none;"></div>
+          <div style="display:flex;align-items:flex-start;gap:28px;position:relative;z-index:1;">
+            <div style="flex-shrink:0;font-family:'Noto Serif KR',serif;font-size:48px;color:rgba(184,134,11,0.7);line-height:1;margin-top:4px;">理鏡</div>
+            <div>
+              <div style="font-family:'Noto Serif KR',serif;font-size:20px;font-weight:700;color:#d4a843;margin-bottom:14px;letter-spacing:1px;">리경상담은 일반 심리상담과 다릅니다</div>
+              <p style="font-size:14px;color:rgba(255,255,255,0.65);line-height:2;margin:0 0 18px;">
+                리경(理鏡)은 보이는 현상 너머 — <strong style="color:rgba(255,255,255,0.9);">세력의 흐름, 운기의 방향, 국운과의 접점</strong>을 함께 읽는 고수의 기법입니다.<br>
+                수많은 변수와 층위를 동시에 보아야 하기 때문에, <em style="color:#d4a843;font-style:normal;">아무에게나 풀이를 제공하지 않습니다.</em>
+              </p>
+              <div style="padding:16px 20px;background:rgba(139,26,26,0.12);border:1px solid rgba(139,26,26,0.3);border-radius:10px;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.9;">
+                ⚠️ <strong style="color:rgba(255,100,100,0.8);">주의</strong> — 나쁜 의도로 남을 속이거나 이용하기 위해 리경 풀이를 악용하면,
+                그 역풍은 반드시 본인에게 돌아옵니다. 이치에는 방향이 있습니다.
+                이 상담은 <strong style="color:rgba(255,255,255,0.85);">바른 쓰임새를 가진 분</strong>께만 열려 있습니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 리경상담 카드 1: 개인 리경 풀이 -->
+        <div class="service-card-full fade-in"
+          style="border:1.5px solid rgba(184,134,11,0.4);background:linear-gradient(160deg,#100e0a 0%,#1e180f 100%);position:relative;overflow:hidden;">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 40px,rgba(184,134,11,0.015) 40px,rgba(184,134,11,0.015) 41px);pointer-events:none;"></div>
+          <div class="scf-header" style="background:transparent;border-bottom:1px solid rgba(184,134,11,0.2);position:relative;z-index:1;">
+            <div class="scf-header-left">
+              <div class="scf-icon" style="font-size:22px;">理</div>
+              <div>
+                <div style="display:inline-block;background:rgba(184,134,11,0.15);border:1px solid rgba(184,134,11,0.4);color:#d4a843;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 10px;border-radius:100px;margin-bottom:8px;">개인 리경 풀이</div>
+                <div class="scf-name" style="color:#fff;">개인 흐름 · 운기 풀이</div>
+                <div class="scf-tags-row">
+                  <span class="service-tag" style="background:rgba(184,134,11,0.1);border-color:rgba(184,134,11,0.3);color:#d4a843;">전화 상담</span>
+                  <span class="service-tag" style="background:rgba(184,134,11,0.1);border-color:rgba(184,134,11,0.3);color:#d4a843;">선별 진행</span>
+                  <span class="service-tag" style="background:rgba(184,134,11,0.1);border-color:rgba(184,134,11,0.3);color:#d4a843;">완전 비공개</span>
+                </div>
+              </div>
+            </div>
+            <div class="scf-header-right" style="position:relative;z-index:1;">
+              <div class="scf-price" style="font-size:26px;color:#d4a843;">협의</div>
+              <div class="scf-unit" style="color:rgba(255,255,255,0.4);">검토 후 개별 안내</div>
+            </div>
+          </div>
+          <div class="scf-body" style="grid-template-columns:1fr 1fr;position:relative;z-index:1;">
+            <div>
+              <div class="scf-block-label" style="color:#d4a843;">이런 분께 기회가 주어집니다</div>
+              <ul class="scf-sit-list">
+                <li style="color:rgba(255,255,255,0.7);">현재 인생의 큰 분기점에서 흐름을 읽고 싶은 분</li>
+                <li style="color:rgba(255,255,255,0.7);">개인 운기와 주변 세력의 관계를 함께 풀이받고 싶은 분</li>
+                <li style="color:rgba(255,255,255,0.7);">언행심리상담을 넘어 더 넓은 시야가 필요한 분</li>
+                <li style="color:rgba(255,255,255,0.7);">바른 의도로 자신과 주변을 이롭게 하려는 분</li>
+              </ul>
+            </div>
+            <div style="background:rgba(184,134,11,0.07);border:1px solid rgba(184,134,11,0.2);border-radius:14px;padding:20px 22px;">
+              <div style="font-size:11px;font-weight:700;color:#d4a843;letter-spacing:2px;margin-bottom:10px;">🔒 진행 안내</div>
+              <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.9;margin:0;">
+                신청서를 검토한 후 풀이 가능 여부를 개별 안내드립니다.<br>
+                상담 사실과 내용은 완전 비공개이며,<br>
+                가격은 상황과 내용에 따라 협의합니다.
+              </p>
+            </div>
+          </div>
+          <div class="scf-footer" style="position:relative;z-index:1;">
+            <div class="scf-note" style="border-color:rgba(184,134,11,0.2);color:rgba(184,134,11,0.7);">
+              ※ 이치에 맞지 않는 쓰임새, 타인을 해하려는 의도가 감지되면 풀이를 제공하지 않습니다
+            </div>
+          </div>
+        </div>
+
+        <!-- 리경상담 카드 2: 조직·세력 흐름 분석 -->
+        <div class="service-card-full fade-in"
+          style="border:1.5px solid rgba(184,134,11,0.4);background:linear-gradient(160deg,#100e0a 0%,#1e180f 100%);position:relative;overflow:hidden;">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 40px,rgba(184,134,11,0.015) 40px,rgba(184,134,11,0.015) 41px);pointer-events:none;"></div>
+          <div class="scf-header" style="background:transparent;border-bottom:1px solid rgba(184,134,11,0.2);position:relative;z-index:1;">
+            <div class="scf-header-left">
+              <div class="scf-icon" style="font-size:22px;">鏡</div>
+              <div>
+                <div style="display:inline-block;background:rgba(184,134,11,0.15);border:1px solid rgba(184,134,11,0.4);color:#d4a843;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 10px;border-radius:100px;margin-bottom:8px;">조직 · 세력 풀이</div>
+                <div class="scf-name" style="color:#fff;">조직·세력 흐름 분석</div>
+                <div class="scf-tags-row">
+                  <span class="service-tag" style="background:rgba(184,134,11,0.1);border-color:rgba(184,134,11,0.3);color:#d4a843;">기업 · 단체 · 정치</span>
+                  <span class="service-tag" style="background:rgba(184,134,11,0.1);border-color:rgba(184,134,11,0.3);color:#d4a843;">4단계 풀이</span>
+                  <span class="service-tag" style="background:rgba(184,134,11,0.1);border-color:rgba(184,134,11,0.3);color:#d4a843;">극비 진행</span>
+                </div>
+              </div>
+            </div>
+            <div class="scf-header-right" style="position:relative;z-index:1;">
+              <div class="scf-price" style="font-size:26px;color:#d4a843;">협의</div>
+              <div class="scf-unit" style="color:rgba(255,255,255,0.4);">규모·복잡도에 따라 협의</div>
+            </div>
+          </div>
+          <div class="scf-body" style="grid-template-columns:1fr 1fr;position:relative;z-index:1;">
+            <div>
+              <div class="scf-block-label" style="color:#d4a843;">어떤 상황에 필요한가</div>
+              <ul class="scf-sit-list">
+                <li style="color:rgba(255,255,255,0.7);">조직 내 보이지 않는 세력 구도와 운기 흐름을 읽어야 할 때</li>
+                <li style="color:rgba(255,255,255,0.7);">중요한 의사결정 전 국운·시대정신과의 접점을 확인하고 싶을 때</li>
+                <li style="color:rgba(255,255,255,0.7);">기업, 단체, 정치 그룹의 흐름이 상승인지 하강인지 판단이 필요할 때</li>
+                <li style="color:rgba(255,255,255,0.7);">현상만 보지 않고 배후 세력까지 포함한 전체 그림이 필요할 때</li>
+              </ul>
+            </div>
+            <div style="background:rgba(184,134,11,0.07);border:1px solid rgba(184,134,11,0.2);border-radius:14px;padding:20px 22px;">
+              <div style="font-size:11px;font-weight:700;color:#d4a843;letter-spacing:2px;margin-bottom:10px;">理鏡 4단계 적용</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8;display:flex;gap:10px;align-items:flex-start;">
+                  <span style="color:#d4a843;font-weight:700;flex-shrink:0;">1단계</span><span>보이는 현상 — 인물과 행동 읽기</span>
+                </div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8;display:flex;gap:10px;align-items:flex-start;">
+                  <span style="color:#d4a843;font-weight:700;flex-shrink:0;">2단계</span><span>배후 세력 — 숨겨진 실질 세력 분석</span>
+                </div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8;display:flex;gap:10px;align-items:flex-start;">
+                  <span style="color:#d4a843;font-weight:700;flex-shrink:0;">3단계</span><span>운기 흐름 — 세력의 상승·하강 판단</span>
+                </div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8;display:flex;gap:10px;align-items:flex-start;">
+                  <span style="color:#d4a843;font-weight:700;flex-shrink:0;">4단계</span><span>국운·시대정신 — 큰 흐름과의 일치 여부</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="scf-footer" style="position:relative;z-index:1;">
+            <div class="scf-note" style="border-color:rgba(184,134,11,0.2);color:rgba(184,134,11,0.7);">
+              ※ 신청서 검토 → 가능 여부 개별 통보 → 협의 후 진행 · 모든 과정 극비 유지
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /svc-ligyeong -->
 
     </section>
 
@@ -1255,6 +1404,29 @@
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ── 서비스 파트 탭 전환 ──
+    function switchServiceTab(tab) {
+      var eonhaeng = document.getElementById('svc-eonhaeng');
+      var ligyeong = document.getElementById('svc-ligyeong');
+      var btnE = document.getElementById('svc-tab-eonhaeng');
+      var btnL = document.getElementById('svc-tab-ligyeong');
+      if (tab === 'eonhaeng') {
+        eonhaeng.style.display = '';
+        ligyeong.style.display = 'none';
+        btnE.style.background = 'linear-gradient(135deg,#b8860b,#d4a843)';
+        btnE.style.color = '#1a1614';
+        btnL.style.background = '#1a1208';
+        btnL.style.color = 'rgba(255,255,255,0.45)';
+      } else {
+        eonhaeng.style.display = 'none';
+        ligyeong.style.display = '';
+        btnL.style.background = 'linear-gradient(135deg,#b8860b,#d4a843)';
+        btnL.style.color = '#1a1614';
+        btnE.style.background = '#1a1208';
+        btnE.style.color = 'rgba(255,255,255,0.45)';
+      }
     }
 
     // Nav scroll effect
