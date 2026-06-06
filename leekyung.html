@@ -679,8 +679,8 @@
     .steps-grid { grid-template-columns: 1fr 1fr; }
     .case-panel.active { grid-template-columns: 1fr; }
     .case-panel-label { position: static; }
-    .principles-grid { grid-template-columns: repeat(2, 1fr); }
-    .principle-item[style*="span 2"] { grid-column: span 2; }
+    .principles-grid { grid-template-columns: 1fr; }
+    .principle-item, .principle-item[style*="span 2"] { grid-column: span 1; }
     .errors-grid { grid-template-columns: 1fr; }
     .mirror-label { display: none; }
     .mirror-diagram { width: min(260px, 70vw); }
@@ -701,8 +701,8 @@
     .errors-section > div,
     .principles-section > div { padding-left: 1.5rem; padding-right: 1.5rem; }
     .case-section > div { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .principles-grid { grid-template-columns: repeat(2, 1fr); }
-    .principle-item[style*="span 2"] { grid-column: span 2; }
+    .principles-grid { grid-template-columns: 1fr; }
+    .principle-item, .principle-item[style*="span 2"] { grid-column: span 1; }
     .error-num { font-size: 3.5rem; }
     .case-item { padding: 1.2rem; }
     .hero-quote { font-size: 0.82rem; }
@@ -714,7 +714,7 @@
     .tab-short { display: inline; }
     .case-tab { font-size: 0.75rem; padding: 0.8rem 1.1rem; letter-spacing: 0.05em; }
     .principles-grid { grid-template-columns: 1fr; }
-    .principle-item[style*="span 2"] { grid-column: span 1; }
+    .principle-item, .principle-item[style*="span 2"] { grid-column: span 1; }
     .principle-item { padding: 1.5rem; }
   }
 </style>
