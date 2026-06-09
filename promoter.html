@@ -360,6 +360,37 @@
       font-weight: 500;
     }
 
+    /* ── OUTPUT MODE ── */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .radio-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.15s;
+      background: var(--surface);
+    }
+    .radio-item:hover { border-color: var(--accent-mid); background: var(--accent-light); }
+    .radio-item.selected { border-color: var(--accent); background: var(--accent-light); }
+    .radio-item input[type="radio"] {
+      width: 16px; height: 16px;
+      accent-color: var(--accent);
+      margin-top: 2px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .radio-text { display: flex; flex-direction: column; gap: 2px; }
+    .radio-title { font-size: 14px; font-weight: 700; color: var(--ink); }
+    .radio-desc { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+
     /* ── SCROLLBAR ── */
     .result-box::-webkit-scrollbar { width: 6px; }
     .result-box::-webkit-scrollbar-track { background: transparent; }
@@ -521,6 +552,40 @@
     </div>
   </div>
 
+  <!-- STEP 5 -->
+  <div class="step-label">
+    <div class="step-num">5</div>
+    <div class="step-title">출력 방식 선택</div>
+  </div>
+  <div class="card">
+    <div class="field" style="margin-bottom:0;">
+      <label>스크립트 출력 형태</label>
+      <div class="radio-group">
+        <label class="radio-item selected" id="mode-edit-wrap">
+          <input type="radio" name="output-mode" value="edit" checked onchange="selectMode(this)">
+          <div class="radio-text">
+            <span class="radio-title">✏️ 편집용 스크립트</span>
+            <span class="radio-desc">구조 번호·섹션 제목·주석 포함 — 내용 검토·수정할 때 사용</span>
+          </div>
+        </label>
+        <label class="radio-item" id="mode-tts-wrap">
+          <input type="radio" name="output-mode" value="tts" onchange="selectMode(this)">
+          <div class="radio-text">
+            <span class="radio-title">🔊 낭독 전용 스크립트 (TTS)</span>
+            <span class="radio-desc">구조 표시 제거 + SSML 쉼·템포 태그 삽입 — Google AI Studio TTS에 바로 붙여넣기</span>
+          </div>
+        </label>
+        <label class="radio-item" id="mode-both-wrap">
+          <input type="radio" name="output-mode" value="both" onchange="selectMode(this)">
+          <div class="radio-text">
+            <span class="radio-title">📄 둘 다 출력</span>
+            <span class="radio-desc">편집용 먼저, 낭독 전용 순서로 — 초반 작업 단계에서 비교하며 사용</span>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+
   <!-- GENERATE BUTTON -->
   <div class="btn-row">
     <button class="btn btn-primary" onclick="generate()">✦ 프롬프트 생성하기</button>
@@ -649,6 +714,60 @@
     wise:   '노련하고 여유 있게 — 오랜 경험에서 우러나온 깊이'
   };
 
+  function selectMode(radio) {
+    document.querySelectorAll('.radio-item').forEach(el => el.classList.remove('selected'));
+    radio.closest('.radio-item').classList.add('selected');
+  }
+
+  function getOutputMode() {
+    return document.querySelector('input[name="output-mode"]:checked').value;
+  }
+
+  const outputModeInstructions = {
+    edit: `[출력 형식 — 편집용 스크립트]
+아래 형식으로 출력하세요.
+- 각 섹션을 번호와 제목으로 명확히 구분 (예: [1. 후킹 오프닝], [2. 핵심 주제 선언] 등)
+- 연출 지시나 톤 메모는 (괄호 안에) 표시
+- 수정·검토가 쉽도록 가독성 있게 구성`,
+
+    tts: `[출력 형식 — 낭독 전용 SSML 스크립트 (Google AI Studio TTS용)]
+아래 규칙을 엄격히 지켜 출력하세요.
+- 섹션 번호, 제목, 구조 표시, 괄호 지시문 전부 제거 — 읽히는 텍스트만 남길 것
+- 모든 숫자는 한글 읽기 방식으로 변환 (예: 3가지 → 세 가지, 2024년 → 이천이십사년)
+- 특수문자·이모지·기호 제거
+- 쉼과 템포는 SSML 태그로 표현:
+  · 짧은 쉼 (단어 강조 후): <break time="300ms"/>
+  · 문장 끝 쉼: <break time="700ms"/>
+  · 섹션 전환 큰 쉼: <break time="1200ms"/>
+  · 강조 단어: <emphasis level="strong">단어</emphasis>
+  · 천천히 읽을 구간: <prosody rate="slow">문장</prosody>
+  · 빠르게 읽을 구간: <prosody rate="fast">문장</prosody>
+- 전체를 <speak> ... </speak> 태그로 감쌀 것
+- 오프닝 후, 섹션 전환마다 1.2초 쉼 삽입
+- 핵심 문장 앞뒤로 0.7초 쉼 삽입하여 귀에 박히게 할 것`,
+
+    both: `[출력 형식 — 편집용 + 낭독 전용 순서로 둘 다 출력]
+
+먼저 편집용 스크립트를 출력하세요.
+- 각 섹션을 번호와 제목으로 명확히 구분 (예: [1. 후킹 오프닝])
+- 연출 지시나 톤 메모는 (괄호 안에) 표시
+- 수정·검토가 쉽도록 가독성 있게 구성
+
+---[편집용 끝 / 낭독 전용 시작]---
+
+이어서 낭독 전용 SSML 스크립트를 출력하세요.
+- 섹션 번호, 제목, 구조 표시, 괄호 지시문 전부 제거
+- 모든 숫자는 한글 읽기 방식으로 변환
+- 특수문자·이모지·기호 제거
+- 쉼과 템포는 SSML 태그로 표현:
+  · 짧은 쉼: <break time="300ms"/>
+  · 문장 끝 쉼: <break time="700ms"/>
+  · 섹션 전환: <break time="1200ms"/>
+  · 강조: <emphasis level="strong">단어</emphasis>
+  · 천천히: <prosody rate="slow">문장</prosody>
+- 전체를 <speak> ... </speak> 태그로 감쌀 것`
+  };
+
   function generate() {
     const raw = rawEl.value.trim();
     if (!raw) {
@@ -663,6 +782,7 @@
     const speechMood  = document.getElementById('speech-mood').value;
     const keyword     = document.getElementById('keyword').value.trim();
     const extra       = document.getElementById('extra').value.trim();
+    const outputMode  = getOutputMode();
     const tags        = getActiveTags();
     const closingLines = tags.map(t => closingMap[t]).filter(Boolean).join('\n');
     const presetNote  = activePreset ? `\n[대상 청취자 특성 — ${presets[activePreset].label}]\n${presets[activePreset].audienceNote}` : '';
@@ -702,6 +822,8 @@ ${closingLines || '- 자연스러운 마무리 멘트'}
 
 [원본 녹음 텍스트]
 날것의 대화체를 살리되, 방송에 맞게 다듬어 위 형식의 유튜브 스크립트로 변환해주세요.
+
+${outputModeInstructions[outputMode]}
 
 ---
 ${raw}
@@ -748,6 +870,9 @@ ${raw}
     document.getElementById('char-count').textContent = '0자';
     document.getElementById('keyword').value = '';
     document.getElementById('extra').value = '';
+    document.querySelector('input[name="output-mode"][value="edit"]').checked = true;
+    document.querySelectorAll('.radio-item').forEach(el => el.classList.remove('selected'));
+    document.getElementById('mode-edit-wrap').classList.add('selected');
     document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('selected'));
     activePreset = null;
     document.getElementById('duration').value = 'auto';
