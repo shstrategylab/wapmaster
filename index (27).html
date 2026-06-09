@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>언행심리 스크립트 프롬프트 생성기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a1a;
+      --ink-2: #4a4a4a;
+      --ink-3: #888;
+      --line: #e0ddd7;
+      --line-2: #ccc;
+      --surface: #faf9f6;
+      --surface-2: #f2f0ec;
+      --surface-3: #fff;
+      --accent: #3a3080;
+      --accent-light: #eeedfe;
+      --accent-mid: #7f77dd;
+      --serif: 'Noto Serif KR', serif;
+      --sans: 'Noto Sans KR', sans-serif;
+      --radius: 8px;
+      --radius-lg: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--surface);
+      color: var(--ink);
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--ink);
+      color: #fff;
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+    }
+    .header-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-mid);
+      margin-bottom: 0.75rem;
+    }
+    header h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.3;
+      color: #fff;
+    }
+    header p {
+      margin-top: 0.75rem;
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .header-rule {
+      width: 40px;
+      height: 2px;
+      background: var(--accent-mid);
+      margin: 1.25rem auto 0;
+      border: none;
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    /* ── STEP LABEL ── */
+    .step-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+    }
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface-3);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    .field { margin-bottom: 1.1rem; }
+    .field:last-child { margin-bottom: 0; }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 6px;
+    }
+    textarea, input[type="text"], select {
+      width: 100%;
+      border: 1px solid var(--line-2);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--surface);
+      transition: border-color 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    textarea:focus, input[type="text"]:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #fff;
+    }
+    textarea { resize: vertical; line-height: 1.65; }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    .char-count {
+      font-size: 12px;
+      color: var(--ink-3);
+      text-align: right;
+      margin-top: 5px;
+    }
+    .hint {
+      font-size: 12px;
+      color: var(--ink-3);
+      margin-top: 5px;
+    }
+
+    /* ── TWO COLUMN ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 520px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* ── TAGS ── */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .tag {
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line-2);
+      background: var(--surface-2);
+      color: var(--ink-2);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tag:hover { border-color: var(--accent-mid); color: var(--accent); }
+    .tag.active {
+      background: var(--accent-light);
+      border-color: var(--accent-mid);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 11px 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line-2);
+      background: transparent;
+      color: var(--ink);
+      font-size: 14px;
+      font-family: var(--sans);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn:hover { background: var(--surface-2); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      flex: 1;
+      min-width: 160px;
+    }
+    .btn-primary:hover { background: #2d2568; border-color: #2d2568; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2rem 0;
+    }
+
+    /* ── RESULT ── */
+    #result-section { display: none; }
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .result-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .result-box {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+      color: var(--ink);
+      white-space: pre-wrap;
+      line-height: 1.75;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .copy-btn {
+      padding: 7px 16px;
+      font-size: 13px;
+      border-radius: var(--radius);
+      border: 1px solid var(--accent-mid);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-family: var(--sans);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: var(--accent); color: #fff; }
+    .copy-success { background: #eaf3de; border-color: #97c459; color: #3b6d11; }
+    .notice {
+      font-size: 12px;
+      color: var(--ink-3);
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: var(--radius);
+      border-left: 3px solid var(--accent-mid);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 12px;
+      color: var(--ink-3);
+      border-top: 1px solid var(--line);
+    }
+
+    /* ── SCROLLBAR ── */
+    .result-box::-webkit-scrollbar { width: 6px; }
+    .result-box::-webkit-scrollbar-track { background: transparent; }
+    .result-box::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      header { padding: 2rem 1.25rem 1.5rem; }
+      .card { padding: 1.25rem 1rem; }
+      .result-box { font-size: 12px; padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="header-eyebrow">언행심리마스터 · 유튜브 채널</p>
+  <h1>스크립트 프롬프트 생성기</h1>
+  <p>녹음 텍스트를 입력하고 설정을 선택하면<br>Claude용 최적화 프롬프트를 만들어드립니다.</p>
+  <hr class="header-rule">
+</header>
+
+<div class="page">
+
+  <!-- STEP 1 -->
+  <div class="step-label">
+    <div class="step-num">1</div>
+    <div class="step-title">녹음 텍스트 입력</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <label for="raw">원본 녹음 텍스트</label>
+      <textarea id="raw" rows="10" placeholder="녹음을 텍스트로 변환한 내용을 그대로 붙여넣으세요.
+날것 그대로 입력해도 됩니다. 다듬는 건 Claude가 합니다."></textarea>
+      <div class="char-count" id="char-count">0자</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-label">
+    <div class="step-num">2</div>
+    <div class="step-title">영상 설정</div>
+  </div>
+  <div class="card">
+    <div class="two-col">
+      <div class="field">
+        <label for="duration">영상 길이 목표</label>
+        <select id="duration">
+          <option value="short">5분 이내 (약 800자)</option>
+          <option value="mid" selected>10분 내외 (약 1,500자)</option>
+          <option value="long">15분 이내 (약 2,500자)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="format">스크립트 형태</label>
+        <select id="format">
+          <option value="master">마스터 어록 중심 재구성</option>
+          <option value="qa">질문-답변 구조 유지</option>
+          <option value="narration">나레이터 1인 독백형</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="keyword">강조할 핵심 메시지 (선택)</label>
+      <input type="text" id="keyword" placeholder="예: 감정을 버려야 관계가 보인다 / 말보다 행동이 먼저다">
+      <p class="hint">비워두면 원본에서 AI가 자동으로 핵심을 추출합니다.</p>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-label">
+    <div class="step-num">3</div>
+    <div class="step-title">클로징 요소 선택</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <label>클로징에 포함할 내용</label>
+      <div class="tag-row" id="closing-tags">
+        <span class="tag active" data-val="book">📖 언행심리학 책 홍보</span>
+        <span class="tag active" data-val="cafe">☕ 상담 카페 안내</span>
+        <span class="tag" data-val="subscribe">🔔 구독 유도</span>
+        <span class="tag" data-val="next">▶ 다음 영상 예고</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-label">
+    <div class="step-num">4</div>
+    <div class="step-title">추가 요청 (선택)</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <label for="extra">세부 요청사항</label>
+      <textarea id="extra" rows="3" placeholder="예: 오프닝을 더 강렬하게 / 중간에 명언 형식으로 끊어주기 / 본론을 짧게..."></textarea>
+    </div>
+  </div>
+
+  <!-- GENERATE BUTTON -->
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="generate()">✦ 프롬프트 생성하기</button>
+    <button class="btn" onclick="resetAll()">초기화</button>
+  </div>
+
+  <hr class="divider">
+
+  <!-- RESULT -->
+  <div id="result-section">
+    <div class="result-header">
+      <span class="result-label">완성된 프롬프트</span>
+      <button class="copy-btn" id="copy-btn" onclick="copyResult()">복사하기</button>
+    </div>
+    <div class="result-box" id="result"></div>
+    <p class="notice">✓ 위 프롬프트를 복사해서 Claude 새 대화창에 붙여넣으면 스크립트가 생성됩니다.</p>
+  </div>
+
+</div>
+
+<footer>
+  언행심리마스터 유튜브 채널 · 스크립트 프롬프트 생성기
+</footer>
+
+<script>
+  const rawEl = document.getElementById('raw');
+  rawEl.addEventListener('input', () => {
+    document.getElementById('char-count').textContent = rawEl.value.length.toLocaleString() + '자';
+  });
+
+  document.querySelectorAll('.tag').forEach(t => {
+    t.addEventListener('click', () => t.classList.toggle('active'));
+  });
+
+  function getActiveTags() {
+    return [...document.querySelectorAll('#closing-tags .tag.active')].map(t => t.dataset.val);
+  }
+
+  const durationMap = {
+    short: '5분 이내 (약 800자)',
+    mid:   '10분 내외 (약 1,500자)',
+    long:  '15분 이내 (약 2,500자)'
+  };
+
+  const formatMap = {
+    master:    '마스터 어록 중심으로 재구성 — 단호하고 논리적인 문체',
+    qa:        '원본 질문-답변 구조를 살리되 방송 언어로 다듬기',
+    narration: '나레이터 1인 독백형으로 재편집'
+  };
+
+  const closingMap = {
+    book:      '- 《언행심리학》 책 자연스럽게 언급 및 홍보',
+    cafe:      '- 더 깊은 상담이 필요한 분들께 카페 상담 공간 안내',
+    subscribe: '- 구독 / 좋아요 / 알림 설정 유도 멘트',
+    next:      '- 다음 영상 예고 한 문장'
+  };
+
+  function generate() {
+    const raw = rawEl.value.trim();
+    if (!raw) {
+      alert('녹음 텍스트를 먼저 입력해주세요.');
+      rawEl.focus();
+      return;
+    }
+
+    const duration = document.getElementById('duration').value;
+    const format   = document.getElementById('format').value;
+    const keyword  = document.getElementById('keyword').value.trim();
+    const extra    = document.getElementById('extra').value.trim();
+    const tags     = getActiveTags();
+    const closingLines = tags.map(t => closingMap[t]).filter(Boolean).join('\n');
+
+    const prompt = `당신은 '언행심리마스터' 유튜브 채널의 전문 스크립트 작가입니다.
+
+[언행심리마스터 특성]
+- 감정을 배제하고 이성과 논리로만 판단하는 스타일
+- 단호하고 냉정하지만 정확하게 핵심을 꿰뚫는 화법
+- 현실적이고 직설적이며 군더더기 없는 문체
+- 듣는 사람이 "맞아, 바로 이거야!" 무릎을 치게 만드는 명쾌함
+- 저서: 《언행심리학》
+
+[영상 스펙]
+- 목표 길이: ${durationMap[duration]}
+- 스크립트 형태: ${formatMap[format]}
+${keyword ? `- 강조할 핵심 메시지: "${keyword}"` : '- 핵심 메시지: 원본에서 가장 임팩트 있는 통찰을 자동 선정'}
+
+[스크립트 구조 — 반드시 이 순서로]
+1. 후킹 오프닝 — 첫 10초, 귀를 잡아당기는 단 한 문장으로 시작
+2. 핵심 주제 선언 — 이 영상에서 무엇을 말할 것인가
+3. 본론 — 마스터의 논리를 중심으로 단호하게 전개, 예시와 반례 활용
+4. 핵심 정리 — 한 줄 요약 또는 명언 형식으로 마무리
+5. 클로징
+${closingLines || '- 자연스러운 마무리 멘트'}
+
+[청취 환경 고려]
+- 출퇴근, 취침 전, 복잡한 일상 속 지친 청취자를 대상으로 함
+- 귀에 쏙 들어오는 리듬감 있는 문장 구성
+- 어렵지 않되 가볍지도 않은 무게감 유지
+- 듣기만 해도 머릿속이 정리되는 명쾌한 흐름${extra ? `\n\n[추가 요청]\n${extra}` : ''}
+
+[원본 녹음 텍스트]
+날것의 대화체를 살리되, 방송에 맞게 다듬어 위 형식의 유튜브 스크립트로 변환해주세요.
+
+---
+${raw}
+---`;
+
+    const resultEl = document.getElementById('result');
+    resultEl.textContent = prompt;
+
+    const section = document.getElementById('result-section');
+    section.style.display = 'block';
+
+    const copyBtn = document.getElementById('copy-btn');
+    copyBtn.textContent = '복사하기';
+    copyBtn.className = 'copy-btn';
+
+    setTimeout(() => {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  function copyResult() {
+    const text = document.getElementById('result').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ 복사 완료';
+      btn.classList.add('copy-success');
+      setTimeout(() => {
+        btn.textContent = '복사하기';
+        btn.classList.remove('copy-success');
+      }, 2500);
+    }).catch(() => {
+      const el = document.getElementById('result');
+      const range = document.createRange();
+      range.selectNode(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+    });
+  }
+
+  function resetAll() {
+    rawEl.value = '';
+    document.getElementById('char-count').textContent = '0자';
+    document.getElementById('keyword').value = '';
+    document.getElementById('extra').value = '';
+    document.getElementById('duration').value = 'mid';
+    document.getElementById('format').value = 'master';
+    document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tag[data-val="book"], .tag[data-val="cafe"]').forEach(t => t.classList.add('active'));
+    document.getElementById('result-section').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
