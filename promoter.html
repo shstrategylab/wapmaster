@@ -307,6 +307,59 @@
       border-top: 1px solid var(--line);
     }
 
+    /* ── PRESET ── */
+    .preset-section {
+      margin-bottom: 1.5rem;
+    }
+    .preset-intro {
+      font-size: 12px;
+      color: var(--ink-3);
+      margin-bottom: 10px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .preset-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 14px 16px;
+      border-radius: var(--radius-lg);
+      border: 1.5px solid var(--line);
+      background: var(--surface-3);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+      font-family: var(--sans);
+    }
+    .preset-btn:hover {
+      border-color: var(--accent-mid);
+      background: var(--accent-light);
+    }
+    .preset-btn.selected {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+    .preset-btn .p-emoji { font-size: 20px; line-height: 1; margin-bottom: 2px; }
+    .preset-btn .p-name { font-size: 14px; font-weight: 700; color: var(--ink); }
+    .preset-btn .p-desc { font-size: 11px; color: var(--ink-3); line-height: 1.4; }
+    .preset-btn .p-badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-light);
+      color: var(--accent);
+      border: 1px solid var(--accent-mid);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
     /* ── SCROLLBAR ── */
     .result-box::-webkit-scrollbar { width: 6px; }
     .result-box::-webkit-scrollbar-track { background: transparent; }
@@ -330,6 +383,37 @@
 </header>
 
 <div class="page">
+
+  <!-- PRESET -->
+  <div class="preset-section">
+    <p class="preset-intro">대상 청취자 프리셋 — 클릭 한 번으로 최적 설정 자동 적용</p>
+    <div class="preset-grid">
+      <button class="preset-btn" data-preset="senior" onclick="applyPreset('senior')">
+        <span class="p-emoji">🧓</span>
+        <span class="p-name">50·60대</span>
+        <span class="p-desc">자기 객관화가 어려운<br>중장년 대상</span>
+        <span class="p-badge">10~15분 · 설교체 · 노련하고 여유 있게</span>
+      </button>
+      <button class="preset-btn" data-preset="worker" onclick="applyPreset('worker')">
+        <span class="p-emoji">💼</span>
+        <span class="p-name">2030 직장인</span>
+        <span class="p-desc">출퇴근 중 듣는<br>바쁜 현대인</span>
+        <span class="p-badge">5~10분 · 코칭체 · 날카롭고 단호하게</span>
+      </button>
+      <button class="preset-btn" data-preset="youth" onclick="applyPreset('youth')">
+        <span class="p-emoji">🎯</span>
+        <span class="p-name">청년층</span>
+        <span class="p-desc">방향을 찾는<br>20대 초중반</span>
+        <span class="p-badge">7~12분 · 표준어 · 긴박감 있게</span>
+      </button>
+      <button class="preset-btn" data-preset="allage" onclick="applyPreset('allage')">
+        <span class="p-emoji">🌐</span>
+        <span class="p-name">전 연령 범용</span>
+        <span class="p-desc">폭넓게 공감되는<br>일반 콘텐츠</span>
+        <span class="p-badge">입력 맞춤 · 격식체 · 차분하고 낮게</span>
+      </button>
+    </div>
+  </div>
 
   <!-- STEP 1 -->
   <div class="step-label">
@@ -355,9 +439,11 @@
       <div class="field">
         <label for="duration">영상 길이 목표</label>
         <select id="duration">
+          <option value="auto" selected>입력 내용에 맞춤 (AI 자동 판단)</option>
           <option value="short">5분 이내 (약 800자)</option>
-          <option value="mid" selected>10분 내외 (약 1,500자)</option>
+          <option value="mid">10분 내외 (약 1,500자)</option>
           <option value="long">15분 이내 (약 2,500자)</option>
+          <option value="xl">30분 이내 (약 5,000자)</option>
         </select>
       </div>
       <div class="field">
@@ -366,6 +452,36 @@
           <option value="master">마스터 어록 중심 재구성</option>
           <option value="qa">질문-답변 구조 유지</option>
           <option value="narration">나레이터 1인 독백형</option>
+        </select>
+      </div>
+    </div>
+    <div class="two-col" style="margin-bottom:1.1rem;">
+      <div class="field" style="margin-bottom:0;">
+        <label for="speech-style">말투 스타일</label>
+        <select id="speech-style">
+          <optgroup label="── 표준어 계열">
+            <option value="standard" selected>표준어 (기본)</option>
+            <option value="formal">격식체 (존댓말 · 방송 언어)</option>
+            <option value="casual">편안한 반말체</option>
+            <option value="sermon">설교체 (선언적·강렬한 문장)</option>
+            <option value="coaching">코칭체 (질문 유도형)</option>
+          </optgroup>
+          <optgroup label="── 사투리 계열">
+            <option value="gyeongsang">경상도 사투리</option>
+            <option value="jeolla">전라도 사투리</option>
+            <option value="chungcheong">충청도 사투리</option>
+            <option value="jeju">제주도 사투리</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label for="speech-mood">말투 분위기</label>
+        <select id="speech-mood">
+          <option value="sharp" selected>날카롭고 단호하게</option>
+          <option value="calm">차분하고 낮게 깔리는</option>
+          <option value="warm">따뜻하지만 단호하게</option>
+          <option value="urgent">긴박감 있게</option>
+          <option value="wise">노련하고 여유 있게</option>
         </select>
       </div>
     </div>
@@ -430,6 +546,55 @@
 </footer>
 
 <script>
+  const presets = {
+    senior: {
+      duration: 'long',
+      format: 'sermon',
+      speechStyle: 'sermon',
+      speechMood: 'wise',
+      label: '50·60대 대상',
+      audienceNote: '자기 객관화가 어려운 50·60대 중장년층 대상. 권위 있는 어른의 말씀처럼 선언적으로 전달하여 방어기제 없이 자연스럽게 흡수되도록 할 것. 직접적으로 잘못을 지적하기보다 "이런 경우가 있다"는 제3자 시점을 활용해 자기 이야기임을 깨닫게 유도.'
+    },
+    worker: {
+      duration: 'mid',
+      format: 'master',
+      speechStyle: 'coaching',
+      speechMood: 'sharp',
+      label: '2030 직장인 대상',
+      audienceNote: '출퇴근 중 이어폰으로 듣는 바쁜 2030 직장인 대상. 짧고 강렬하게 핵심만. 현실적인 직장·관계 상황에 바로 적용 가능한 실용적 통찰 중심. 지루하지 않게 리듬감 있게 전개.'
+    },
+    youth: {
+      duration: 'mid',
+      format: 'qa',
+      speechStyle: 'standard',
+      speechMood: 'urgent',
+      label: '청년층 대상',
+      audienceNote: '방향을 잃고 혼란스러운 20대 초중반 청년층 대상. "지금 이 말을 들어야 한다"는 긴박감으로 각성을 유도. 공감에서 시작해 명쾌한 해답으로 마무리. 너무 무겁지 않되 가볍지도 않은 균형.'
+    },
+    allage: {
+      duration: 'auto',
+      format: 'master',
+      speechStyle: 'formal',
+      speechMood: 'calm',
+      label: '전 연령 범용',
+      audienceNote: '특정 연령에 치우치지 않고 폭넓게 공감되는 범용 콘텐츠. 격식 있되 딱딱하지 않게. 누구에게나 해당되는 보편적 삶의 통찰 중심으로 전개.'
+    }
+  };
+
+  let activePreset = null;
+
+  function applyPreset(key) {
+    const p = presets[key];
+    document.getElementById('duration').value    = p.duration;
+    document.getElementById('format').value      = p.format;
+    document.getElementById('speech-style').value = p.speechStyle;
+    document.getElementById('speech-mood').value  = p.speechMood;
+
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelector(`.preset-btn[data-preset="${key}"]`).classList.add('selected');
+    activePreset = key;
+  }
+
   const rawEl = document.getElementById('raw');
   rawEl.addEventListener('input', () => {
     document.getElementById('char-count').textContent = rawEl.value.length.toLocaleString() + '자';
@@ -444,9 +609,11 @@
   }
 
   const durationMap = {
+    auto:  '입력 내용 분량에 맞게 AI가 자동 판단 (제약 없음)',
     short: '5분 이내 (약 800자)',
     mid:   '10분 내외 (약 1,500자)',
-    long:  '15분 이내 (약 2,500자)'
+    long:  '15분 이내 (약 2,500자)',
+    xl:    '30분 이내 (약 5,000자)'
   };
 
   const formatMap = {
@@ -462,6 +629,26 @@
     next:      '- 다음 영상 예고 한 문장'
   };
 
+  const speechStyleMap = {
+    standard:    '표준어 (자연스러운 현대 한국어)',
+    formal:      '격식체 — 존댓말 기반, 방송·강연에 적합한 언어',
+    casual:      '편안한 반말체 — 친근하되 핵심은 단호하게',
+    sermon:      '설교체 — 선언적이고 강렬한 짧은 문장 반복',
+    coaching:    '코칭체 — 질문을 던지며 청취자 스스로 생각하게 유도',
+    gyeongsang:  '경상도 사투리 — 억양 살려 직설적으로',
+    jeolla:      '전라도 사투리 — 구수하고 정감 있게',
+    chungcheong: '충청도 사투리 — 느릿하지만 깊이 있게',
+    jeju:        '제주도 사투리 — 독특한 어미와 표현으로'
+  };
+
+  const speechMoodMap = {
+    sharp:  '날카롭고 단호하게 — 군더더기 없이 핵심만',
+    calm:   '차분하고 낮게 깔리는 톤 — 신뢰감을 주는 무게감',
+    warm:   '따뜻하지만 단호하게 — 공감하되 흐트러지지 않게',
+    urgent: '긴박감 있게 — 듣는 이가 지금 당장 행동하게 만드는 톤',
+    wise:   '노련하고 여유 있게 — 오랜 경험에서 우러나온 깊이'
+  };
+
   function generate() {
     const raw = rawEl.value.trim();
     if (!raw) {
@@ -470,12 +657,15 @@
       return;
     }
 
-    const duration = document.getElementById('duration').value;
-    const format   = document.getElementById('format').value;
-    const keyword  = document.getElementById('keyword').value.trim();
-    const extra    = document.getElementById('extra').value.trim();
-    const tags     = getActiveTags();
+    const duration    = document.getElementById('duration').value;
+    const format      = document.getElementById('format').value;
+    const speechStyle = document.getElementById('speech-style').value;
+    const speechMood  = document.getElementById('speech-mood').value;
+    const keyword     = document.getElementById('keyword').value.trim();
+    const extra       = document.getElementById('extra').value.trim();
+    const tags        = getActiveTags();
     const closingLines = tags.map(t => closingMap[t]).filter(Boolean).join('\n');
+    const presetNote  = activePreset ? `\n[대상 청취자 특성 — ${presets[activePreset].label}]\n${presets[activePreset].audienceNote}` : '';
 
     const prompt = `당신은 '언행심리마스터' 유튜브 채널의 전문 스크립트 작가입니다.
 
@@ -491,6 +681,11 @@
 - 스크립트 형태: ${formatMap[format]}
 ${keyword ? `- 강조할 핵심 메시지: "${keyword}"` : '- 핵심 메시지: 원본에서 가장 임팩트 있는 통찰을 자동 선정'}
 
+[말투 설정]
+- 말투 스타일: ${speechStyleMap[speechStyle]}
+- 말투 분위기: ${speechMoodMap[speechMood]}
+- 말투는 스크립트 전체에 일관되게 적용할 것
+
 [스크립트 구조 — 반드시 이 순서로]
 1. 후킹 오프닝 — 첫 10초, 귀를 잡아당기는 단 한 문장으로 시작
 2. 핵심 주제 선언 — 이 영상에서 무엇을 말할 것인가
@@ -503,7 +698,7 @@ ${closingLines || '- 자연스러운 마무리 멘트'}
 - 출퇴근, 취침 전, 복잡한 일상 속 지친 청취자를 대상으로 함
 - 귀에 쏙 들어오는 리듬감 있는 문장 구성
 - 어렵지 않되 가볍지도 않은 무게감 유지
-- 듣기만 해도 머릿속이 정리되는 명쾌한 흐름${extra ? `\n\n[추가 요청]\n${extra}` : ''}
+- 듣기만 해도 머릿속이 정리되는 명쾌한 흐름${presetNote}${extra ? `\n\n[추가 요청]\n${extra}` : ''}
 
 [원본 녹음 텍스트]
 날것의 대화체를 살리되, 방송에 맞게 다듬어 위 형식의 유튜브 스크립트로 변환해주세요.
@@ -553,8 +748,12 @@ ${raw}
     document.getElementById('char-count').textContent = '0자';
     document.getElementById('keyword').value = '';
     document.getElementById('extra').value = '';
-    document.getElementById('duration').value = 'mid';
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('selected'));
+    activePreset = null;
+    document.getElementById('duration').value = 'auto';
     document.getElementById('format').value = 'master';
+    document.getElementById('speech-style').value = 'standard';
+    document.getElementById('speech-mood').value = 'sharp';
     document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tag[data-val="book"], .tag[data-val="cafe"]').forEach(t => t.classList.add('active'));
     document.getElementById('result-section').style.display = 'none';
