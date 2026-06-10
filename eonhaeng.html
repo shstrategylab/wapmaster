@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>언행심리학 — 말과 행동이 삶을 바꾼다</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Pretendard:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1410;
+      --paper: #faf7f2;
+      --accent: #c8451a;
+      --accent2: #2c5f8a;
+      --muted: #7a6e62;
+      --border: #e0d8cc;
+      --card-bg: #ffffff;
+      --section-bg: #f3ede3;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      height: 64px;
+      background: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--ink);
+      transition: all 0.3s;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 80px clamp(1.5rem, 5vw, 4rem) 0;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 60vw;
+      height: 80vh;
+      background: radial-gradient(ellipse at center, rgba(200, 69, 26, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .hero-title {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: clamp(2.6rem, 5.5vw, 5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.35s forwards;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--accent);
+      position: relative;
+    }
+
+    .hero-title em::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0.35;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.9rem 2rem;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s, transform 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.65s forwards;
+    }
+
+    .hero-cta:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .hero-cta svg {
+      transition: transform 0.2s;
+    }
+
+    .hero-cta:hover svg {
+      transform: translateX(4px);
+    }
+
+    .hero-visual {
+      position: relative;
+      opacity: 0;
+      animation: fadeIn 1.2s 0.4s forwards;
+    }
+
+    .hero-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.5rem;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    .quote-mark {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--accent);
+      opacity: 0.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .quote-text {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .quote-source {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .meta-item {
+      text-align: center;
+    }
+
+    .meta-num {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+    }
+
+    .meta-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+    }
+
+    .section-header {
+      margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 40px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .section-desc {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 580px;
+      font-weight: 300;
+    }
+
+    /* ─── DIFFERENCE SECTION ─── */
+    #difference {
+      background: var(--section-bg);
+    }
+
+    .diff-grid {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+
+    .diff-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .diff-card.left {
+      border-radius: 4px 0 0 4px;
+      border-right: none;
+    }
+
+    .diff-card.right {
+      border-radius: 0 4px 4px 0;
+      border-left: none;
+    }
+
+    .diff-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+    }
+
+    .diff-card.left::before {
+      background: var(--accent);
+    }
+
+    .diff-card.right::before {
+      background: var(--accent2);
+    }
+
+    .diff-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+      margin-bottom: 1.2rem;
+    }
+
+    .diff-card.left .diff-tag {
+      background: rgba(200, 69, 26, 0.1);
+      color: var(--accent);
+    }
+
+    .diff-card.right .diff-tag {
+      background: rgba(44, 95, 138, 0.1);
+      color: var(--accent2);
+    }
+
+    .diff-card h3 {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+    }
+
+    .diff-card p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .diff-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .diff-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .diff-points li::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.55rem;
+    }
+
+    .diff-card.left .diff-points li::before {
+      background: var(--accent);
+    }
+
+    .diff-card.right .diff-points li::before {
+      background: var(--accent2);
+    }
+
+    .diff-vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      writing-mode: vertical-rl;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── SYNERGY BANNER ─── */
+    .synergy-banner {
+      margin-top: 3rem;
+      padding: 2rem 2.5rem;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .synergy-icon {
+      font-size: 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .synergy-banner h4 {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .synergy-banner p {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.7;
+    }
+
+    /* ─── CASE STUDY ─── */
+    /* ─── INSIGHT ─── */
+    #insight {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    #insight .section-label {
+      color: rgba(200, 69, 26, 0.9);
+    }
+
+    #insight .section-label::after {
+      background: rgba(200, 69, 26, 0.9);
+    }
+
+    #insight .section-title {
+      color: var(--paper);
+    }
+
+    .insight-quote {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 2rem auto 1.5rem;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .insight-quote span {
+      color: var(--accent);
+    }
+
+    .insight-author {
+      text-align: center;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.1em;
+    }
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .value-item {
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .value-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-4px);
+    }
+
+    .value-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .value-item h4 {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+      color: var(--paper);
+    }
+
+    .value-item p {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.7;
+    }
+
+    /* ─── PRINCIPLE SECTION ─── */
+    #principle {
+      background: var(--section-bg);
+    }
+
+    .principle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .principle-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .principle-num {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--border);
+      line-height: 1;
+    }
+
+    .principle-card h3 {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+      position: relative;
+      padding-bottom: 0.8rem;
+    }
+
+    .principle-card h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .principle-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.8;
+      position: relative;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      color: rgba(255, 255, 255, 0.4);
+      padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer .logo {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    footer p {
+      font-size: 0.8rem;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── MOBILE NAV ─── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 99;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-top: 100px;
+        padding-bottom: 3rem;
+        gap: 3rem;
+      }
+
+      .hero-visual {
+        order: -1;
+      }
+
+      .diff-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .diff-card.left {
+        border-radius: 4px 4px 0 0;
+        border-right: 1px solid var(--border);
+        border-bottom: none;
+      }
+
+      .diff-card.right {
+        border-radius: 0 0 4px 4px;
+        border-left: 1px solid var(--border);
+        border-top: none;
+      }
+
+      .diff-vs {
+        writing-mode: horizontal-tb;
+        padding: 0.8rem 2rem;
+        font-size: 0.9rem;
+      }
+
+      .principle-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .synergy-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-meta {
+        gap: 1.5rem;
+      }
+
+      .meta-num {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">언행심리학</a>
+    <ul class="nav-links">
+      <li><a href="#difference">차이점</a></li>
+      <li><a href="#principle">핵심 원리</a></li>
+      <li><a href="#insight">인사이트</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="메뉴">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#difference" onclick="closeMobile()">차이점</a>
+    <a href="#principle" onclick="closeMobile()">핵심 원리</a>
+    <a href="#insight" onclick="closeMobile()">인사이트</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">언행심리학 · 도현(道賢)</div>
+      <h1 class="hero-title">말과 행동이<br><em>삶의 구조</em>를<br>결정한다</h1>
+      <p class="hero-sub">현재 일어나고 있는 문제의 구조를 파악하고, 말과 행동의 패턴을 바꿔 삶 전체를 바꾸는 심리 상담 접근법.</p>
+      <a href="#difference" class="hero-cta">
+        지금 알아보기
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">잘못된 길을 가고 있다는 것은 알지만, 왜 멈추지 못할까요? 해답을 모르기 때문입니다. 해답을 알면 삶은 180도 바뀝니다.</p>
+        <div class="quote-source">언행심리마스터 상담 중</div>
+        <div class="hero-meta">
+          <div class="meta-item">
+            <span class="meta-num">구조</span>
+            <span class="meta-label">파악</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-num">중심</span>
+            <span class="meta-label">회복</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-num">삶의</span>
+            <span class="meta-label">변화</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFFERENCE -->
+  <section id="difference">
+    <div class="section-header reveal">
+      <div class="section-label">비교 분석</div>
+      <h2 class="section-title">언행심리학과 사주명리학,<br>무엇이 다른가</h2>
+      <p class="section-desc">두 학문은 상호 보완적입니다. 각자의 강점을 이해하면 더 깊은 통찰을 얻을 수 있습니다.</p>
+    </div>
+
+    <div class="diff-grid reveal">
+      <div class="diff-card left">
+        <div class="diff-tag">언행심리학</div>
+        <h3>현재의 말과 행동</h3>
+        <p>지금 이 순간 상대방의 말과 행동 패턴을 분석하여 삶의 구조적 문제를 파악하고, 그 구조를 바꿔주는 접근법입니다.</p>
+        <ul class="diff-points">
+          <li>현재 상황의 구조적 문제 파악</li>
+          <li>일상 속 인간관계에 즉시 적용 가능</li>
+          <li>상담을 통한 실질적 변화 유도</li>
+          <li>내담자 스스로 중심을 잡도록 코칭</li>
+          <li>가족·직장 등 모든 관계에 활용 가능</li>
+        </ul>
+      </div>
+      <div class="diff-vs">vs</div>
+      <div class="diff-card right">
+        <div class="diff-tag">사주명리학</div>
+        <h3>타고난 기질과 운의 흐름</h3>
+        <p>태어난 연·월·일·시를 기반으로 선천적 기질, 성향, 인생의 운(運)을 분석하는 학문으로 큰 흐름을 보는 데 강점이 있습니다.</p>
+        <ul class="diff-points">
+          <li>타고난 기질과 성향의 심층 분석</li>
+          <li>과거·미래 운의 흐름 파악</li>
+          <li>개인의 고유한 에너지 구조 이해</li>
+          <li>삶의 큰 방향과 타이밍 제시</li>
+          <li>전문적·디테일한 성향 분류 가능</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="synergy-banner reveal">
+      <div class="synergy-icon">✦</div>
+      <div>
+        <h4>두 학문의 접목 — 최강의 시너지</h4>
+        <p>사주명리로 타고난 기질을 전문적으로 파악하고, 언행심리로 현재의 구조적 문제를 해결합니다. 과거부터 미래까지의 흐름과 지금 이 순간의 변화를 동시에 다루는 통합적 상담이 가능해집니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLE -->
+  <section id="principle">
+    <div class="section-header reveal">
+      <div class="section-label">핵심 원리</div>
+      <h2 class="section-title">언행심리학이<br>작동하는 방식</h2>
+      <p class="section-desc">인간의 말과 행동에는 모든 진실이 담겨 있습니다. 아기의 울음소리만으로 배고픔과 불편함을 구분하듯, 언어를 읽는 능력은 누구나 훈련할 수 있습니다.</p>
+    </div>
+
+    <div class="principle-grid">
+      <div class="principle-card reveal">
+        <div class="principle-num">01</div>
+        <h3>구조를 읽는다</h3>
+        <p>현재의 힘든 상황은 우연이 아닙니다. 말과 행동의 패턴을 분석하면 왜 이 문제가 반복되는지, 구조적 원인을 파악할 수 있습니다. 해결의 시작은 구조를 보는 것입니다.</p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-num">02</div>
+        <h3>해답을 제공한다</h3>
+        <p>사람들은 종종 잘못된 길을 가고 있음을 알면서도 멈추지 못합니다. 대안과 해답을 모르기 때문입니다. 구체적인 방향을 제시받으면 희망의 무게중심이 이동하고, 행동이 달라집니다.</p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-num">03</div>
+        <h3>중심을 잡는다</h3>
+        <p>변화의 핵심은 타인이 아닌 자기 자신입니다. 내가 중심을 잡고 흔들리지 않을 때, 주변의 구조가 스스로 재편됩니다. 언행심리 상담은 그 중심을 잡는 과정을 함께합니다.</p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-num">04</div>
+        <h3>불편함을 활용한다</h3>
+        <p>이기적인 사람도 하루아침에 바뀌지 않습니다. 그러나 불편함을 느낄 때는 스스로 계산하고 태도를 바꿉니다. 상대방의 이기심을 역이용해 구조를 정상화하는 것이 핵심 전략입니다.</p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-num">05</div>
+        <h3>관계를 재정의한다</h3>
+        <p>특히 가족 관계는 끊을 수 없기 때문에 가장 어렵습니다. 역할과 경계를 명확히 하고, 각자의 자리를 바로잡는 것만으로도 오랜 갈등이 해소되고 관계의 질이 달라집니다.</p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-num">06</div>
+        <h3>삶을 유익하게 한다</h3>
+        <p>언행심리를 마스터하면 이용당하지 않고, 좋은 관계를 선택하며, 나를 해치는 구조에서 벗어날 수 있습니다. 이것이 단순한 상담을 넘어 삶의 방식 자체를 바꾸는 이유입니다.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- INSIGHT -->
+  <section id="insight">
+    <div class="section-header reveal" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;">핵심 인사이트</div>
+      <h2 class="section-title" style="color:var(--paper)">언행심리를 마스터하면<br>삶이 유익해진다</h2>
+    </div>
+
+    <blockquote class="insight-quote reveal">
+      "사람을 바꾸려면 <span>상대를 바꾸려 해서는 안 됩니다.</span><br>
+      본인이 중심을 잡으면,<br>
+      이기적인 사람도 스스로 계산하고 바뀝니다."
+    </blockquote>
+    <p class="insight-author reveal">— 언행심리마스터 상담 중</p>
+
+    <div class="value-grid">
+      <div class="value-item reveal">
+        <div class="value-icon">👁</div>
+        <h4>사람을 읽는 눈</h4>
+        <p>아기의 울음소리로 배고픔과 불편함을 구분하듯, 말과 행동의 언어를 읽어 상대방의 진심을 파악할 수 있습니다.</p>
+      </div>
+      <div class="value-item reveal">
+        <div class="value-icon">⚖</div>
+        <h4>이용당하지 않는 삶</h4>
+        <p>구조를 이해하면 착취적인 관계에서 벗어날 수 있습니다. 경계를 설정하고 유지하는 것이 자기 존중의 시작입니다.</p>
+      </div>
+      <div class="value-item reveal">
+        <div class="value-icon">🔗</div>
+        <h4>건강한 관계 선택</h4>
+        <p>좋은 관계를 맺는 법, 유해한 관계에서 떠나는 법을 알게 됩니다. 관계의 질이 삶의 질을 결정합니다.</p>
+      </div>
+      <div class="value-item reveal">
+        <div class="value-icon">🧭</div>
+        <h4>삶의 방향 통제</h4>
+        <p>내 삶을 이끌어가는 주체가 됩니다. 타인의 구조에 끌려가는 것이 아니라, 스스로 길을 선택할 수 있습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">언행심리학</div>
+    <p>언행심리마스터 · 도현(道賢)</p>
+  </footer>
+
+  <script>
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    function closeMobile() { mobileMenu.classList.remove('open'); }
+
+    // Accordion
+    function toggleStep(header) {
+      const card = header.closest('.step-card');
+      card.classList.toggle('open');
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // TOC active state
+    const steps = document.querySelectorAll('.step-card');
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const stepObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          const id = entry.target.id;
+          const active = document.querySelector(`.toc-link[href="#${id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.5 });
+    steps.forEach(s => stepObserver.observe(s));
+  </script>
+</body>
+
+</html>
