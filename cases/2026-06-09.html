@@ -100,9 +100,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  .hero h1 span {
-    color: var(--gold);
-  }
+  .hero h1 span { color: var(--gold); }
   .hero-sub {
     color: var(--text-muted);
     font-size: 0.9rem;
@@ -171,10 +169,7 @@
     line-height: 1.85;
     font-weight: 400;
   }
-  .key-message p strong {
-    color: var(--gold);
-    font-weight: 600;
-  }
+  .key-message p strong { color: var(--gold); font-weight: 600; }
 
   /* BODY TEXT */
   .body-section {
@@ -229,6 +224,7 @@
     font-size: 0.84rem;
     color: var(--text-muted);
     line-height: 1.7;
+    margin-bottom: 0;
   }
 
   /* DIALOGUE */
@@ -271,6 +267,128 @@
     font-weight: 500;
   }
 
+  /* COMMENTARY BOX — 대화 해설 */
+  .commentary {
+    background: rgba(212,168,67,0.06);
+    border-left: 2px solid rgba(212,168,67,0.4);
+    border-radius: 0 6px 6px 0;
+    padding: 1rem 1.2rem;
+    margin: -1rem 0 2rem 0;
+    font-size: 0.84rem;
+    color: #5a4e3a;
+    line-height: 1.8;
+  }
+  .commentary strong {
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    margin: 2rem 0;
+    position: relative;
+    padding-left: 1.8rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.4rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.8rem;
+  }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.47rem;
+    top: 0.55rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--bg);
+  }
+  .timeline-item h4 {
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--gold-deep);
+    margin-bottom: 0.3rem;
+  }
+  .timeline-item p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0;
+    line-height: 1.75;
+  }
+
+  /* QUOTE PULL */
+  .pull-quote {
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--gold-deep);
+    border-bottom: 1px solid var(--gold-deep);
+    text-align: center;
+  }
+  .pull-quote p {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--gold-deep);
+    line-height: 1.8;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  /* TWO-COL COMPARE */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin: 2rem 0;
+  }
+  .compare-col {
+    border-radius: 10px;
+    padding: 1.5rem 1.3rem;
+  }
+  .compare-col.visible {
+    background: #fff;
+    border: 1px solid var(--border);
+  }
+  .compare-col.invisible {
+    background: var(--bg-dark);
+    border: 1px solid rgba(212,168,67,0.2);
+  }
+  .compare-col h4 {
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+  .compare-col.visible h4 { color: var(--text-muted); }
+  .compare-col.invisible h4 { color: var(--gold); }
+  .compare-col ul {
+    list-style: none;
+    padding: 0;
+  }
+  .compare-col ul li {
+    font-size: 0.83rem;
+    line-height: 1.75;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .compare-col.visible ul li { color: var(--text-muted); }
+  .compare-col.invisible ul li {
+    color: #a09070;
+    border-bottom-color: rgba(255,255,255,0.05);
+  }
+  .compare-col ul li:last-child { border-bottom: none; }
+
   /* REFLECTION BOX */
   .reflection {
     background: linear-gradient(135deg, var(--bg-dark) 0%, #1c180f 100%);
@@ -292,8 +410,58 @@
     max-width: 560px;
     margin: 0 auto;
   }
-  .reflection p + p {
-    margin-top: 0.9rem;
+  .reflection p + p { margin-top: 0.9rem; }
+
+  /* CHECKLIST LIGHT (light bg section) */
+  .checklist-light {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+  .checklist-light li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    font-size: 0.93rem;
+    color: #3d3226;
+    line-height: 1.8;
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .checklist-light li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .checklist-light li::before {
+    content: '○';
+    color: var(--gold-deep);
+    flex-shrink: 0;
+    font-size: 1rem;
+    margin-top: 0.05rem;
+  }
+
+  /* CHECKLIST (dark bg) */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.9rem;
+    color: #b0a590;
+    line-height: 1.75;
+    margin-bottom: 0.7rem;
+  }
+  .checklist li::before {
+    content: '○';
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.05rem;
   }
 
   /* TAGS */
@@ -325,15 +493,13 @@
     letter-spacing: 0.05em;
     margin-top: 4rem;
   }
-  footer a {
-    color: var(--gold-deep);
-    text-decoration: none;
-  }
+  footer a { color: var(--gold-deep); text-decoration: none; }
 
   @media (max-width: 600px) {
     .hero { padding: 3.5rem 1.2rem 3rem; }
     .key-message { padding: 1.5rem 1.2rem 1.5rem 1.5rem; }
     .insight-grid { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
     .dialogue-block { padding: 1.2rem; }
   }
 </style>
@@ -375,6 +541,39 @@
     <h2>어떤 사례인가</h2>
     <p>60대 이상의 한 인물을 관찰한 사례다. 평생을 자기 중심적이고 계산적으로 살아온 이 사람은 현재 깊은 외로움을 호소하고 있다. 투자의 개념을 물질적 수익에만 적용해온 삶이 어떤 심리적 결말을 낳는지를 보여주는 전형적인 사례다.</p>
     <p>상담자는 이 현상을 "보이는 투자와 보이지 않는 투자의 불균형"으로 진단했다. 재물은 쌓였지만, 관계의 자산은 텅 비어 있다.</p>
+    <p>주목할 점은 이 사람이 투자 개념 자체를 모르는 것이 아니라는 점이다. 오히려 평생 투자의 논리로 살아왔다. 단지 그 투자의 대상이 철저하게 물질과 수익에 국한되어 있었을 뿐이다. 이것이 이 사례를 단순한 "이기적인 사람 이야기"가 아닌, 마인드셋의 구조적 오류로 바라보게 만드는 이유다.</p>
+  </section>
+
+  <!-- 두 가지 투자의 비교 -->
+  <section class="body-section">
+    <p class="section-label">개념 정리</p>
+    <h2>보이는 투자 vs. 보이지 않는 투자</h2>
+    <p>두 투자의 차이는 수익률의 문제가 아니다. 어디에 자본을 쌓느냐의 방향 문제다.</p>
+
+    <div class="compare-grid">
+      <div class="compare-col visible">
+        <h4>👁 보이는 투자</h4>
+        <ul>
+          <li>주식·부동산·현금 자산 축적</li>
+          <li>즉각적인 수익과 손익 계산</li>
+          <li>노후의 물질적 안정 확보</li>
+          <li>재무 포트폴리오가 풍요로워짐</li>
+          <li>결과가 숫자로 측정 가능</li>
+        </ul>
+      </div>
+      <div class="compare-col invisible">
+        <h4>✦ 보이지 않는 투자</h4>
+        <ul>
+          <li>따뜻한 말 한마디, 밥 한 끼</li>
+          <li>위로와 공감, 시간의 나눔</li>
+          <li>조건 없는 관심과 진심</li>
+          <li>인간 포트폴리오 — 사람이 쌓임</li>
+          <li>결과가 말년의 행복으로 귀환</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>보이는 투자의 결실은 노년에 물질로 돌아온다. 보이지 않는 투자의 결실은 노년에 사람으로 돌아온다. 이 사례의 인물은 전자에만 집중하고 후자를 완전히 방치했다. 그 결과가 지금의 외로움이다.</p>
   </section>
 
   <!-- 핵심 대화 -->
@@ -405,6 +604,10 @@
       </div>
     </div>
 
+    <div class="commentary">
+      <strong>해설.</strong> "당연히 있을 거라고 생각했다"는 내담자의 답변은 핵심을 드러낸다. 사랑과 애정을 물질처럼 어딘가에 고정된 자원으로 착각한 것이다. 관계는 축적되는 것이 아니라 지속적으로 투자하고 유지해야 하는 살아있는 자산이다. 그것을 "당연한 것"으로 전제했을 때, 아무것도 쌓이지 않는다.
+    </div>
+
     <div class="dialogue-block">
       <div class="dialogue-line">
         <span class="speaker">상담자</span>
@@ -416,29 +619,57 @@
         </p>
       </div>
     </div>
+
+    <div class="commentary">
+      <strong>해설.</strong> 상담자가 꺼내는 "덕(德)"이라는 개념은 도덕적 훈계가 아니다. 투자론의 언어로 재번역된 삶의 전략이다. 작은 위로, 밥 한 끼, 따뜻한 말 — 이것들은 당장의 손익이 없어 보이지만, 복리처럼 누적되어 말년에 사람이라는 형태의 수익으로 귀환한다. 이기심을 경계하는 윤리적 언어가 아닌, 장기 투자의 관점으로 덕을 바라보는 것이 이 상담의 독특한 통찰이다.
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dialogue-line">
+        <span class="speaker">상담자</span>
+        <p class="speech">
+          이기심은 숨긴다고 숨겨지지 않아요. 같은 나이대의 사람들은 본능적으로 느껴요.
+          아주 어린 애들은 속일 수 있어도, 50대·60대·70대를 어떻게 속이겠어요.
+          이기적인 마음으로 사람을 대하면 그 사람도 느낀다니까요.
+          어느 순간 짧게 만나고 <em>빨리 떠나요.</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="commentary">
+      <strong>해설.</strong> 이기심의 은폐 불가능성은 심리학적으로도 뒷받침된다. 인간은 타인의 진정성과 의도를 비언어적 신호를 통해 직관적으로 감지한다. 특히 동년배일수록 같은 삶의 경험치로 상대를 읽는 능력이 정교해진다. 계산적인 태도는 의식의 레벨에서 인지되기 전에 감정의 레벨에서 먼저 감지된다.
+    </div>
   </section>
 
   <!-- 심리 분석 -->
   <section class="body-section">
     <p class="section-label">심리 분석</p>
-    <h2>이 사례에서 드러나는 네 가지 심리 패턴</h2>
+    <h2>이 사례에서 드러나는 여섯 가지 심리 패턴</h2>
 
     <div class="insight-grid">
       <div class="insight-card" data-icon="🪞">
         <h3>자기 객관화 부재</h3>
-        <p>자신의 이기적 행동 패턴을 인지하지 못하고, 외로움의 원인을 외부에서만 찾는다.</p>
+        <p>자신의 이기적 행동 패턴을 인지하지 못하고, 외로움의 원인을 외부에서만 찾는다. 문제가 자신에게 있다는 인식 자체가 차단되어 있다.</p>
       </div>
       <div class="insight-card" data-icon="📊">
         <h3>왜곡된 투자 마인드</h3>
-        <p>모든 관계를 물질적 손익으로 계산하며, 감정·시간·공감의 투자 가치를 인식하지 못한다.</p>
+        <p>모든 관계를 물질적 손익으로 계산하며, 감정·시간·공감의 투자 가치를 인식하지 못한다. 인덕의 ROI를 계산할 수 없기 때문에 투자 가치 없음으로 처리된다.</p>
       </div>
       <div class="insight-card" data-icon="🔒">
         <h3>마음의 가난</h3>
-        <p>재물은 충분하지만, 타인을 위한 공감과 위로를 베풀 심리적 여유가 없다.</p>
+        <p>재물은 충분하지만, 타인을 위한 공감과 위로를 베풀 심리적 여유가 없다. 물질적 풍요가 오히려 정서적 빈곤을 감추는 역할을 해왔다.</p>
       </div>
       <div class="insight-card" data-icon="⏳">
         <h3>누적적 결핍</h3>
-        <p>젊을 때 덕을 쌓지 않은 결과가 말년에 외로움이라는 형태로 청구된다.</p>
+        <p>젊을 때 덕을 쌓지 않은 결과가 말년에 외로움이라는 형태로 청구된다. 관계 자산은 하루아침에 만들어지지 않는다. 수십 년의 방치가 수십 년의 공백을 낳는다.</p>
+      </div>
+      <div class="insight-card" data-icon="🎭">
+        <h3>이기심의 자기 은폐</h3>
+        <p>본인은 숨긴다고 생각하지만, 오랜 삶의 경험을 가진 동년배는 이미 다 보인다. 이기심은 언어가 아닌 행동 패턴으로 드러나며, 사람들은 말 없이 멀어진다.</p>
+      </div>
+      <div class="insight-card" data-icon="📖">
+        <h3>외부 위안의 의존</h3>
+        <p>자기 성찰 없이 종교나 외부 공동체에서 위안을 찾으려 한다. 증상에 대한 처방이지, 원인에 대한 치료가 아니다. 근본적 변화 없이 위안만 구하는 악순환이 반복된다.</p>
       </div>
     </div>
   </section>
@@ -447,9 +678,45 @@
   <section class="body-section">
     <p class="section-label">핵심 통찰</p>
     <h2>보이지 않는 곳에 투자한다는 것</h2>
-    <p>이 사례의 중심 테제는 명확하다. 투자(投資)의 개념을 물질적 자산 증식에만 적용해온 사람은, 정작 삶의 질(質) — 관계, 애정, 동반자 — 을 형성하는 영역에는 아무런 자본을 투입하지 않았다. 결과적으로 재무 포트폴리오는 풍요롭지만 인간 포트폴리오는 파산 상태다.</p>
+    <p>이 사례의 중심 테제는 명확하다. 투자(投資)의 개념을 물질적 자산 증식에만 적용해온 사람은, 정작 삶의 질(質) — 관계, 애정, 동반자를 형성하는 영역에는 아무런 자본을 투입하지 않았다. 결과적으로 재무 포트폴리오는 풍요롭지만 인간 포트폴리오는 파산 상태다.</p>
     <p>상담자는 이를 "덕의 투자"라는 언어로 재정의했다. 인덕(人德)은 따뜻한 말 한마디, 밥 한 끼, 위로 한 번의 누적이다. 그것이 말년에 사람으로 돌아온다. 수익률을 기대하며 넣는 투자가 아니라, 조건 없이 쌓아가는 인간적 자본이다.</p>
     <p>또한 상담자는 지적한다 — 이기심은 감춰지지 않는다. 같은 나이대의 사람들은 본능적으로 상대의 진심을 감지한다. 계산적인 사람 곁에서 사람들은 오래 머물지 않는다.</p>
+
+    <div class="pull-quote">
+      <p>"내가 베푼 대로 돌아오는 거야.<br>보이지 않는 곳에 투자한 만큼 돌아온 거야."</p>
+    </div>
+
+    <p>이 말은 위로가 아니라 진단이다. 외로움은 삶의 불운이 아니라, 투자 포트폴리오의 구조적 불균형이 만든 예측 가능한 결과다. 그리고 바로 그렇기 때문에 — 아직 의지가 있다면 — 바꿀 수 있다.</p>
+  </section>
+
+  <!-- 덕 쌓기의 실천 타임라인 -->
+  <section class="body-section">
+    <p class="section-label">실천 관점</p>
+    <h2>덕(德)은 어떻게 쌓이는가</h2>
+    <p>덕은 거창한 선행이 아니다. 상담자가 반복해서 강조하듯, 가장 작은 단위의 투자가 누적되는 것이다.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4>말 한마디</h4>
+        <p>힘들어 보이는 사람에게 건네는 짧은 위로. "괜찮아?" 한 마디가 그 사람의 기억에 남는다. 기억된 사람은 돌아온다.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>밥 한 끼</h4>
+        <p>거창한 선물이 아니라 함께하는 식사 한 번. 시간을 내어 옆에 앉는다는 것 자체가 관심의 표현이다.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>커피 한 잔</h4>
+        <p>만남의 자리에서 먼저 한 잔을 더 챙겨주는 작은 제스처. 계산 없이 건네는 호의는 상대의 방어를 낮춘다.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>경청 한 번</h4>
+        <p>말을 끊지 않고, 판단하지 않고 들어주는 것. 인덕의 가장 강력한 형태는 종종 침묵 속 경청에 있다.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>작은 보탬</h4>
+        <p>큰돈이 아니어도 좋다. 가족이나 주변이 필요로 할 때 조건 없이 작은 도움을 내미는 것. 그 기억이 말년에 곁의 사람으로 돌아온다.</p>
+      </div>
+    </div>
   </section>
 
   <!-- 성찰 -->
@@ -462,12 +729,27 @@
     아직 늦지 않았다. 깨달으면 가능하다.</p>
   </div>
 
+  <!-- 자기 점검 -->
+  <section class="body-section">
+    <p class="section-label">자기 점검</p>
+    <h2>나의 인간 포트폴리오를 확인하라</h2>
+    <p>성찰은 추상적인 감정이 아니라 구체적인 질문에서 시작된다. 아래 다섯 가지를 솔직하게 스스로에게 물어보라.</p>
+    <ul class="checklist-light">
+      <li>오늘 주변 누군가에게 먼저 연락한 적이 있는가.</li>
+      <li>상대의 이야기를 끊지 않고 끝까지 들어준 적이 있는가.</li>
+      <li>아무 조건 없이 무언가를 베풀어본 마지막 기억이 언제인가.</li>
+      <li>나의 이기심이 상대에게 느껴지고 있지는 않은가.</li>
+      <li>지금 내 인간 포트폴리오에 어떤 자산이 쌓여 있는가.</li>
+    </ul>
+  </section>
+
   <!-- 상담자 메시지 -->
   <section class="body-section">
     <p class="section-label">상담자 메시지</p>
     <h2>자기 성찰이 먼저다</h2>
     <p>이 사례의 인물에게 가장 필요한 것은 종교나 외부 위안이 아니다. 상담자는 명확하게 말한다 — "자기 객관화, 자기 성찰이 먼저"라고. 내가 왜 외로운지, 내 주변에 왜 사람이 없는지를 스스로 묻고 답하는 과정이 선행되어야 한다.</p>
     <p>성찰 없이 외로움의 원인을 찾는 것은, 증상만 치료하고 원인을 방치하는 것과 같다. 자기 성찰은 불편하다. 그러나 그 불편함을 직면하는 것이 인생 후반부를 바꾸는 유일한 시작점이다.</p>
+    <p>상담자는 덧붙인다. "지금도 늦지는 않았어. 깨달으면 가능해." 이 말은 희망이기도 하지만, 동시에 조건이기도 하다. 깨달음 없이는 가능하지 않다는 뜻이기도 하다. 자기 성찰이 없으면 외로움의 원인을 모른 채 생을 마감할 가능성이 높다. 반면 지금이라도 그 불편한 거울 앞에 서기로 결심한다면 — 아직 투자할 시간은 있다.</p>
   </section>
 
   <div class="tag-row">
@@ -478,6 +760,8 @@
     <span class="tag">#보이지않는투자</span>
     <span class="tag">#말년고독</span>
     <span class="tag">#언행심리학</span>
+    <span class="tag">#덕을쌓아라</span>
+    <span class="tag">#인간포트폴리오</span>
   </div>
 
 </div>
