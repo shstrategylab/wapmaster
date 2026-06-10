@@ -1,1267 +1,650 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>실제 상담 사례 — 왜곡된 가족 구조, 어떻게 바꿨나</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Pretendard:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>왜곡된 가족 구조, 어떻게 바꿨나 | 언행심리학 상담 사례</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --ink: #1a1410;
-      --paper: #faf7f2;
-      --accent: #c8451a;
-      --accent2: #2c5f8a;
-      --muted: #7a6e62;
+      --bg: #f7f3ee;
+      --dark: #100e0a;
+      --gold: #d4a843;
+      --gold-deep: #b8860b;
+      --text: #2a2318;
+      --text-muted: #6b5f4e;
       --border: #e0d8cc;
-      --card-bg: #ffffff;
-      --section-bg: #f3ede3;
+      --serif: 'Noto Serif KR', serif;
+      --sans: 'Noto Sans KR', sans-serif;
     }
 
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Pretendard', sans-serif;
-      background: var(--paper);
-      color: var(--ink);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
       line-height: 1.8;
-      overflow-x: hidden;
     }
 
-    /* ─── NAV ─── */
+    /* NAV */
     nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
+      background: var(--dark);
+      padding: 0 1.5rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-      height: 64px;
-      background: rgba(250, 247, 242, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-
-    .nav-logo {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--ink);
+    nav a {
+      color: var(--gold);
       text-decoration: none;
-    }
-
-    .nav-links {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
       display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.02em;
+      align-items: center;
+      gap: 0.5rem;
       transition: color 0.2s;
     }
-
-    .nav-links a:hover {
-      color: var(--accent);
+    nav a:hover { color: #fff; }
+    nav a::before {
+      content: '←';
+      font-size: 1rem;
+    }
+    nav .nav-title {
+      margin-left: auto;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
     }
 
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--ink);
-      transition: all 0.3s;
-    }
-
-    /* ─── HERO ─── */
+    /* HERO */
     .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 80px clamp(1.5rem, 5vw, 4rem) 0;
-      gap: 4rem;
+      background: var(--dark);
+      color: #fff;
+      padding: 5rem 1.5rem 4rem;
       position: relative;
       overflow: hidden;
     }
-
     .hero::before {
       content: '';
       position: absolute;
-      top: -20%;
-      right: -10%;
-      width: 60vw;
-      height: 80vh;
-      background: radial-gradient(ellipse at center, rgba(200, 69, 26, 0.07) 0%, transparent 70%);
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%);
       pointer-events: none;
     }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.2rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
+    .hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
     }
-
-    .hero-eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 28px;
-      height: 2px;
-      background: var(--accent);
-    }
-
-    .hero-title {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: clamp(2.6rem, 5.5vw, 5rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.35s forwards;
-    }
-
-    .hero-title em {
-      font-style: normal;
-      color: var(--accent);
-      position: relative;
-    }
-
-    .hero-title em::after {
-      content: '';
-      position: absolute;
-      bottom: 2px;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--accent);
-      opacity: 0.35;
-    }
-
-    .hero-sub {
-      font-size: clamp(1rem, 1.8vw, 1.2rem);
-      color: var(--muted);
-      font-weight: 300;
-      max-width: 480px;
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.5s forwards;
-    }
-
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.9rem 2rem;
-      background: var(--ink);
-      color: var(--paper);
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: 2px;
-      transition: background 0.2s, transform 0.2s;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.65s forwards;
-    }
-
-    .hero-cta:hover {
-      background: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    .hero-cta svg {
-      transition: transform 0.2s;
-    }
-
-    .hero-cta:hover svg {
-      transform: translateX(4px);
-    }
-
-    .hero-visual {
-      position: relative;
-      opacity: 0;
-      animation: fadeIn 1.2s 0.4s forwards;
-    }
-
-    .hero-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 2.5rem;
-      position: relative;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-    }
-
-    .hero-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-    }
-
-    .quote-mark {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 4rem;
-      line-height: 1;
-      color: var(--accent);
-      opacity: 0.2;
-      margin-bottom: 0.5rem;
-    }
-
-    .quote-text {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      line-height: 1.7;
-      margin-bottom: 1.2rem;
-    }
-
-    .quote-source {
-      font-size: 0.8rem;
-      color: var(--muted);
-      font-weight: 500;
-      letter-spacing: 0.05em;
-    }
-
     .hero-meta {
-      display: flex;
-      gap: 2rem;
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .meta-item {
-      text-align: center;
-    }
-
-    .meta-num {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--accent);
-      display: block;
-    }
-
-    .meta-label {
       font-size: 0.75rem;
-      color: var(--muted);
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      font-family: var(--sans);
       font-weight: 500;
-    }
-
-    /* ─── SECTION BASE ─── */
-    section {
-      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
-    }
-
-    .section-header {
-      margin-bottom: clamp(2.5rem, 5vw, 4rem);
-    }
-
-    .section-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
+      margin-bottom: 1.25rem;
       display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
       align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 0.9rem;
     }
-
-    .section-label::after {
-      content: '';
-      flex: 1;
-      max-width: 40px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    .section-title {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      font-weight: 800;
-      line-height: 1.2;
+    .hero-meta span { opacity: 0.6; color: #fff; }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.35;
       letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
     }
-
-    .section-desc {
-      margin-top: 1rem;
-      font-size: 1rem;
-      color: var(--muted);
-      max-width: 540px;
+    .hero-line {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+      margin-bottom: 1.5rem;
+    }
+    .hero-summary {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.7);
       font-weight: 300;
+      max-width: 620px;
     }
 
-    /* ─── DIFFERENCE SECTION ─── */
-    #difference {
-      background: var(--section-bg);
-    }
-
-    .diff-grid {
-      display: grid;
-      grid-template-columns: 1fr 80px 1fr;
-      gap: 0;
-      align-items: stretch;
-    }
-
-    .diff-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 2.5rem;
-      border-radius: 4px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .diff-card.left {
-      border-radius: 4px 0 0 4px;
-      border-right: none;
-    }
-
-    .diff-card.right {
-      border-radius: 0 4px 4px 0;
-      border-left: none;
-    }
-
-    .diff-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-    }
-
-    .diff-card.left::before {
-      background: var(--accent);
-    }
-
-    .diff-card.right::before {
-      background: var(--accent2);
-    }
-
-    .diff-tag {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.8rem;
-      border-radius: 2px;
-      margin-bottom: 1.2rem;
-    }
-
-    .diff-card.left .diff-tag {
-      background: rgba(200, 69, 26, 0.1);
-      color: var(--accent);
-    }
-
-    .diff-card.right .diff-tag {
-      background: rgba(44, 95, 138, 0.1);
-      color: var(--accent2);
-    }
-
-    .diff-card h3 {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 0.8rem;
-    }
-
-    .diff-card p {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 1.5rem;
-    }
-
-    .diff-points {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-    }
-
-    .diff-points li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.7rem;
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-
-    .diff-points li::before {
-      content: '';
-      display: block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 0.55rem;
-    }
-
-    .diff-card.left .diff-points li::before {
-      background: var(--accent);
-    }
-
-    .diff-card.right .diff-points li::before {
-      background: var(--accent2);
-    }
-
-    .diff-vs {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--ink);
-      color: var(--paper);
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      writing-mode: vertical-rl;
-      letter-spacing: 0.1em;
-    }
-
-    /* ─── SYNERGY BANNER ─── */
-    .synergy-banner {
-      margin-top: 3rem;
-      padding: 2rem 2.5rem;
-      background: var(--ink);
-      color: var(--paper);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
-
-    .synergy-icon {
-      font-size: 2.5rem;
-      flex-shrink: 0;
-    }
-
-    .synergy-banner h4 {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      margin-bottom: 0.4rem;
-    }
-
-    .synergy-banner p {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.65);
-      line-height: 1.7;
-    }
-
-    /* ─── CASE STUDY ─── */
-    #case {
-      background: var(--paper);
-    }
-
-    .case-layout {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    .case-sidebar {
-      position: sticky;
-      top: 100px;
-    }
-
-    .case-sidebar-title {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid var(--accent);
-    }
-
-    .case-toc {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .case-toc li a {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.5rem 0.8rem;
-      font-size: 0.85rem;
-      color: var(--muted);
-      text-decoration: none;
-      border-radius: 3px;
-      transition: all 0.2s;
-    }
-
-    .case-toc li a:hover,
-    .case-toc li a.active {
-      background: rgba(200, 69, 26, 0.08);
-      color: var(--accent);
-    }
-
-    .toc-num {
-      font-size: 0.7rem;
-      font-weight: 700;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.2s;
-    }
-
-    .case-toc li a:hover .toc-num,
-    .case-toc li a.active .toc-num {
-      background: var(--accent);
-      color: white;
-    }
-
-    .case-content {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .step-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      transition: box-shadow 0.3s;
-    }
-
-    .step-card:hover {
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-    }
-
-    .step-header {
-      padding: 1.5rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .step-num {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--border);
-      line-height: 1;
-      transition: color 0.2s;
-      min-width: 2.5rem;
-    }
-
-    .step-card:hover .step-num,
-    .step-card.open .step-num {
-      color: var(--accent);
-    }
-
-    .step-title {
-      font-size: 1rem;
-      font-weight: 700;
-      flex: 1;
-    }
-
-    .step-chevron {
-      width: 20px;
-      height: 20px;
-      color: var(--muted);
-      transition: transform 0.3s;
-      flex-shrink: 0;
-    }
-
-    .step-card.open .step-chevron {
-      transform: rotate(180deg);
-    }
-
-    .step-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.3s;
-      border-top: 0 solid var(--border);
-    }
-
-    .step-card.open .step-body {
-      max-height: 600px;
-      border-top-width: 1px;
-    }
-
-    .step-body-inner {
-      padding: 1.5rem 2rem 2rem;
-    }
-
-    .step-body p {
-      font-size: 0.95rem;
-      color: #444;
-      line-height: 1.8;
-      margin-bottom: 1rem;
-    }
-
-    .step-body p:last-child {
-      margin-bottom: 0;
-    }
-
-    .highlight-box {
-      background: rgba(200, 69, 26, 0.06);
-      border-left: 3px solid var(--accent);
-      padding: 1rem 1.2rem;
-      border-radius: 0 3px 3px 0;
-      margin: 1rem 0;
-      font-size: 0.9rem;
-      color: var(--ink);
-      font-style: italic;
-    }
-
-    .tag-row {
+    /* TAGS */
+    .tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-top: 1rem;
+      margin-top: 2rem;
     }
-
     .tag {
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.25rem 0.75rem;
-      background: var(--section-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      color: var(--muted);
-    }
-
-    /* ─── INSIGHT ─── */
-    #insight {
-      background: var(--ink);
-      color: var(--paper);
-    }
-
-    #insight .section-label {
-      color: rgba(200, 69, 26, 0.9);
-    }
-
-    #insight .section-label::after {
-      background: rgba(200, 69, 26, 0.9);
-    }
-
-    #insight .section-title {
-      color: var(--paper);
-    }
-
-    .insight-quote {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: clamp(1.4rem, 3vw, 2.2rem);
-      font-weight: 700;
-      line-height: 1.6;
-      max-width: 620px;
-      margin: 2rem auto 1.5rem;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .insight-quote span {
-      color: var(--accent);
-    }
-
-    .insight-author {
-      text-align: center;
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.4);
+      background: rgba(212,168,67,0.15);
+      border: 1px solid rgba(212,168,67,0.3);
+      color: var(--gold);
+      font-size: 0.72rem;
       letter-spacing: 0.1em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      font-family: var(--sans);
     }
 
-    .value-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-top: 4rem;
+    /* MAIN */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
     }
 
-    .value-item {
-      padding: 2rem;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 4px;
-      transition: background 0.2s, transform 0.2s;
+    /* SECTION */
+    .section {
+      margin-bottom: 3.5rem;
     }
-
-    .value-item:hover {
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateY(-4px);
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-deep);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-family: var(--sans);
+      margin-bottom: 0.75rem;
     }
-
-    .value-icon {
-      font-size: 1.8rem;
+    .section h2 {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+    }
+    .section p {
+      color: var(--text-muted);
       margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
     }
 
-    .value-item h4 {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1.05rem;
-      font-weight: 800;
-      margin-bottom: 0.6rem;
-      color: var(--paper);
+    /* HIGHLIGHT BOX */
+    .highlight {
+      background: var(--dark);
+      color: rgba(255,255,255,0.85);
+      border-left: 3px solid var(--gold);
+      padding: 1.75rem 2rem;
+      margin: 2.5rem 0;
+      border-radius: 0 2px 2px 0;
+    }
+    .highlight p {
+      color: rgba(255,255,255,0.8) !important;
+      font-size: 1rem !important;
+      line-height: 1.9;
+    }
+    .highlight strong {
+      color: var(--gold);
+      font-weight: 500;
     }
 
-    .value-item p {
-      font-size: 0.88rem;
-      color: rgba(255, 255, 255, 0.5);
+    /* INSIGHT GRID */
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .insight-item {
+      background: var(--bg);
+      padding: 1.5rem;
+    }
+    .insight-icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .insight-title {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .insight-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
       line-height: 1.7;
     }
 
-    /* ─── PRINCIPLE SECTION ─── */
-    #principle {
-      background: var(--section-bg);
+    /* ACCORDION CARDS */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
     }
-
-    .principle-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-    }
-
-    .principle-card {
-      background: var(--card-bg);
+    .acc-card {
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 2rem;
-      position: relative;
+      border-radius: 2px;
       overflow: hidden;
+      background: #fff;
     }
-
-    .principle-num {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 3.5rem;
-      font-weight: 800;
-      color: var(--border);
-      line-height: 1;
-    }
-
-    .principle-card h3 {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1.15rem;
-      font-weight: 800;
-      margin-bottom: 0.8rem;
-      position: relative;
-      padding-bottom: 0.8rem;
-    }
-
-    .principle-card h3::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 30px;
-      height: 2px;
-      background: var(--accent);
-    }
-
-    .principle-card p {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.8;
-      position: relative;
-    }
-
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--ink);
-      color: rgba(255, 255, 255, 0.4);
-      padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+    .acc-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
       gap: 1rem;
+      padding: 1.1rem 1.5rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
     }
-
-    footer .logo {
-      font-family: 'Nanum Myeongjo', serif;
-      font-size: 1rem;
-      font-weight: 800;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    footer p {
-      font-size: 0.8rem;
-    }
-
-    /* ─── ANIMATIONS ─── */
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 0.7s, transform 0.7s;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    /* ─── MOBILE NAV ─── */
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      top: 64px;
-      left: 0;
-      right: 0;
-      background: var(--paper);
-      border-bottom: 1px solid var(--border);
-      padding: 1.5rem;
-      flex-direction: column;
-      gap: 1rem;
-      z-index: 99;
-    }
-
-    .mobile-menu.open {
+    .acc-header:hover { background: rgba(212,168,67,0.05); }
+    .acc-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--dark);
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 0.75rem;
+      font-weight: 700;
       display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+    .acc-card.open .acc-num {
+      background: var(--gold-deep);
+    }
+    .acc-title {
+      font-family: var(--serif);
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--dark);
+      flex: 1;
+    }
+    .acc-chevron {
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .acc-card.open .acc-chevron {
+      transform: rotate(180deg);
+    }
+    .acc-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      border-top: 0px solid var(--border);
+    }
+    .acc-card.open .acc-body {
+      max-height: 600px;
+      border-top-width: 1px;
+    }
+    .acc-body-inner {
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+    .acc-body-inner p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+      line-height: 1.8;
+    }
+    .acc-body-inner p:last-child { margin-bottom: 0; }
+    .acc-quote {
+      background: var(--dark);
+      border-left: 3px solid var(--gold);
+      padding: 1rem 1.25rem;
+      margin: 0.85rem 0;
+      border-radius: 0 2px 2px 0;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.8);
+      font-style: italic;
+      line-height: 1.75;
+    }
+    .acc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+    }
+    .acc-tag {
+      background: rgba(212,168,67,0.1);
+      border: 1px solid rgba(212,168,67,0.25);
+      color: var(--gold-deep);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
     }
 
-    .mobile-menu a {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--ink);
+    /* PHILOSOPHY */
+    .philosophy {
+      background: linear-gradient(135deg, #1a1710 0%, var(--dark) 100%);
+      color: #fff;
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+      margin: 2.5rem 0;
+    }
+    .philosophy .phi-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .philosophy p {
+      font-size: 0.93rem;
+      color: rgba(255,255,255,0.7) !important;
+      margin-bottom: 0.85rem;
+    }
+    .philosophy p:last-child { margin-bottom: 0 !important; }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 2rem 1.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    footer a {
+      color: var(--gold);
       text-decoration: none;
     }
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        padding-top: 100px;
-        padding-bottom: 3rem;
-        gap: 3rem;
-      }
-
-      .hero-visual {
-        order: -1;
-      }
-
-      .diff-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .diff-card.left {
-        border-radius: 4px 4px 0 0;
-        border-right: 1px solid var(--border);
-        border-bottom: none;
-      }
-
-      .diff-card.right {
-        border-radius: 0 0 4px 4px;
-        border-left: 1px solid var(--border);
-        border-top: none;
-      }
-
-      .diff-vs {
-        writing-mode: horizontal-tb;
-        padding: 0.8rem 2rem;
-        font-size: 0.9rem;
-      }
-
-      .case-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .case-sidebar {
-        position: static;
-      }
-
-      .principle-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-      }
-
-      .synergy-banner {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-      }
-    }
-
     @media (max-width: 600px) {
-      .hero-meta {
-        gap: 1.5rem;
-      }
-      .meta-num {
-        font-size: 1.4rem;
-      }
-      .hero-title {
-        font-size: clamp(2rem, 8vw, 3rem);
-      }
-      .hero-sub {
-        font-size: 0.95rem;
-      }
-      .step-header {
-        gap: 0.75rem;
-        padding: 1.1rem 1.25rem;
-      }
-      .step-num {
-        font-size: 1rem;
-        min-width: 2rem;
-        height: 2rem;
-      }
-      .step-title {
-        font-size: 0.9rem;
-      }
-      .step-body-inner {
-        padding: 1.25rem;
-      }
-      .highlight-box {
-        padding: 1rem 1.25rem;
-        font-size: 0.88rem;
-      }
-      .tag-row {
-        gap: 0.4rem;
-        flex-wrap: wrap;
-      }
-      .tag-row .tag, .tag {
-        font-size: 0.72rem;
-        padding: 0.3rem 0.7rem;
-      }
-      .case-sidebar {
-        padding: 1.25rem;
-      }
-      .case-toc li a {
-        font-size: 0.85rem;
-        padding: 0.55rem 0.75rem;
-      }
-      .section-title {
-        font-size: clamp(1.5rem, 5vw, 2rem);
-      }
-      .section-desc {
-        font-size: 0.9rem;
-      }
-    }
-    @media (max-width: 400px) {
-      .step-title {
-        font-size: 0.82rem;
-      }
-      .step-num {
-        min-width: 1.8rem;
-        height: 1.8rem;
-        font-size: 0.85rem;
-      }
+      nav .nav-title { display: none; }
+      .hero { padding: 3.5rem 1.25rem 3rem; }
+      main { padding: 2.5rem 1.25rem 4rem; }
+      .highlight { padding: 1.25rem 1.25rem; }
+      .philosophy { padding: 1.75rem 1.25rem; }
+      .acc-header { padding: 1rem 1.1rem; }
+      .acc-body-inner { padding: 1rem 1.1rem 1.25rem; }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a href="#" class="nav-logo">언행심리학</a>
-    <ul class="nav-links">
-      <li><a href="#case">상담 사례</a></li>
-    </ul>
-    <button class="hamburger" id="hamburger" aria-label="메뉴">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+<nav>
+  <a href="../index.html">메인으로 돌아가기</a>
+  <span class="nav-title">언행심리학 사례 아카이브</span>
+</nav>
 
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#case" onclick="closeMobile()">상담 사례</a>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      언행심리학 상담 사례
+      <span>언행심리마스터 · 도현(道賢)</span>
+    </div>
+    <h1>왜곡된 가족 구조,<br>어떻게 바꿨나</h1>
+    <div class="hero-line"></div>
+    <p class="hero-summary">
+      딸에게 엄마의 역할까지 전가된 가족 구조. 언행심리마스터가 직접 개입 없이
+      당사자의 중심을 세워 수십 년간 고착된 구조를 바꾼 실제 사례.
+    </p>
+    <div class="tags">
+      <span class="tag">가족 역할 왜곡</span>
+      <span class="tag">역할 경계</span>
+      <span class="tag">아들 선호 사상</span>
+      <span class="tag">자기 중심 회복</span>
+      <span class="tag">구조 정상화</span>
+      <span class="tag">언행심리 코칭</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- 상황 -->
+  <section class="section">
+    <div class="section-label">상황 분석</div>
+    <h2>딸에게 전가된 엄마의 역할</h2>
+    <p>
+      아들 선호 사상을 가진 엄마가 딸에게 오빠를 돌보는 역할까지 맡겼다.
+      "너는 오빠가 아프면 네가 돌봐야 해"라는 말이 반복되며 딸은 자신이
+      '필요할 때만 써먹히는 존재'라는 인식 속에서 자랐다.
+    </p>
+    <p>
+      엄마가 해야 할 일을 딸에게 넘기는 구조가 수십 년에 걸쳐 고착화되었고,
+      딸은 그것이 잘못됐다는 것을 알면서도 어떻게 바꿔야 할지 알지 못했다.
+    </p>
+  </section>
+
+  <div class="highlight">
+    <p>
+      <strong>"너는 오빠를 위해 존재하는 거야. 오빠가 아프면 네가 가서 돌봐야 해."</strong><br>
+      엄마의 반복된 메시지가 딸의 정체성을 조각했다.
+    </p>
   </div>
 
-  <!-- CASE STUDY -->
-  <section id="case">
-    <div class="section-header reveal">
-      <div class="section-label">실제 상담 사례</div>
-      <h2 class="section-title">왜곡된 가족 구조,<br>어떻게 바꿨나</h2>
-      <p class="section-desc">딸에게 엄마의 역할까지 전가된 가족 구조. 언행심리마스터가 개입 없이 구조를 바꾼 실제 사례입니다.</p>
-    </div>
+  <hr class="divider" />
 
-    <div class="case-layout">
-      <div class="case-sidebar reveal">
-        <div class="case-sidebar-title">상담 흐름</div>
-        <ul class="case-toc" id="caseToc">
-          <li><a href="#step1" class="toc-link"><span class="toc-num">1</span>상황 파악</a></li>
-          <li><a href="#step2" class="toc-link"><span class="toc-num">2</span>구조 분석</a></li>
-          <li><a href="#step3" class="toc-link"><span class="toc-num">3</span>상담 접근</a></li>
-          <li><a href="#step4" class="toc-link"><span class="toc-num">4</span>저항과 협박</a></li>
-          <li><a href="#step5" class="toc-link"><span class="toc-num">5</span>변화의 시작</a></li>
-          <li><a href="#step6" class="toc-link"><span class="toc-num">6</span>구조 정상화</a></li>
-        </ul>
+  <!-- 구조 분석 -->
+  <section class="section">
+    <div class="section-label">심리 분석</div>
+    <h2>수용이 만든 당연함</h2>
+    <p>
+      언행심리마스터가 파악한 구조의 핵심은 이것이었다. 딸이 모든 요구를 수용해왔기 때문에,
+      엄마와 오빠에게 그것이 '당연한 것'으로 굳어졌다는 것이다.
+    </p>
+    <p>
+      가족 각자에게는 분명한 역할이 있다. 그런데 이 구조에서 딸은 자신의 역할 외에도
+      엄마와 오빠의 역할까지 도맡아 하고 있었다.
+    </p>
+
+    <div class="insight-grid">
+      <div class="insight-item">
+        <div class="insight-icon">🔁</div>
+        <div class="insight-title">수용의 고착화</div>
+        <div class="insight-desc">받아주니까 계속하게 된 것이다. 딸이 "아니오"라고 한 번도 말하지 못했기 때문에 이 구조가 유지되어 왔다.</div>
       </div>
-
-      <div class="case-content">
-        <div class="step-card open reveal" id="step1">
-          <div class="step-header" onclick="toggleStep(this)">
-            <div class="step-num">01</div>
-            <div class="step-title">상황 파악 — 딸에게 전가된 엄마의 역할</div>
-            <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
-          <div class="step-body">
-            <div class="step-body-inner">
-              <p>아들 선호 사상을 가진 엄마가 딸에게 오빠를 돌보는 역할까지 맡겼습니다. "너는 오빠가 아프면 네가 돌봐야 해"라는 말이 반복되며 딸은 자신이 '필요할 때만 써먹히는 존재'라는 인식
-                속에서 자랐습니다.</p>
-              <p>엄마가 해야 할 일을 딸에게 넘기는 구조가 수십 년에 걸쳐 고착화되었고, 딸은 그것이 잘못됐다는 것을 알면서도 어떻게 바꿔야 할지 알지 못했습니다.</p>
-              <div class="highlight-box">
-                "너는 오빠를 위해 존재하는 거야. 오빠가 아프면 네가 가서 돌봐야 해." — 엄마의 반복된 메시지
-              </div>
-              <div class="tag-row">
-                <span class="tag">가족 역할 왜곡</span>
-                <span class="tag">아들 선호 사상</span>
-                <span class="tag">역할 전가</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-card reveal" id="step2">
-          <div class="step-header" onclick="toggleStep(this)">
-            <div class="step-num">02</div>
-            <div class="step-title">구조 분석 — 수용이 만든 당연함</div>
-            <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
-          <div class="step-body">
-            <div class="step-body-inner">
-              <p>언행심리마스터가 파악한 구조의 핵심은 이것이었습니다. 딸이 모든 요구를 수용해왔기 때문에, 엄마와 오빠에게 그것이 '당연한 것'으로 굳어졌다는 것입니다.</p>
-              <p>가족 각자에게는 분명한 역할이 있습니다. 엄마의 역할, 오빠의 역할, 그리고 딸의 역할. 그런데 이 구조에서 딸은 자신의 역할 외에도 엄마와 오빠의 역할까지 도맡아 하고 있었습니다.
-              </p>
-              <div class="highlight-box">
-                받아주니까 계속하게 된 것입니다. 딸이 "아니오"라고 한 번도 말하지 못했기 때문에 이 구조가 유지되어 왔습니다.
-              </div>
-              <div class="tag-row">
-                <span class="tag">수용의 고착화</span>
-                <span class="tag">역할 경계 붕괴</span>
-                <span class="tag">구조적 착취</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-card reveal" id="step3">
-          <div class="step-header" onclick="toggleStep(this)">
-            <div class="step-num">03</div>
-            <div class="step-title">상담 접근 — 개입 없이 구조를 흔들다</div>
-            <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
-          <div class="step-body">
-            <div class="step-body-inner">
-              <p>언행심리마스터는 엄마나 오빠에게 직접 개입하지 않았습니다. 대신 딸에게 구조를 설명하고, 해야 할 일과 하지 않아도 되는 일의 경계를 명확히 알려줬습니다.</p>
-              <p>딸에게는 이미 구조를 바꿀 힘이 있었습니다. 다만 방법을 몰랐을 뿐이었습니다. 상담의 역할은 그 방법을 알려주고, 흔들리지 않도록 옆에서 중심을 잡아주는 것이었습니다.</p>
-              <div class="highlight-box">
-                타인인 내가 직접 구조를 바꿀 수는 없습니다. 그러나 내가 개입하지 않고도, 본인의 중심을 통해 구조를 바꿀 수 있습니다.
-              </div>
-              <div class="tag-row">
-                <span class="tag">간접 개입</span>
-                <span class="tag">역할 경계 설정</span>
-                <span class="tag">자기 중심 회복</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-card reveal" id="step4">
-          <div class="step-header" onclick="toggleStep(this)">
-            <div class="step-num">04</div>
-            <div class="step-title">저항과 협박 — 처음 3~4일의 폭풍</div>
-            <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
-          <div class="step-body">
-            <div class="step-body-inner">
-              <p>딸이 오빠의 병원 수발을 거부하자, 예상대로 강한 반발이 들어왔습니다. "너 진짜 안 오는 거야?", "재산도 안 준다", "어떻게 그럴 수 있냐" 등의 협박과 압박이 쏟아졌습니다.
-              </p>
-              <p>이 3~4일이 가장 중요한 시간이었습니다. 언행심리마스터는 딸에게 분명히 말했습니다. "흔들리지 마라. 이게 들어와도 버텨. 버텨." 그리고 그 버팀을 함께했습니다.</p>
-              <div class="highlight-box">
-                구조를 바꿀 때 저항은 반드시 옵니다. 그 저항을 버티는 것이 변화의 문을 여는 열쇠입니다.
-              </div>
-              <div class="tag-row">
-                <span class="tag">초기 저항</span>
-                <span class="tag">협박·압박</span>
-                <span class="tag">중심 유지</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-card reveal" id="step5">
-          <div class="step-header" onclick="toggleStep(this)">
-            <div class="step-num">05</div>
-            <div class="step-title">변화의 시작 — 아쉬울 때 바뀐다</div>
-            <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
-          <div class="step-body">
-            <div class="step-body-inner">
-              <p>딸이 실제로 움직이지 않자, 엄마와 오빠는 '불편함'을 느끼기 시작했습니다. 이기적인 사람도 갑자기 천사가 될 수는 없습니다. 그러나 아쉬울 때, 손해가 될 때는 계산을 합니다.</p>
-              <p>엄마 입장에서는 '딸이 없으면 내가 불편하구나'를 느꼈고, 오빠는 '내 말을 안 들을 수도 있구나'를 처음으로 인식했습니다. 이것이 변화의 시작이었습니다.</p>
-              <div class="highlight-box">
-                사람은 잘못을 먼저 깨닫기보다, 불편함을 먼저 느낍니다. 불편함이 깨우침으로 이어지고, 그것이 태도 변화의 동력이 됩니다.
-              </div>
-              <div class="tag-row">
-                <span class="tag">불편함 인식</span>
-                <span class="tag">이기심의 역이용</span>
-                <span class="tag">자발적 반성</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-card reveal" id="step6">
-          <div class="step-header" onclick="toggleStep(this)">
-            <div class="step-num">06</div>
-            <div class="step-title">구조 정상화 — "와"에서 "미안해, 와줘"로</div>
-            <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
-          <div class="step-body">
-            <div class="step-body-inner">
-              <p>관계가 바뀌었음을 보여주는 가장 명확한 신호는 언어의 변화였습니다. 이전의 "병원 와"가 "미안한데, 좀 와서 도와줄 수 있어?"로 달라졌습니다. 명령이 요청으로, 당연함이 감사함으로
-                바뀐 것입니다.</p>
-              <p>딸이 중심을 잡고 흔들리지 않자, 가족 구조는 스스로 재편되었습니다. 딸의 소중함을 알게 된 엄마와 오빠는 태도를 바꾸기 시작했고, 수십 년간 지속되어 온 왜곡된 구조가 마침내
-                정상화되었습니다.</p>
-              <div class="highlight-box">
-                "와"와 "도와줘"는 다릅니다. 언어 하나가 바뀌면 관계 전체가 바뀝니다. 이것이 언행심리학의 힘입니다.
-              </div>
-              <div class="tag-row">
-                <span class="tag">언어 변화</span>
-                <span class="tag">관계 재정립</span>
-                <span class="tag">구조 정상화</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="insight-item">
+        <div class="insight-icon">🧱</div>
+        <div class="insight-title">역할 경계 붕괴</div>
+        <div class="insight-desc">엄마의 역할, 오빠의 역할이 딸에게 전가되었다. 경계가 없어질수록 착취는 구조화된다.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">🪞</div>
+        <div class="insight-title">자기 중심의 부재</div>
+        <div class="insight-desc">딸에게는 이미 구조를 바꿀 힘이 있었다. 다만 방법을 몰랐을 뿐이었다.</div>
       </div>
     </div>
   </section>
 
-  <footer>
-    <div class="logo">언행심리학</div>
-    <p>언행심리마스터 · 도현(道賢)</p>
-  </footer>
+  <hr class="divider" />
 
-  <script>
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
-    function closeMobile() { mobileMenu.classList.remove('open'); }
+  <!-- 코칭 과정 -->
+  <section class="section">
+    <div class="section-label">언행심리 코칭</div>
+    <h2>6단계 — 구조를 흔든 과정</h2>
+    <p>
+      언행심리마스터는 엄마나 오빠에게 직접 개입하지 않았다. 대신 딸에게 구조를 설명하고,
+      해야 할 일과 하지 않아도 되는 일의 경계를 명확히 알려줬다.
+    </p>
 
-    function toggleStep(header) {
-      const card = header.closest('.step-card');
-      card.classList.toggle('open');
-    }
+    <div class="accordion">
 
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 80);
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(el => observer.observe(el));
+      <div class="acc-card open">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-num">1</div>
+          <div class="acc-title">상황 파악 — 딸에게 전가된 엄마의 역할</div>
+          <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <p>아들 선호 사상을 가진 엄마가 딸에게 오빠를 돌보는 역할까지 맡겼다. "너는 오빠가 아프면 네가 돌봐야 해"라는 말이 반복되며 딸은 '필요할 때만 써먹히는 존재'라는 인식 속에서 자랐다.</p>
+            <div class="acc-quote">"너는 오빠를 위해 존재하는 거야. 오빠가 아프면 네가 가서 돌봐야 해." — 엄마의 반복된 메시지</div>
+            <div class="acc-tags">
+              <span class="acc-tag">가족 역할 왜곡</span>
+              <span class="acc-tag">아들 선호 사상</span>
+              <span class="acc-tag">역할 전가</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    const steps = document.querySelectorAll('.step-card');
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const stepObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          tocLinks.forEach(l => l.classList.remove('active'));
-          const id = entry.target.id;
-          const active = document.querySelector(`.toc-link[href="#${id}"]`);
-          if (active) active.classList.add('active');
-        }
-      });
-    }, { threshold: 0.5 });
-    steps.forEach(s => stepObserver.observe(s));
-  </script>
+      <div class="acc-card">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-num">2</div>
+          <div class="acc-title">구조 분석 — 수용이 만든 당연함</div>
+          <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <p>딸이 모든 요구를 수용해왔기 때문에, 엄마와 오빠에게 그것이 '당연한 것'으로 굳어졌다. 딸은 자신의 역할 외에도 엄마와 오빠의 역할까지 도맡아 하고 있었다.</p>
+            <div class="acc-quote">받아주니까 계속하게 된 것이다. 딸이 "아니오"라고 한 번도 말하지 못했기 때문에 이 구조가 유지되어 왔다.</div>
+            <div class="acc-tags">
+              <span class="acc-tag">수용의 고착화</span>
+              <span class="acc-tag">역할 경계 붕괴</span>
+              <span class="acc-tag">구조적 착취</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-card">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-num">3</div>
+          <div class="acc-title">상담 접근 — 개입 없이 구조를 흔들다</div>
+          <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <p>언행심리마스터는 엄마나 오빠에게 직접 개입하지 않았다. 대신 딸에게 구조를 설명하고, 해야 할 일과 하지 않아도 되는 일의 경계를 명확히 알려줬다.</p>
+            <div class="acc-quote">타인인 내가 직접 구조를 바꿀 수는 없다. 그러나 개입하지 않고도, 본인의 중심을 통해 구조를 바꿀 수 있다.</div>
+            <div class="acc-tags">
+              <span class="acc-tag">간접 개입</span>
+              <span class="acc-tag">역할 경계 설정</span>
+              <span class="acc-tag">자기 중심 회복</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-card">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-num">4</div>
+          <div class="acc-title">저항과 협박 — 처음 3~4일의 폭풍</div>
+          <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <p>딸이 오빠의 병원 수발을 거부하자 강한 반발이 들어왔다. "너 진짜 안 오는 거야?", "재산도 안 준다", "어떻게 그럴 수 있냐" 등의 협박과 압박이 쏟아졌다.</p>
+            <p>이 3~4일이 가장 중요한 시간이었다. 언행심리마스터는 딸에게 분명히 말했다. "흔들리지 마라. 이게 들어와도 버텨. 버텨." 그리고 그 버팀을 함께했다.</p>
+            <div class="acc-quote">구조를 바꿀 때 저항은 반드시 온다. 그 저항을 버티는 것이 변화의 문을 여는 열쇠다.</div>
+            <div class="acc-tags">
+              <span class="acc-tag">초기 저항</span>
+              <span class="acc-tag">협박·압박</span>
+              <span class="acc-tag">중심 유지</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-card">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-num">5</div>
+          <div class="acc-title">변화의 시작 — 아쉬울 때 바뀐다</div>
+          <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <p>딸이 실제로 움직이지 않자, 엄마와 오빠는 '불편함'을 느끼기 시작했다. 이기적인 사람도 갑자기 천사가 될 수는 없다. 그러나 아쉬울 때, 손해가 될 때는 계산을 한다.</p>
+            <div class="acc-quote">사람은 잘못을 먼저 깨닫기보다, 불편함을 먼저 느낀다. 불편함이 깨우침으로 이어지고, 그것이 태도 변화의 동력이 된다.</div>
+            <div class="acc-tags">
+              <span class="acc-tag">불편함 인식</span>
+              <span class="acc-tag">이기심의 역이용</span>
+              <span class="acc-tag">자발적 반성</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-card">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-num">6</div>
+          <div class="acc-title">구조 정상화 — "와"에서 "미안해, 와줘"로</div>
+          <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <p>관계가 바뀌었음을 보여주는 가장 명확한 신호는 언어의 변화였다. 이전의 "병원 와"가 "미안한데, 좀 와서 도와줄 수 있어?"로 달라졌다. 명령이 요청으로, 당연함이 감사함으로 바뀐 것이다.</p>
+            <p>딸이 중심을 잡고 흔들리지 않자, 가족 구조는 스스로 재편되었다. 수십 년간 지속되어 온 왜곡된 구조가 마침내 정상화되었다.</p>
+            <div class="acc-quote">"와"와 "도와줘"는 다르다. 언어 하나가 바뀌면 관계 전체가 바뀐다. 이것이 언행심리학의 힘이다.</div>
+            <div class="acc-tags">
+              <span class="acc-tag">언어 변화</span>
+              <span class="acc-tag">관계 재정립</span>
+              <span class="acc-tag">구조 정상화</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 결과 -->
+  <section class="section">
+    <div class="section-label">사례 결과</div>
+    <h2>언어가 바뀌면 관계가 바뀐다</h2>
+    <p>
+      딸이 중심을 잡고 흔들리지 않자, 가족 구조는 스스로 재편되었다.
+      딸의 소중함을 알게 된 엄마와 오빠는 태도를 바꾸기 시작했다.
+    </p>
+    <p>
+      명령이 요청으로, 당연함이 감사함으로 바뀌었다. 수십 년간 지속되어 온
+      왜곡된 구조가 딸 한 사람의 중심 회복만으로 정상화되었다.
+    </p>
+  </section>
+
+  <!-- 철학 -->
+  <div class="philosophy">
+    <div class="phi-label">언행심리학 핵심 통찰</div>
+    <p>
+      타인인 내가 직접 구조를 바꿀 수는 없다. 그러나 개입하지 않고도, 본인의 중심을 통해 구조를 바꿀 수 있다.
+      상담의 역할은 방법을 알려주고, 흔들리지 않도록 옆에서 중심을 잡아주는 것이었다.
+    </p>
+    <p>
+      저항은 반드시 온다. 3~4일을 버티면 균열이 생기고, 균열에서 변화가 시작된다.
+      "와"와 "미안해, 와줘"의 차이 — 언어 하나가 바뀌면 관계 전체가 바뀐다.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  <p>언행심리학 사례 아카이브 &nbsp;·&nbsp; <a href="../cases/index.html">목록으로</a></p>
+</footer>
+
+<script>
+  function toggleAcc(header) {
+    const card = header.closest('.acc-card');
+    card.classList.toggle('open');
+  }
+</script>
+
 </body>
-
 </html>
