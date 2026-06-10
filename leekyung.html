@@ -191,6 +191,7 @@
 
   /* ── SECTIONS ── */
   section { padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem); }
+  .section-inner { max-width: 900px; margin: 0 auto; }
 
   .section-label {
     font-size: 0.65rem;
@@ -222,6 +223,10 @@
   .what-is {
     background: var(--ink);
     color: #fff;
+  }
+  .what-is-inner {
+    max-width: 900px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
@@ -307,7 +312,7 @@
   .scope-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; transition: color 0.3s; }
 
   /* ── STEPS ── */
-  .steps-section { max-width: 620px; margin: 0 auto; }
+  .steps-section { max-width: 900px; margin: 0 auto; }
 
   .steps-header {
     display: flex;
@@ -596,6 +601,10 @@
     background: var(--paper);
     border-top: 1px solid var(--line);
     padding: 4rem clamp(1.5rem, 6vw, 5rem);
+  }
+  .footer-inner {
+    max-width: 900px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -676,7 +685,7 @@
     .hero { grid-template-columns: 1fr; min-height: auto; }
     .hero-left { min-height: auto; padding: clamp(2.5rem, 6vw, 4rem); }
     .hero-right { min-height: auto; padding: 3rem 2rem; }
-    .what-is { grid-template-columns: 1fr; }
+    .what-is-inner { grid-template-columns: 1fr; }
     .scope-grid { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: 1fr 1fr; }
     .case-panel.active { grid-template-columns: 1fr; }
@@ -687,7 +696,7 @@
     .mirror-label { display: none; }
     .mirror-diagram { width: min(260px, 70vw); }
     .mirror-center { font-size: clamp(2rem, 8vw, 3.5rem); }
-    footer { flex-direction: column; align-items: center; text-align: center; }
+    .footer-inner { flex-direction: column; align-items: center; text-align: center; }
     .steps-header { flex-direction: column; align-items: flex-start; }
     .steps-header p { text-align: left; }
   }
@@ -769,6 +778,7 @@
 
 <!-- ── WHAT IS 리경 ── -->
 <section class="what-is">
+  <div class="what-is-inner">
   <div class="what-is-text reveal">
     <div class="section-label">개요</div>
     <h2 class="section-title">리경이란<br>무엇인가</h2>
@@ -803,7 +813,7 @@
 
 <!-- ── SCOPE ── -->
 <section class="scope-section">
-  <div style="max-width:620px; margin:0 auto">
+  <div style="max-width:900px; margin:0 auto">
     <div class="section-label reveal">적용 범위</div>
     <h2 class="section-title reveal">세 가지 층위에서<br>읽는다</h2>
     <div class="scope-grid">
@@ -831,7 +841,7 @@
 
 <!-- ── 4 STEPS ── -->
 <section style="background: var(--paper); padding: clamp(4rem,10vw,8rem) clamp(1.5rem,4vw,4rem)">
-  <div style="max-width:620px; margin:0 auto">
+  <div style="max-width:900px; margin:0 auto">
     <div class="steps-header">
       <div>
         <div class="section-label reveal">방법론</div>
@@ -878,7 +888,7 @@
 
 <!-- ── CASE STUDY ── -->
 <section class="case-section">
-  <div style="max-width:620px; margin:0 auto">
+  <div style="max-width:900px; margin:0 auto">
     <div class="section-label reveal">실전 사례</div>
     <h2 class="section-title reveal">2026년 6.3 지방선거<br>리경 풀이</h2>
     <p class="reveal" style="color:rgba(255,255,255,0.5); font-size:0.9rem; max-width:50ch; margin-top:1rem">
@@ -1034,7 +1044,7 @@
 
 <!-- ── ERRORS ── -->
 <section class="errors-section">
-  <div style="max-width:620px; margin:0 auto">
+  <div style="max-width:900px; margin:0 auto">
     <div class="section-label reveal">오독 유형</div>
     <h2 class="section-title reveal">리경을 잘못 읽는<br>3가지 유형</h2>
     <div class="errors-grid">
@@ -1065,7 +1075,7 @@
 
 <!-- ── PRINCIPLES ── -->
 <section class="principles-section">
-  <div style="max-width:620px; margin:0 auto">
+  <div style="max-width:900px; margin:0 auto">
     <div class="section-label reveal">핵심 원칙</div>
     <h2 class="section-title reveal">리경의 5가지<br>핵심 원칙</h2>
     <div class="principles-grid">
@@ -1095,6 +1105,7 @@
 
 <!-- ── FOOTER ── -->
 <footer>
+  <div class="footer-inner">
   <div class="footer-logo">
     理鏡
     <span>리경 풀이법 v3</span>
@@ -1102,6 +1113,7 @@
   <div class="footer-summary">
     보이는 현상 + 보이지 않는 세력의 운기 + 국운(시대정신)
     <em>이 세 층위를 함께 읽을 때, 세상이 비로소 풀린다</em>
+  </div>
   </div>
 </footer>
 
