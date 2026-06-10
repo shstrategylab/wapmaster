@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자기성찰, 보이지 않는 곳에 투자하라 | 언행심리학</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f3ee;
+    --bg-dark: #100e0a;
+    --gold: #d4a843;
+    --gold-deep: #b8860b;
+    --text: #2a2218;
+    --text-muted: #7a6e5f;
+    --text-light: #ede8df;
+    --border: #e0d9ce;
+    --serif: 'Noto Serif KR', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--bg-dark);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav a.back {
+    color: var(--gold);
+    text-decoration: none;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: opacity 0.2s;
+  }
+  nav a.back:hover { opacity: 0.75; }
+  nav a.back::before { content: "←"; font-size: 1rem; }
+  .nav-label {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-family: var(--sans);
+    letter-spacing: 0.08em;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--bg-dark);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(212,168,67,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    color: var(--gold);
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 1.4rem;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.7rem, 5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--text-light);
+    line-height: 1.45;
+    margin-bottom: 1rem;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero h1 span {
+    color: var(--gold);
+  }
+  .hero-sub {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-family: var(--sans);
+    font-weight: 300;
+    margin-bottom: 2.4rem;
+    letter-spacing: 0.03em;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .meta-chip {
+    background: rgba(212,168,67,0.12);
+    border: 1px solid rgba(212,168,67,0.25);
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-family: var(--sans);
+    font-weight: 400;
+    padding: 0.3rem 0.85rem;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 48px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+    margin: 3rem auto;
+    border: none;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin-bottom: 1rem;
+  }
+
+  /* KEY MESSAGE */
+  .key-message {
+    background: var(--bg-dark);
+    border-left: 3px solid var(--gold);
+    padding: 2rem 2rem 2rem 2.2rem;
+    margin: 3rem 0;
+    border-radius: 0 8px 8px 0;
+  }
+  .key-message p {
+    font-family: var(--serif);
+    font-size: 1.18rem;
+    color: var(--text-light);
+    line-height: 1.85;
+    font-weight: 400;
+  }
+  .key-message p strong {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* BODY TEXT */
+  .body-section {
+    padding: 3rem 0;
+  }
+  .body-section + .body-section {
+    border-top: 1px solid var(--border);
+  }
+  .body-section h2 {
+    font-family: var(--serif);
+    font-size: 1.22rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+  }
+  .body-section p {
+    font-size: 0.96rem;
+    color: #3d3226;
+    margin-bottom: 1rem;
+    line-height: 1.9;
+  }
+
+  /* INSIGHT CARDS */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin: 2rem 0;
+  }
+  .insight-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.4rem 1.3rem;
+    position: relative;
+  }
+  .insight-card::before {
+    content: attr(data-icon);
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+  .insight-card h3 {
+    font-family: var(--serif);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--gold-deep);
+    margin-bottom: 0.5rem;
+  }
+  .insight-card p {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* DIALOGUE */
+  .dialogue-block {
+    background: #faf7f3;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.8rem;
+    margin: 2rem 0;
+  }
+  .dialogue-line {
+    display: flex;
+    gap: 0.9rem;
+    margin-bottom: 1.3rem;
+    align-items: flex-start;
+  }
+  .dialogue-line:last-child { margin-bottom: 0; }
+  .speaker {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: var(--gold-deep);
+    border-radius: 4px;
+    padding: 0.18rem 0.5rem;
+    margin-top: 0.15rem;
+    font-family: var(--sans);
+    white-space: nowrap;
+  }
+  .speaker.b { background: #4a3f2f; }
+  .speech {
+    font-size: 0.89rem;
+    color: #3d3226;
+    line-height: 1.8;
+  }
+  .speech em {
+    color: var(--gold-deep);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* REFLECTION BOX */
+  .reflection {
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #1c180f 100%);
+    border-radius: 12px;
+    padding: 2.4rem 2rem;
+    margin: 3rem 0;
+    text-align: center;
+  }
+  .reflection h2 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  .reflection p {
+    font-size: 0.9rem;
+    color: #b0a590;
+    line-height: 1.9;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .reflection p + p {
+    margin-top: 0.9rem;
+  }
+
+  /* TAGS */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .tag {
+    font-size: 0.75rem;
+    font-family: var(--sans);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg-dark);
+    color: #5a5040;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    font-size: 0.78rem;
+    font-family: var(--sans);
+    letter-spacing: 0.05em;
+    margin-top: 4rem;
+  }
+  footer a {
+    color: var(--gold-deep);
+    text-decoration: none;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 3.5rem 1.2rem 3rem; }
+    .key-message { padding: 1.5rem 1.2rem 1.5rem 1.5rem; }
+    .insight-grid { grid-template-columns: 1fr; }
+    .dialogue-block { padding: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="back" href="../index.html">메인으로</a>
+  <span class="nav-label">언행심리학</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-eyebrow">언행심리학 상담 사례</p>
+  <h1>자기성찰,<br><span>보이지 않는 곳에 투자하라</span></h1>
+  <p class="hero-sub">덕(德)의 투자와 말년의 고독 — 이기적 삶의 심리적 귀결</p>
+  <div class="hero-meta">
+    <span class="meta-chip">2026.06.09</span>
+    <span class="meta-chip">자기성찰</span>
+    <span class="meta-chip">관계 심리학</span>
+    <span class="meta-chip">투자 마인드셋</span>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <hr class="divider">
+
+  <div class="key-message">
+    <p>
+      보이는 곳에만 투자한 삶은 재물을 쌓지만,<br>
+      <strong>보이지 않는 곳</strong>에 투자한 삶은 사람을 쌓는다.<br>
+      말년의 외로움은 우연이 아니라 — 평생의 투자 방향이 만든 결과물이다.
+    </p>
+  </div>
+
+  <!-- 상담 개요 -->
+  <section class="body-section">
+    <p class="section-label">상담 개요</p>
+    <h2>어떤 사례인가</h2>
+    <p>60대 이상의 한 인물을 관찰한 사례다. 평생을 자기 중심적이고 계산적으로 살아온 이 사람은 현재 깊은 외로움을 호소하고 있다. 투자의 개념을 물질적 수익에만 적용해온 삶이 어떤 심리적 결말을 낳는지를 보여주는 전형적인 사례다.</p>
+    <p>상담자는 이 현상을 "보이는 투자와 보이지 않는 투자의 불균형"으로 진단했다. 재물은 쌓였지만, 관계의 자산은 텅 비어 있다.</p>
+  </section>
+
+  <!-- 핵심 대화 -->
+  <section class="body-section">
+    <p class="section-label">핵심 대화 발췌</p>
+    <h2>투자 개념의 오해를 짚다</h2>
+
+    <div class="dialogue-block">
+      <div class="dialogue-line">
+        <span class="speaker">상담자</span>
+        <p class="speech">
+          나한테 하나가 왔을 때 두 개가 돌아오지 않으면 절대 무언가 가지 않는 사람이에요.
+          그러면 뭐가 잘못됐냐 — <em>어리석다</em>고 봐요.
+          왜 보이지 않는 곳에 투자를 했어야 하는지를 거꾸로 생각하는 거잖아요.
+        </p>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker b">내담자</span>
+        <p class="speech">그거는 당연히 있을 거라고 생각을 했던 것 같아요.</p>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">상담자</span>
+        <p class="speech">
+          세상에 공짜는 없어요. <em>내가 베푼 대로 돌아오는 거예요.</em>
+          사랑을 받고 싶어? 그럼 사랑을 줘봤어야 되는 거 아닐까요.
+          관심을 받고 싶어? 관심도 줘보고. 하다못해 따뜻하게 커피 한 잔 더 줘보고.
+        </p>
+      </div>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dialogue-line">
+        <span class="speaker">상담자</span>
+        <p class="speech">
+          보이는 투자는 내 삶에 필요한 물질을 쌓는 거지만,
+          보이지 않는 곳에 투자하는 게 <em>인덕(人德)</em>이라는 거죠.
+          옛말에 덕을 쌓으라는 게 큰 게 아니에요. 하다못해 힘들어할 때 마음 한 번 위로해 주고,
+          작은 거라도 밥 한 끼 같이 먹어주는 것 — 그게 나중에 덕으로 돌아오는 거예요.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 심리 분석 -->
+  <section class="body-section">
+    <p class="section-label">심리 분석</p>
+    <h2>이 사례에서 드러나는 네 가지 심리 패턴</h2>
+
+    <div class="insight-grid">
+      <div class="insight-card" data-icon="🪞">
+        <h3>자기 객관화 부재</h3>
+        <p>자신의 이기적 행동 패턴을 인지하지 못하고, 외로움의 원인을 외부에서만 찾는다.</p>
+      </div>
+      <div class="insight-card" data-icon="📊">
+        <h3>왜곡된 투자 마인드</h3>
+        <p>모든 관계를 물질적 손익으로 계산하며, 감정·시간·공감의 투자 가치를 인식하지 못한다.</p>
+      </div>
+      <div class="insight-card" data-icon="🔒">
+        <h3>마음의 가난</h3>
+        <p>재물은 충분하지만, 타인을 위한 공감과 위로를 베풀 심리적 여유가 없다.</p>
+      </div>
+      <div class="insight-card" data-icon="⏳">
+        <h3>누적적 결핍</h3>
+        <p>젊을 때 덕을 쌓지 않은 결과가 말년에 외로움이라는 형태로 청구된다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 핵심 통찰 -->
+  <section class="body-section">
+    <p class="section-label">핵심 통찰</p>
+    <h2>보이지 않는 곳에 투자한다는 것</h2>
+    <p>이 사례의 중심 테제는 명확하다. 투자(投資)의 개념을 물질적 자산 증식에만 적용해온 사람은, 정작 삶의 질(質) — 관계, 애정, 동반자 — 을 형성하는 영역에는 아무런 자본을 투입하지 않았다. 결과적으로 재무 포트폴리오는 풍요롭지만 인간 포트폴리오는 파산 상태다.</p>
+    <p>상담자는 이를 "덕의 투자"라는 언어로 재정의했다. 인덕(人德)은 따뜻한 말 한마디, 밥 한 끼, 위로 한 번의 누적이다. 그것이 말년에 사람으로 돌아온다. 수익률을 기대하며 넣는 투자가 아니라, 조건 없이 쌓아가는 인간적 자본이다.</p>
+    <p>또한 상담자는 지적한다 — 이기심은 감춰지지 않는다. 같은 나이대의 사람들은 본능적으로 상대의 진심을 감지한다. 계산적인 사람 곁에서 사람들은 오래 머물지 않는다.</p>
+  </section>
+
+  <!-- 성찰 -->
+  <div class="reflection">
+    <h2>오늘 나에게 던지는 질문</h2>
+    <p>나는 지금 어디에 투자하고 있는가.<br>
+    재물을 불리는 데 쏟는 에너지의 절반만큼,<br>
+    주변 사람에게 따뜻함을 투자하고 있는가.</p>
+    <p>외로움은 결핍이 아니라 — 투자 방향의 결과다.<br>
+    아직 늦지 않았다. 깨달으면 가능하다.</p>
+  </div>
+
+  <!-- 상담자 메시지 -->
+  <section class="body-section">
+    <p class="section-label">상담자 메시지</p>
+    <h2>자기 성찰이 먼저다</h2>
+    <p>이 사례의 인물에게 가장 필요한 것은 종교나 외부 위안이 아니다. 상담자는 명확하게 말한다 — "자기 객관화, 자기 성찰이 먼저"라고. 내가 왜 외로운지, 내 주변에 왜 사람이 없는지를 스스로 묻고 답하는 과정이 선행되어야 한다.</p>
+    <p>성찰 없이 외로움의 원인을 찾는 것은, 증상만 치료하고 원인을 방치하는 것과 같다. 자기 성찰은 불편하다. 그러나 그 불편함을 직면하는 것이 인생 후반부를 바꾸는 유일한 시작점이다.</p>
+  </section>
+
+  <div class="tag-row">
+    <span class="tag">#자기성찰</span>
+    <span class="tag">#자기객관화</span>
+    <span class="tag">#인덕</span>
+    <span class="tag">#관계심리학</span>
+    <span class="tag">#보이지않는투자</span>
+    <span class="tag">#말년고독</span>
+    <span class="tag">#언행심리학</span>
+  </div>
+
+</div>
+</main>
+
+<footer>
+  <p>© 2026 언행심리학 · <a href="../index.html">메인으로 돌아가기</a></p>
+  <p style="margin-top:0.5rem; color:#3a3020;">본 사례는 실제 상담 대화를 바탕으로 재구성하였습니다.</p>
+</footer>
+
+</body>
+</html>
