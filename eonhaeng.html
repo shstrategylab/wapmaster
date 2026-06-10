@@ -779,9 +779,51 @@
       .hero-meta {
         gap: 1.5rem;
       }
-
       .meta-num {
         font-size: 1.4rem;
+      }
+      .hero-title {
+        font-size: clamp(2.2rem, 8vw, 3.5rem);
+      }
+      .hero-sub {
+        font-size: 0.95rem;
+        max-width: 100%;
+      }
+      .hero-cta {
+        width: 100%;
+        justify-content: center;
+      }
+      .hero-card {
+        padding: 1.5rem;
+      }
+      .quote-text {
+        font-size: 0.9rem;
+      }
+      .diff-card {
+        padding: 1.5rem;
+      }
+      .diff-vs {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.8rem;
+      }
+      .principle-card {
+        padding: 1.5rem;
+      }
+      .section-title {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+      }
+      .insight-card {
+        padding: 1.5rem;
+      }
+    }
+    @media (max-width: 400px) {
+      .hero-title {
+        font-size: clamp(1.9rem, 7vw, 2.5rem);
+      }
+      .meta-item {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.1rem;
       }
     }
   </style>
