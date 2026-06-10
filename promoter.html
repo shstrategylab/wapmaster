@@ -939,7 +939,7 @@ ${ttsRules}`;
 
   // ── TTS 분할: 1분 기준 약 200~250어절 ──
   // speak 태그 기준으로 문장 단위 분할 후 묶기
-  const CHARS_PER_MINUTE = 350; // 한국어 TTS 분당 평균 글자 수 (SSML 태그 제외)
+  const CHARS_PER_MINUTE = 230; // 한국어 TTS 약 40초 분량 글자 수 (SSML 태그 제외)
 
   function stripSsmlTags(text) {
     return text.replace(/<[^>]+>/g, '');
@@ -1011,7 +1011,7 @@ ${ttsRules}`;
         <div class="chunk-header">
           <div class="chunk-badge">
             <span class="chunk-num">구간 ${i + 1}</span>
-            <span class="chunk-time">약 ${minuteStart}~${minuteEnd}분</span>
+            <span class="chunk-time">약 ${minuteStart * 40}~${minuteEnd * 40}초</span>
           </div>
           <button class="chunk-copy-btn" data-idx="${i}" onclick="copyChunk(this, ${i})">복사하기</button>
         </div>
@@ -1180,7 +1180,7 @@ ${raw}
             <div>
               <strong>1구간 — 기준 설정 구간</strong><br>
               이 구간을 AI Studio에 붙여넣고 목소리·속도를 설정한 뒤, <u>어떤 보이스·속도를 골랐는지 메모해두세요.</u><br>
-              2구간부터는 동일한 설정을 수동으로 맞춰야 톤이 이어집니다.
+              2구간부터는 동일한 설정을 수동으로 맞춰야 톤이 이어집니다. (각 구간 약 40초)
             </div>
           </div>`
         : `<div class="chunk-tone-bar">
@@ -1192,7 +1192,7 @@ ${raw}
         <div class="chunk-header">
           <div class="chunk-badge">
             <span class="chunk-num">구간 ${i + 1} / ${chunks.length}</span>
-            <span class="chunk-time">약 ${i}~${i + 1}분</span>
+            <span class="chunk-time">약 ${i * 40}~${(i + 1) * 40}초</span>
           </div>
           <button class="chunk-copy-btn" onclick="copyChunk(this, ${i})">복사하기</button>
         </div>
