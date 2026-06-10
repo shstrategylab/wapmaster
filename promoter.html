@@ -396,6 +396,111 @@
     .result-box::-webkit-scrollbar-track { background: transparent; }
     .result-box::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
 
+    /* ── TTS CHUNKS ── */
+    #tts-chunks-section { display: none; margin-top: 1.5rem; }
+    .chunks-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chunks-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .chunks-meta {
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+    .chunk-card {
+      background: var(--surface-3);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .chunk-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--line);
+      gap: 8px;
+    }
+    .chunk-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chunk-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid var(--accent-mid);
+      border-radius: 999px;
+      padding: 2px 10px;
+    }
+    .chunk-time {
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+    .chunk-copy-btn {
+      padding: 5px 14px;
+      font-size: 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--accent-mid);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-family: var(--sans);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .chunk-copy-btn:hover { background: var(--accent); color: #fff; }
+    .chunk-copy-success { background: #eaf3de !important; border-color: #97c459 !important; color: #3b6d11 !important; }
+    .chunk-body {
+      padding: 1rem 1.25rem;
+      font-size: 12.5px;
+      font-family: 'Courier New', monospace;
+      color: var(--ink);
+      white-space: pre-wrap;
+      line-height: 1.75;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .chunk-tone-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: #fffbeb;
+      border-top: 1px solid #fde68a;
+      font-size: 11px;
+      color: #92400e;
+    }
+    .chunk-tone-icon { font-size: 13px; }
+    .chunk-tone-first {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #eff6ff;
+      border-top: 1px solid #bfdbfe;
+      font-size: 12px;
+      color: #1e40af;
+      line-height: 1.6;
+    }
+    .chunk-tone-first strong { font-weight: 700; }
+    .chunk-tone-first .chunk-tone-icon { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       header { padding: 2rem 1.25rem 1.5rem; }
@@ -601,7 +706,21 @@
       <button class="copy-btn" id="copy-btn" onclick="copyResult()">복사하기</button>
     </div>
     <div class="result-box" id="result"></div>
-    <p class="notice">✓ 위 프롬프트를 복사해서 Claude 새 대화창에 붙여넣으면 스크립트가 생성됩니다.</p>
+    <p class="notice">&#10003; 위 프롬프트를 복사해서 Claude 새 대화창에 붙여넣으면 스크립트가 생성됩니다.</p>
+  </div>
+
+  <!-- TTS CHUNKS -->
+  <div id="tts-chunks-section">
+    <hr class="divider" style="margin-top:1rem;">
+    <div class="step-label" style="margin-bottom:0.75rem;">
+      <div class="step-num" style="background:var(--accent-mid); font-size:14px;">✂</div>
+      <div class="step-title">TTS 구간별 분할 스크립트</div>
+    </div>
+    <p class="hint" style="margin-bottom:1rem; font-size:13px; color:var(--ink-2);">
+      음성 생성 시 한 번에 입력하면 오류가 생길 수 있어 <strong>1분 단위</strong>로 나눴습니다.<br>
+      각 구간을 순서대로 TTS에 붙여넣고, 첫 구간의 톤·속도를 기준으로 이후 구간도 동일하게 설정하세요.
+    </p>
+    <div id="chunks-container"></div>
   </div>
 
 </div>
@@ -818,6 +937,120 @@ ${editRules}
 ${ttsRules}`;
   }
 
+  // ── TTS 분할: 1분 기준 약 200~250어절 ──
+  // speak 태그 기준으로 문장 단위 분할 후 묶기
+  const CHARS_PER_MINUTE = 350; // 한국어 TTS 분당 평균 글자 수 (SSML 태그 제외)
+
+  function stripSsmlTags(text) {
+    return text.replace(/<[^>]+>/g, '');
+  }
+
+  // SSML <speak>...</speak> 내부를 문장 단위로 쪼갠 뒤 1분 단위로 묶기
+  function splitTtsIntoChunks(ssmlText) {
+    // <speak> 태그 안쪽만 추출
+    const inner = ssmlText.replace(/^[\s\S]*?<speak>([\s\S]*?)<\/speak>[\s\S]*$/, '$1').trim();
+
+    // prosody rate 래퍼 찾기 (있으면 각 청크에 다시 씌울 것)
+    const prosodyMatch = inner.match(/^(<prosody[^>]*>)([\s\S]*)(<\/prosody>)$/);
+    const prosodyOpen  = prosodyMatch ? prosodyMatch[1] : '';
+    const prosodyClose = prosodyMatch ? prosodyMatch[3] : '';
+    const content      = prosodyMatch ? prosodyMatch[2] : inner;
+
+    // 문장 끊기: SSML break, emphasis, prosody 태그는 보존하며 마침표/물음표/느낌표 기준으로 분리
+    // 단순히 줄바꿈 + 문장부호 기준으로 분리
+    const sentences = content
+      .split(/(?<=[.!?。]\s*(?:<break[^\/]*\/>)?)\s*\n+|\n{2,}/)
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
+
+    const chunks = [];
+    let currentChars = 0;
+    let currentLines = [];
+
+    for (const sentence of sentences) {
+      const plain = stripSsmlTags(sentence);
+      currentLines.push(sentence);
+      currentChars += plain.length;
+
+      if (currentChars >= CHARS_PER_MINUTE) {
+        chunks.push(currentLines.join('\n'));
+        currentLines = [];
+        currentChars = 0;
+      }
+    }
+    if (currentLines.length > 0) {
+      chunks.push(currentLines.join('\n'));
+    }
+
+    // 각 청크를 순수 SSML로만 감싸기 — 주석 없이 TTS에 바로 붙여넣을 수 있도록
+    return chunks.map((body, i) => {
+      const wrapped = prosodyOpen
+        ? `${prosodyOpen}\n${body}\n${prosodyClose}`
+        : body;
+      return `<speak>\n${wrapped}\n</speak>`;
+    });
+  }
+
+  function buildTtsChunksUI(chunks, preset) {
+    const container = document.getElementById('chunks-container');
+    container.innerHTML = '';
+    const section = document.getElementById('tts-chunks-section');
+    section.style.display = 'block';
+
+    chunks.forEach((chunk, i) => {
+      const minuteStart = i;
+      const minuteEnd   = i + 1;
+      const card = document.createElement('div');
+      card.className = 'chunk-card';
+
+      const toneHint = i === 0
+        ? '이 구간에서 톤·속도를 설정하고 저장해두세요 — 이후 구간도 동일 설정 사용'
+        : `앞 구간(${i}구간)과 동일한 목소리 설정으로 생성하세요`;
+
+      card.innerHTML = `
+        <div class="chunk-header">
+          <div class="chunk-badge">
+            <span class="chunk-num">구간 ${i + 1}</span>
+            <span class="chunk-time">약 ${minuteStart}~${minuteEnd}분</span>
+          </div>
+          <button class="chunk-copy-btn" data-idx="${i}" onclick="copyChunk(this, ${i})">복사하기</button>
+        </div>
+        <div class="chunk-body" id="chunk-body-${i}">${escHtml(chunk)}</div>
+        <div class="chunk-tone-bar">
+          <span class="chunk-tone-icon">🎚</span>
+          <span>${escHtml(toneHint)}</span>
+        </div>`;
+      container.appendChild(card);
+    });
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // 청크별 복사
+  window._ttsChunks = [];
+  function copyChunk(btn, idx) {
+    const text = window._ttsChunks[idx];
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ 복사됨';
+      btn.classList.add('chunk-copy-success');
+      setTimeout(() => {
+        btn.textContent = '복사하기';
+        btn.classList.remove('chunk-copy-success');
+      }, 2500);
+    }).catch(() => {
+      const el = document.getElementById(`chunk-body-${idx}`);
+      const range = document.createRange();
+      range.selectNode(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+    });
+  }
+
   function generate() {
     const raw = rawEl.value.trim();
     if (!raw) {
@@ -889,9 +1122,98 @@ ${raw}
     copyBtn.textContent = '복사하기';
     copyBtn.className = 'copy-btn';
 
+    // ── TTS 모드일 때만 구간 분할 UI 표시 ──
+    // 프롬프트 생성 단계에서는 실제 SSML이 아직 없으므로
+    // 사용자가 Claude에서 받아온 SSML을 붙여넣을 수 있는 분할 도구를 함께 제공
+    const chunkSection = document.getElementById('tts-chunks-section');
+    if (outputMode === 'tts' || outputMode === 'both') {
+      // SSML 붙여넣기 입력창 표시
+      chunkSection.style.display = 'block';
+      const container = document.getElementById('chunks-container');
+      container.innerHTML = `
+        <div class="card" style="border-color: var(--accent-mid);">
+          <div class="field" style="margin-bottom:0.75rem;">
+            <label style="color:var(--accent);">Claude가 생성한 SSML 스크립트 붙여넣기</label>
+            <textarea id="ssml-input" rows="8" placeholder="Claude에서 생성된 낭독 전용 SSML 스크립트 전체를 여기에 붙여넣으세요.&#10;(&lt;speak&gt; ... &lt;/speak&gt; 포함)"></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="splitAndRender()">✂ 1분 단위로 구간 분할하기</button>
+        </div>`;
+    } else {
+      chunkSection.style.display = 'none';
+    }
+
     setTimeout(() => {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
+  }
+
+  function splitAndRender() {
+    const ssml = document.getElementById('ssml-input').value.trim();
+    if (!ssml) {
+      alert('SSML 스크립트를 먼저 붙여넣어주세요.');
+      return;
+    }
+
+    const chunks = splitTtsIntoChunks(ssml);
+    if (chunks.length === 0) {
+      alert('분할할 내용이 없습니다. SSML 형식을 확인해주세요.');
+      return;
+    }
+
+    window._ttsChunks = chunks;
+
+    const container = document.getElementById('chunks-container');
+    container.innerHTML = `
+      <div style="margin-bottom:1rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+        <span style="font-size:13px; font-weight:700; color:var(--ink);">총 ${chunks.length}구간으로 분할됨</span>
+        <button class="btn" style="font-size:13px; padding:7px 16px;" onclick="resetChunks()">↩ 다시 붙여넣기</button>
+      </div>`;
+
+    chunks.forEach((chunk, i) => {
+      const card = document.createElement('div');
+      card.className = 'chunk-card';
+
+      // 구간별 UI 안내 — 1구간은 설정 기준 안내, 이후는 동일 설정 유지 안내
+      const toneBarHtml = i === 0
+        ? `<div class="chunk-tone-bar chunk-tone-first">
+            <div class="chunk-tone-icon">📌</div>
+            <div>
+              <strong>1구간 — 기준 설정 구간</strong><br>
+              이 구간을 AI Studio에 붙여넣고 목소리·속도를 설정한 뒤, <u>어떤 보이스·속도를 골랐는지 메모해두세요.</u><br>
+              2구간부터는 동일한 설정을 수동으로 맞춰야 톤이 이어집니다.
+            </div>
+          </div>`
+        : `<div class="chunk-tone-bar">
+            <span class="chunk-tone-icon">🎚</span>
+            <span>1구간과 <strong>동일한 보이스·속도</strong>로 설정 후 생성하세요</span>
+          </div>`;
+
+      card.innerHTML = `
+        <div class="chunk-header">
+          <div class="chunk-badge">
+            <span class="chunk-num">구간 ${i + 1} / ${chunks.length}</span>
+            <span class="chunk-time">약 ${i}~${i + 1}분</span>
+          </div>
+          <button class="chunk-copy-btn" onclick="copyChunk(this, ${i})">복사하기</button>
+        </div>
+        <div class="chunk-body" id="chunk-body-${i}">${escHtml(chunk)}</div>
+        ${toneBarHtml}`;
+      container.appendChild(card);
+    });
+  }
+
+  function resetChunks() {
+    window._ttsChunks = [];
+    const outputMode = getOutputMode();
+    const container = document.getElementById('chunks-container');
+    container.innerHTML = `
+      <div class="card" style="border-color: var(--accent-mid);">
+        <div class="field" style="margin-bottom:0.75rem;">
+          <label style="color:var(--accent);">Claude가 생성한 SSML 스크립트 붙여넣기</label>
+          <textarea id="ssml-input" rows="8" placeholder="Claude에서 생성된 낭독 전용 SSML 스크립트 전체를 여기에 붙여넣으세요.&#10;(&lt;speak&gt; ... &lt;/speak&gt; 포함)"></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%;" onclick="splitAndRender()">✂ 1분 단위로 구간 분할하기</button>
+      </div>`;
   }
 
   function copyResult() {
@@ -932,6 +1254,9 @@ ${raw}
     document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tag[data-val="book"], .tag[data-val="cafe"]').forEach(t => t.classList.add('active'));
     document.getElementById('result-section').style.display = 'none';
+    document.getElementById('tts-chunks-section').style.display = 'none';
+    document.getElementById('chunks-container').innerHTML = '';
+    window._ttsChunks = [];
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
