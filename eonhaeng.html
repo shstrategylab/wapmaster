@@ -112,13 +112,18 @@
     /* ─── HERO ─── */
     .hero {
       min-height: 100vh;
+      padding: 80px clamp(1.5rem, 5vw, 4rem) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-inner {
+      max-width: 900px;
+      margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: center;
-      padding: 80px clamp(1.5rem, 5vw, 4rem) 0;
       gap: 4rem;
-      position: relative;
-      overflow: hidden;
+      min-height: calc(100vh - 80px);
     }
 
     .hero::before {
@@ -300,6 +305,10 @@
     section {
       padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
     }
+    .section-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
     .section-header {
       margin-bottom: clamp(2.5rem, 5vw, 4rem);
@@ -337,7 +346,7 @@
       margin-top: 1rem;
       font-size: 1rem;
       color: var(--muted);
-      max-width: 540px;
+      max-width: 580px;
       font-weight: 300;
     }
 
@@ -524,7 +533,7 @@
       font-size: clamp(1.4rem, 3vw, 2.2rem);
       font-weight: 700;
       line-height: 1.6;
-      max-width: 620px;
+      max-width: 800px;
       margin: 2rem auto 1.5rem;
       text-align: center;
       color: rgba(255, 255, 255, 0.9);
@@ -642,6 +651,10 @@
       background: var(--ink);
       color: rgba(255, 255, 255, 0.4);
       padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+    }
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -723,10 +736,13 @@
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
       .hero {
-        grid-template-columns: 1fr;
         min-height: auto;
         padding-top: 100px;
         padding-bottom: 3rem;
+      }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        min-height: auto;
         gap: 3rem;
       }
 
@@ -852,6 +868,7 @@
 
   <!-- HERO -->
   <section class="hero">
+    <div class="hero-inner">
     <div class="hero-text">
       <div class="hero-eyebrow">언행심리학 · 도현(道賢)</div>
       <h1 class="hero-title">말과 행동이<br><em>삶의 구조</em>를<br>결정한다</h1>
@@ -884,10 +901,12 @@
         </div>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- DIFFERENCE -->
   <section id="difference">
+    <div class="section-inner">
     <div class="section-header reveal">
       <div class="section-label">비교 분석</div>
       <h2 class="section-title">언행심리학과 사주명리학,<br>무엇이 다른가</h2>
@@ -929,10 +948,12 @@
         <p>사주명리로 타고난 기질을 전문적으로 파악하고, 언행심리로 현재의 구조적 문제를 해결합니다. 과거부터 미래까지의 흐름과 지금 이 순간의 변화를 동시에 다루는 통합적 상담이 가능해집니다.</p>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- PRINCIPLE -->
   <section id="principle">
+    <div class="section-inner">
     <div class="section-header reveal">
       <div class="section-label">핵심 원리</div>
       <h2 class="section-title">언행심리학이<br>작동하는 방식</h2>
@@ -971,11 +992,13 @@
         <p>언행심리를 마스터하면 이용당하지 않고, 좋은 관계를 선택하며, 나를 해치는 구조에서 벗어날 수 있습니다. 이것이 단순한 상담을 넘어 삶의 방식 자체를 바꾸는 이유입니다.</p>
       </div>
     </div>
+    </div>
   </section>
 
 
   <!-- INSIGHT -->
   <section id="insight">
+    <div class="section-inner">
     <div class="section-header reveal" style="text-align:center;">
       <div class="section-label" style="justify-content:center;">핵심 인사이트</div>
       <h2 class="section-title" style="color:var(--paper)">언행심리를 마스터하면<br>삶이 유익해진다</h2>
@@ -1010,12 +1033,15 @@
         <p>내 삶을 이끌어가는 주체가 됩니다. 타인의 구조에 끌려가는 것이 아니라, 스스로 길을 선택할 수 있습니다.</p>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
+    <div class="footer-inner">
     <div class="logo">언행심리학</div>
     <p>언행심리마스터 · 도현(道賢)</p>
+    </div>
   </footer>
 
   <script>
