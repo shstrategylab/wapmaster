@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>말보다 행동이 보여준 집안 질서 | 언행심리학 상담 사례</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f3ee;
+      --dark: #100e0a;
+      --gold: #d4a843;
+      --gold-deep: #b8860b;
+      --text: #2a2318;
+      --text-muted: #6b5f4e;
+      --border: #e0d8cc;
+      --serif: 'Noto Serif KR', serif;
+      --sans: 'Noto Sans KR', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--dark);
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: var(--gold);
+      text-decoration: none;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #fff; }
+    nav a::before {
+      content: '←';
+      font-size: 1rem;
+    }
+    nav .nav-title {
+      margin-left: auto;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--dark);
+      color: #fff;
+      padding: 5rem 1.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .hero-meta {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      align-items: center;
+    }
+    .hero-meta span { opacity: 0.6; color: #fff; }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-line {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+      margin-bottom: 1.5rem;
+    }
+    .hero-summary {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+      max-width: 620px;
+    }
+
+    /* TAGS */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+    .tag {
+      background: rgba(212,168,67,0.15);
+      border: 1px solid rgba(212,168,67,0.3);
+      color: var(--gold);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      font-family: var(--sans);
+    }
+
+    /* MAIN */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* SECTION */
+    .section {
+      margin-bottom: 3.5rem;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-deep);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-family: var(--sans);
+      margin-bottom: 0.75rem;
+    }
+    .section h2 {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+    }
+    .section p {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight {
+      background: var(--dark);
+      color: rgba(255,255,255,0.85);
+      border-left: 3px solid var(--gold);
+      padding: 1.75rem 2rem;
+      margin: 2.5rem 0;
+      border-radius: 0 2px 2px 0;
+    }
+    .highlight p {
+      color: rgba(255,255,255,0.8) !important;
+      font-size: 1rem !important;
+      line-height: 1.9;
+    }
+    .highlight strong {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* INSIGHT GRID */
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .insight-item {
+      background: var(--bg);
+      padding: 1.5rem;
+    }
+    .insight-icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .insight-title {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .insight-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* COACHING STEPS */
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .steps li {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      counter-increment: step;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--dark);
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-top: 0.1rem;
+    }
+    .step-text {
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      padding-top: 0.2rem;
+      line-height: 1.75;
+    }
+    .step-text strong {
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    /* PHILOSOPHY */
+    .philosophy {
+      background: linear-gradient(135deg, #1a1710 0%, var(--dark) 100%);
+      color: #fff;
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+      margin: 2.5rem 0;
+    }
+    .philosophy .phi-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .philosophy p {
+      font-size: 0.93rem;
+      color: rgba(255,255,255,0.7) !important;
+      margin-bottom: 0.85rem;
+    }
+    .philosophy p:last-child { margin-bottom: 0 !important; }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 2rem 1.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      nav .nav-title { display: none; }
+      .hero { padding: 3.5rem 1.25rem 3rem; }
+      main { padding: 2.5rem 1.25rem 4rem; }
+      .highlight { padding: 1.25rem 1.25rem; }
+      .philosophy { padding: 1.75rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html">메인으로 돌아가기</a>
+  <span class="nav-title">언행심리학 사례 아카이브</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      언행심리학 상담 사례
+      <span>2026년 6월 11일</span>
+      <span>임수현</span>
+    </div>
+    <h1>말보다 행동이 보여준<br>집안 질서</h1>
+    <div class="hero-line"></div>
+    <p class="hero-summary">
+      방치되던 시골의 90세 노모. 치매도, 병도 없었다. 그저 자식들이 오지 않았을 뿐이다.
+      막내 아들의 묵묵한 솔선수범이 형제들의 양심을 흔들고, 끝내 집안의 질서를 바로 세운 사례.
+    </p>
+    <div class="tags">
+      <span class="tag">솔선수범</span>
+      <span class="tag">양심</span>
+      <span class="tag">노인 방치</span>
+      <span class="tag">가족 서열 심리</span>
+      <span class="tag">노부모 돌봄</span>
+      <span class="tag">언행심리 코칭</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- 상황 -->
+  <section class="section">
+    <div class="section-label">상황 분석</div>
+    <h2>아무도 이상하다 생각하지 않았다</h2>
+    <p>
+      90세에 가까운 노모가 시골에 혼자 살고 있었다. 자식들이 방문했을 때 노모는 사람을 잘 알아보지 못했고,
+      멍한 눈빛에 기운도 없었다. 그러나 형제들 중 누구도 걱정하지 않았다.
+      <strong style="color:var(--dark); font-weight:500;">"나이 먹으면 다 그런 거야."</strong>
+    </p>
+    <p>
+      한 가지 단서가 있었다. 집 안팎이 유난히 깨끗했다. 이는 자신이 갈 날을 감지한 노인이
+      주변을 정리하기 시작했다는 신호였다. 그러나 자식들 중 이를 알아챈 사람은 없었다.
+    </p>
+    <p>
+      밭농사는 손에서 떠난 지 오래였고, 대화 상대도, 먹을 것도 넉넉지 않았다.
+      치매도 없고 병도 없는 90세 노인이 빠르게 쇠약해지고 있었다. 원인은 하나였다 — 방치.
+    </p>
+  </section>
+
+  <div class="highlight">
+    <p>
+      <strong>"아프지도 않고 치매도 없는데, 못 알아봤다는 건 — 못 드신 거야."</strong><br>
+      관리가 안 된 거야. 자식들이 관심을 주지 않았다는 얘기야.
+    </p>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- 심리 분석 -->
+  <section class="section">
+    <div class="section-label">심리 분석</div>
+    <h2>이기심 속에도 양심은 있었다</h2>
+    <p>
+      형제들 각자는 나름의 '의무'를 이행했다고 생각했다. 특별한 날 밥 한 끼, 가끔 용돈,
+      영양제 한 박스. 스스로의 기준에서 "나는 다 했다"는 면죄부를 가지고 살았다.
+    </p>
+    <p>
+      그러나 이 가족에는 한 가지 공통 자산이 있었다. <strong style="color:var(--dark); font-weight:500;">양심</strong>.
+      아무것도 하지 않는 완전한 무관심은 아니었다. 형들이 그 선에서 멈추니
+      아래 자식들은 "이 정도면 됐다"는 기준을 그대로 물려받았다.
+      윗물이 맑지 않으면 아랫물은 더 탁해질 뿐이다.
+    </p>
+
+    <div class="insight-grid">
+      <div class="insight-item">
+        <div class="insight-icon">⚖️</div>
+        <div class="insight-title">서열이 만드는 기준</div>
+        <div class="insight-desc">큰아들이 하는 만큼이 묵시적 기준선이 된다. 형이 영양제 하나라면, 막내는 그보다 덜 해도 된다는 심리.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">🪞</div>
+        <div class="insight-title">자기 기준의 의무감</div>
+        <div class="insight-desc">부모가 필요한 것이 아닌 '내가 했다'는 행위 자체를 기준으로 삼는 이기적 의무감.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">💛</div>
+        <div class="insight-title">양심이라는 균열</div>
+        <div class="insight-desc">완전히 외면하지는 못한다. 이 균열이 솔선수범이 들어올 수 있는 틈이 된다.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 코칭 -->
+  <section class="section">
+    <div class="section-label">언행심리 코칭</div>
+    <h2>말 대신 행동으로 서열을 뒤흔들다</h2>
+    <p>
+      언행심리 마스터의 핵심 판단은 이랬다. 이 집안에는 양심이 있다. 양심이 있는 집은
+      바로 세울 수 있다. 단, 말로 지적해서는 안 된다. 막내가 형들에게 "당신들이 잘못했어요"라고
+      말하는 순간 싸움이 되고 분란이 된다.
+    </p>
+    <p>
+      해법은 단 하나였다 — <strong style="color:var(--dark); font-weight:500;">조용히, 꿋꿋이, 보여주는 것.</strong>
+    </p>
+
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>충격을 주어 깨운다</strong><br>
+          "치매도 없고 병도 없는데 못 알아봤다 — 못 드신 거야." 이 한 문장으로 막내를 흔들었다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>매주 방문하고, 살피고, 먹인다</strong><br>
+          민어, 보약, 직접 끓인 음식. 비싼 것 한 번이 아니라 일주일을 버틸 수 있는 행복을 매주 전했다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>가족 단톡방에 상황을 공유한다</strong><br>
+          "상황이 안 좋다. 보살핌이 필요하다. 방법을 찾아야 할 것 같다." — 지적 없이, 사실만.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <strong>시스템을 만든다</strong><br>
+          요양보호사 제도를 알아보고 연결했다. 국가 제도를 아무도 신경 쓰지 않았을 뿐이었다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">5</div>
+        <div class="step-text">
+          <strong>생색 없이 지속한다</strong><br>
+          막내는 한 마디도 하지 않았다. 그 침묵이 형들의 수치심을 만들었다.
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 결과 -->
+  <section class="section">
+    <div class="section-label">사례 결과</div>
+    <h2>노모의 회복, 형제들의 변화</h2>
+    <p>
+      잘 먹고 보살핌을 받자 노모는 빠르게 회복했다. 기억력이 돌아왔고, 밭일을 다시 시작했다.
+      집은 다시 편안한 생활의 흔적으로 채워졌다. 병 없이 잘 먹고 보살핌만 있으면
+      100세도 충분하다는 것이 증명됐다.
+    </p>
+    <p>
+      형들은 나중에서야 진실을 알았다. 자신들이 영양제 한 박스로 변화가 생겼다 착각할 때,
+      막내가 수십 주를 묵묵히 오갔다는 것을. 그 순간 수치심이 왔다.
+      그리고 행동이 달라졌다.
+    </p>
+    <p>
+      제일 어리고, 형편도 더 어려운 막내가 혼자 다 했다. 그게 얼마나 창피한 일인가 — 양심이 있는 사람이라면 그걸 버티지 못한다.
+    </p>
+  </section>
+
+  <!-- 철학 -->
+  <div class="philosophy">
+    <div class="phi-label">언행심리학 핵심 통찰</div>
+    <p>
+      인간은 태어날 때 아무것도 못 하고 죽을 때도 아무것도 못 한다.
+      아기 때 기저귀를 갈아준 어머니가, 이제 기저귀가 필요해졌다면 — 그 자식이 해야 하는 건 당연한 수순이다.
+      벤자민 버튼처럼, 삶은 처음과 끝이 같다. 받은 대로 베풀어야 한다.
+    </p>
+    <p>
+      그리고 양심 있는 집안은 반드시 바로 세울 수 있다.
+      말로 해서는 안 된다. 솔선수범, 행하면 된다.
+      그 행동이 서열을 흔들고, 서열이 흔들리면 양심이 움직인다.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  <p>언행심리학 사례 아카이브 &nbsp;·&nbsp; <a href="../index.html">목록으로</a></p>
+  <p style="margin-top:0.5rem; font-size:0.68rem;">2026.06.11 &nbsp;·&nbsp; 상담자: 임수현</p>
+</footer>
+
+</body>
+</html>
