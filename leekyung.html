@@ -695,6 +695,8 @@
   @media (max-width: 600px) {
     .hero-left { padding: 2.5rem 1.5rem; }
     .hero-right { padding: 2.5rem 1.5rem; }
+    .hero-title { font-size: clamp(2.8rem, 9vw, 4rem); }
+    .hero-desc { font-size: 0.9rem; }
     .steps-grid { grid-template-columns: 1fr; }
     .case-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .case-tab { font-size: 0.7rem; padding: 0.7rem 0.9rem; flex-shrink: 0; letter-spacing: 0.04em; }
@@ -709,6 +711,11 @@
     .case-item { padding: 1.2rem; }
     .hero-quote { font-size: 0.82rem; }
     section { padding: clamp(3rem, 8vw, 6rem) clamp(1.2rem, 4vw, 3rem); }
+    .scope-card { padding: 1.75rem 1.5rem; }
+    .section-title { font-size: clamp(1.6rem, 5vw, 2.2rem); }
+    .error-card { padding: 1.5rem; }
+    .what-is-text { padding: 0; }
+    .when-needed-grid { gap: 1rem; }
   }
 
   @media (max-width: 480px) {
@@ -718,6 +725,18 @@
     .principles-grid { grid-template-columns: 1fr; }
     .principle-item, .principle-item[style*="span 2"], .principle-item--wide { grid-column: span 1; }
     .principle-item { padding: 1.5rem; }
+    .hero-title { font-size: clamp(2.4rem, 8vw, 3.2rem); }
+    .scope-name { font-size: 1.1rem; }
+    .scope-desc { font-size: 0.82rem; }
+    .when-text { font-size: 0.85rem; }
+    .step-num-badge { width: 2rem; height: 2rem; font-size: 0.75rem; }
+  }
+
+  @media (max-width: 380px) {
+    .hero-left { padding: 2rem 1.25rem; }
+    .hero-right { padding: 2rem 1.25rem; }
+    .scope-card { padding: 1.5rem 1.25rem; }
+    .section-title { font-size: clamp(1.4rem, 6vw, 1.9rem); }
   }
 </style>
 </head>
