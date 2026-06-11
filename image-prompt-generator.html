@@ -214,62 +214,6 @@
       color: #3a3a60;
       cursor: not-allowed;
     }
-    .gen-btn.loading {
-      background: linear-gradient(135deg, #1e1e40 0%, #16163a 100%);
-      color: #8888c0;
-      cursor: not-allowed;
-    }
-
-    /* ── PROGRESS BAR ── */
-    .progress-wrap {
-      background: #111128;
-      border: 1px solid #222240;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 20px;
-    }
-    .progress-bar-track {
-      height: 6px;
-      background: #1e1e40;
-      border-radius: 4px;
-      overflow: hidden;
-      margin: 10px 0 8px;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #D97757, #8B5CF6);
-      border-radius: 4px;
-      transition: width 0.4s ease;
-    }
-    .progress-text {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #6666a0;
-    }
-
-    /* ── STORY CONTEXT ── */
-    .context-box {
-      background: #0c1828;
-      border: 1px solid #1e3a5a;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 20px;
-    }
-    .context-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      color: #4285F4;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .context-text {
-      color: #7090b0;
-      font-size: 13px;
-      line-height: 1.7;
-      font-style: italic;
-    }
 
     /* ── RESULTS HEADER ── */
     .results-header {
@@ -343,22 +287,8 @@
       font-style: italic;
       line-height: 1.65;
       flex: 1;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
     }
     .scene-body { padding: 0 20px 20px; }
-
-    /* loading state */
-    .scene-loading {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #5555a0;
-      font-size: 13px;
-      padding: 12px 0;
-    }
 
     /* ── PROMPT ROW ── */
     .prompt-row {
@@ -395,20 +325,8 @@
       font-size: 12px;
       line-height: 1.75;
       font-family: 'SF Mono', 'Fira Code', monospace;
-      word-break: break-word;
-    }
-
-    /* ── LOADING DOTS ── */
-    .dots { display: inline-flex; gap: 4px; align-items: center; }
-    .dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: #D97757;
-      display: inline-block;
-    }
-    @keyframes dotBounce {
-      0%,80%,100% { transform: translateY(0); opacity: 0.4; }
-      40% { transform: translateY(-5px); opacity: 1; }
+      white-space: pre-wrap;
+      word-break: break-all;
     }
 
     /* ── DONE BANNER ── */
@@ -440,11 +358,11 @@
 
   <!-- HEADER -->
   <header class="header">
-    <p class="header-eyebrow">▶ YouTube Script → Image Prompt</p>
-    <h1 class="header-title">이미지 프롬프트 생성기</h1>
+    <p class="header-eyebrow">▶ YouTube Script → AI Instruction Generator</p>
+    <h1 class="header-title">AI 대화창 프롬프트 생성기</h1>
     <p class="header-sub">
-      전체 스크립트 맥락을 유지하며<br>
-      장면별 AI 이미지 프롬프트를 자동 생성합니다
+      설정한 옵션에 맞춰 AI 대화창에 바로 복사+붙여넣기 할 수 있는<br>
+      최적의 프롬프트 명령어를 생성합니다.
     </p>
   </header>
 
@@ -456,14 +374,14 @@
       <textarea
         class="script-area"
         id="scriptInput"
-        placeholder="전체 스크립트를 그대로 붙여넣으세요.&#10;&#10;AI가 전체 흐름을 먼저 파악한 뒤,&#10;지정한 장면 수로 자동 분할하고&#10;앞뒤 맥락이 자연스럽게 이어지는&#10;이미지 프롬프트를 생성합니다."
+        placeholder="여기에 방송 스크립트를 붙여넣으세요. 이 스크립트가 AI에게 전달되어 분석됩니다."
       ></textarea>
     </div>
 
     <!-- SCENE COUNT -->
     <div class="card">
       <div class="slider-row">
-        <p class="card-label" style="margin:0">🎬 이미지 장면 수</p>
+        <p class="card-label" style="margin:0">🎬 목표 이미지 장면 수</p>
         <span class="scene-badge" id="sceneCountLabel">10 장면</span>
       </div>
       <input type="range" min="3" max="30" value="10" id="sceneCountSlider" />
@@ -478,12 +396,12 @@
       <div>
         <p class="opt-label">🎨 이미지 스타일</p>
         <select class="opt-select" id="styleSelect">
-          <option>사실적 사진 스타일</option>
+          <option>사실적 사진 스타일(Photorealistic)</option>
           <option>애니메이션 / 일러스트</option>
-          <option>수채화</option>
-          <option>유화</option>
+          <option>수채화(Watercolor)</option>
+          <option>유화(Oil Painting)</option>
           <option>미니멀 디자인</option>
-          <option>영화적 시네마틱</option>
+          <option>영화적 시네마틱(Cinematic)</option>
           <option>인포그래픽</option>
           <option>3D 렌더링</option>
         </select>
@@ -491,18 +409,18 @@
       <div>
         <p class="opt-label">📐 화면 비율</p>
         <select class="opt-select" id="ratioSelect">
-          <option>16:9 (유튜브)</option>
-          <option>9:16 (쇼츠)</option>
+          <option>16:9 (유튜브 일반)</option>
+          <option>9:16 (쇼츠 / 릴스)</option>
           <option>1:1 (정사각)</option>
           <option>4:3</option>
         </select>
       </div>
       <div>
-        <p class="opt-label">🤖 AI 툴 보기</p>
+        <p class="opt-label">🤖 타겟 AI 모델</p>
         <select class="opt-select" id="toolSelect">
-          <option value="all">전체 보기</option>
+          <option value="all">전체 모델용 보기</option>
           <option value="gemini">Google Gemini</option>
-          <option value="chatgpt">ChatGPT / DALL·E</option>
+          <option value="chatgpt">ChatGPT (DALL·E 3)</option>
           <option value="claude">Claude</option>
           <option value="copilot">Microsoft Copilot</option>
           <option value="midjourney">Midjourney</option>
@@ -515,38 +433,21 @@
     <div class="tool-pills" id="toolPills"></div>
 
     <!-- GENERATE BUTTON -->
-    <button class="gen-btn disabled" id="genBtn" disabled>✨  이미지 프롬프트 생성하기</button>
-
-    <!-- PROGRESS -->
-    <div class="progress-wrap hidden" id="progressWrap">
-      <div class="progress-bar-track">
-        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
-      </div>
-      <div class="progress-text">
-        <span id="progressCount">0 / 0 완료</span>
-        <span id="progressPct">0%</span>
-      </div>
-    </div>
-
-    <!-- STORY CONTEXT -->
-    <div class="context-box hidden" id="contextBox">
-      <p class="context-eyebrow">🎯 스토리 맥락 — 모든 장면에 일관되게 적용됨</p>
-      <p class="context-text" id="contextText"></p>
-    </div>
+    <button class="gen-btn ready" id="genBtn">✨ 대화창 복사용 프롬프트 생성하기</button>
 
     <!-- RESULTS -->
     <div id="resultsSection" class="hidden">
       <div class="results-header">
-        <span class="results-count" id="resultsCount"></span>
-        <button class="copy-all-btn hidden" id="copyAllBtn">📋 전체 복사</button>
+        <span class="results-count" id="resultsCount">복사할 프롬프트 준비 완료</span>
+        <button class="copy-all-btn" id="copyAllBtn">📋 전체 복사</button>
       </div>
       <div id="resultCards"></div>
     </div>
 
     <!-- DONE BANNER -->
     <div class="done-banner hidden" id="doneBanner">
-      ✅ <strong id="doneCount"></strong> 프롬프트 생성 완료<br>
-      <span style="font-size:12px;margin-top:4px;display:block">스토리 연속성이 유지된 이미지 프롬프트가 준비됐습니다.</span>
+      ✅ 프롬프트가 성공적으로 생성되었습니다!<br>
+      <span style="font-size:12px;margin-top:4px;display:block">아래의 프롬프트를 복사하여 ChatGPT, Gemini, Claude 등의 대화창에 그대로 붙여넣으세요.</span>
     </div>
 
   </main>
@@ -562,12 +463,9 @@ const AI_TOOLS = [
   { id: "stable",     label: "Stable Diffusion",   short: "SD",     color: "#E11D48", bg: "#2a0d14", icon: "◇" },
 ];
 
-// State
 let sceneCount = 10;
 let selectedTool = "all";
-let results = [];
-let loadingIdx = null;
-let isDone = false;
+let generatedPromptText = "";
 
 // Elements
 const scriptInput    = document.getElementById("scriptInput");
@@ -578,23 +476,13 @@ const ratioSelect    = document.getElementById("ratioSelect");
 const toolSelect     = document.getElementById("toolSelect");
 const toolPills      = document.getElementById("toolPills");
 const genBtn         = document.getElementById("genBtn");
-const progressWrap   = document.getElementById("progressWrap");
-const progressFill   = document.getElementById("progressFill");
-const progressCount  = document.getElementById("progressCount");
-const progressPct    = document.getElementById("progressPct");
-const contextBox     = document.getElementById("contextBox");
-const contextText    = document.getElementById("contextText");
 const resultsSection = document.getElementById("resultsSection");
-const resultsCount   = document.getElementById("resultsCount");
-const copyAllBtn     = document.getElementById("copyAllBtn");
 const resultCards    = document.getElementById("resultCards");
 const doneBanner     = document.getElementById("doneBanner");
-const doneCount      = document.getElementById("doneCount");
+const copyAllBtn     = document.getElementById("copyAllBtn");
 
-// Build tool pills
 function buildPills() {
   toolPills.innerHTML = "";
-
   const allPill = document.createElement("button");
   allPill.className = "tool-pill" + (selectedTool === "all" ? " active" : "");
   allPill.textContent = "전체";
@@ -616,121 +504,115 @@ function setSelectedTool(id) {
   selectedTool = id;
   toolSelect.value = id;
   buildPills();
-  renderResults();
-  updateCopyAllLabel();
+  if(scriptInput.value.trim()) {
+    generateTemplates();
+  }
 }
 
 toolSelect.addEventListener("change", () => {
   selectedTool = toolSelect.value;
   buildPills();
-  renderResults();
-  updateCopyAllLabel();
+  if(scriptInput.value.trim()) {
+    generateTemplates();
+  }
 });
 
-// Slider
 sceneSlider.addEventListener("input", () => {
   sceneCount = Number(sceneSlider.value);
   sceneLabel.textContent = sceneCount + " 장면";
 });
 
-// Script input → enable/disable button
-scriptInput.addEventListener("input", () => {
-  updateGenBtn();
-  results = [];
-  isDone = false;
-  renderResults();
-  contextBox.classList.add("hidden");
-  doneBanner.classList.add("hidden");
-});
+// 핵심 기능: AI 대화창용 마스터 프롬프트 생성 규칙
+function generateTemplates() {
+  const script = scriptInput.value.trim();
+  const style = styleSelect.value;
+  const ratio = ratioSelect.value;
+  
+  if (!script) return;
 
-function updateGenBtn() {
-  const isLoading = loadingIdx !== null;
-  const hasText = scriptInput.value.trim().length > 0;
-  genBtn.disabled = !hasText || isLoading;
-  if (isLoading) {
-    genBtn.className = "gen-btn loading";
-  } else if (!hasText) {
-    genBtn.className = "gen-btn disabled";
-  } else {
-    genBtn.className = "gen-btn ready";
-  }
-}
+  resultsSection.classList.remove("hidden");
+  doneBanner.classList.remove("hidden");
+  resultCards.innerHTML = "";
 
-function updateBtnLabel() {
-  if (loadingIdx === -1) {
-    genBtn.textContent = "🔍  전체 스크립트 분석 중...";
-  } else if (loadingIdx !== null) {
-    genBtn.textContent = `⏳  프롬프트 생성 중... (${loadingIdx + 1} / ${results.length})`;
-  } else {
-    genBtn.textContent = "✨  이미지 프롬프트 생성하기";
-  }
-}
-
-function updateProgress() {
-  const completed = results.filter(r => r.prompts).length;
-  const total = results.length;
-  const pct = total ? Math.round((completed / total) * 100) : 0;
-
-  if (loadingIdx !== null && total > 0 && loadingIdx >= 0) {
-    progressWrap.classList.remove("hidden");
-    progressFill.style.width = pct + "%";
-    progressCount.textContent = completed + " / " + total + " 완료";
-    progressPct.textContent = pct + "%";
-  } else {
-    progressWrap.classList.add("hidden");
-  }
-}
-
-function updateCopyAllLabel() {
-  const tid = selectedTool === "all" ? "gemini" : selectedTool;
-  const label = AI_TOOLS.find(t => t.id === tid)?.label || "Gemini";
-  copyAllBtn.textContent = `📋 전체 복사 (${label})`;
-}
-
-// Build a single scene card HTML
-function buildSceneCard(r, i, total) {
-  const pct = Math.round(((i + 1) / total) * 100);
   const toolsToShow = selectedTool === "all" ? AI_TOOLS : AI_TOOLS.filter(t => t.id === selectedTool);
-  const isLoading = (loadingIdx === i);
 
-  let bodyHtml = "";
-  if (isLoading) {
-    bodyHtml = `
-      <div class="scene-loading">
-        <span class="dots">
-          <span class="dot" style="animation:dotBounce 1.2s ease-in-out 0s infinite"></span>
-          <span class="dot" style="animation:dotBounce 1.2s ease-in-out 0.18s infinite"></span>
-          <span class="dot" style="animation:dotBounce 1.2s ease-in-out 0.36s infinite"></span>
-        </span>
-        <span>맥락 분석 & 프롬프트 생성 중...</span>
-      </div>`;
-  } else if (r.prompts) {
-    bodyHtml = toolsToShow.map(tool => {
-      const text = r.prompts[tool.id] || "—";
-      return `
-        <div class="prompt-row" style="background:${tool.bg};border-color:${tool.color}18" data-tool="${tool.id}" data-scene="${i}">
-          <div class="prompt-row-header">
-            <span class="prompt-tool-name" style="color:${tool.color}">${tool.icon} ${tool.label}</span>
-            <button class="copy-btn" style="background:transparent;border-color:${tool.color}66;color:${tool.color}"
-              onclick="copyPrompt(this, ${i}, '${tool.id}')">복사</button>
-          </div>
-          <p class="prompt-text">${escapeHtml(text)}</p>
-        </div>`;
-    }).join("");
-  }
+  toolsToShow.forEach(tool => {
+    let toolRule = "";
+    
+    // 각 AI 모델별 맞춤형 명령어 세팅
+    switch(tool.id) {
+      case "gemini":
+        toolRule = "- 자연스러운 묘사 중심의 문장형 영어 프롬프트로 작성해줘.\n- 디테일한 상황 묘사와 스타일 키워드를 조화롭게 섞어줘.";
+        break;
+      case "chatgpt":
+        toolRule = "- DALL·E 3 엔진에 최적화된 생생하고 구체적인 영어 프롬프트로 작성해줘.\n- 조명(Lighting), 구도(Composition), 분위기(Mood) 정보를 명확하게 포함해줘.";
+        break;
+      case "claude":
+        toolRule = "- 주체(Subject) + 환경(Environment) + 분위기(Mood) 구조의 균형 잡힌 영어 프롬프트로 작성해줘.\n- 텍스트의 문맥과 서사적 연속성이 비주얼에 잘 드러나도록 해줘.";
+        break;
+      case "copilot":
+        toolRule = "- 안전하고 명확하며 서술적인 묘사 중심의 영어 프롬프트로 작성해줘.\n- 지나치게 추상적인 표현은 배제하고 직관적인 비주얼 위주로 구성해줘.";
+        break;
+      case "midjourney":
+        toolRule = "- 미드저니 v6 문법에 맞게 핵심 키워드와 시네마틱 수식어 중심으로 작성해줘.\n- 모든 장면 끝에 반드시 비율 옵션인 `---ar ${ratio.split(' ')[0]}`를 붙여주고 일관된 비주얼 랭귀지를 써줘.";
+        break;
+      case "stable":
+        toolRule = "- 스테이블 디퓨전 가중치 문법인 강조 괄호 `(keyword:1.3)` 등을 적절히 활용한 영문 태그/문장 형태로 작성해줘.\n- 퀄리티 관련 네거티브 정보나 고품질 디스크립터를 일관되게 적용해줘.";
+        break;
+    }
 
-  return `
-    <div class="scene-card">
-      <div class="scene-top-bar" style="width:${pct}%;min-width:3px"></div>
+    // AI에게 입력할 최종 완성형 거대 프롬프트 양식
+    const finalPromptForAI = `당신은 유튜브 영상 제작 및 AI 이미지 프롬프트 엔지니어링 전문가입니다.
+아래 제공된 [유튜브 스크립트]를 분석하여, 전체 맥락과 시각적 일관성(Visual Continuity)을 유지하는 총 ${sceneCount}개의 이미지 생성용 프롬프트를 만드세요.
+
+[생성 조건]
+1. 목표 장면 수: 정확히 ${sceneCount}개의 장면으로 스크립트를 문맥에 맞게 등분할 것.
+2. 비주얼 스타일: 전체 장면에 '${style}' 스타일을 일관되게 적용할 것.
+3. 화면 비율: 기본 타겟 비율은 '${ratio}' 입니다.
+4. 출력 언어: 이미지 생성 엔진이 잘 이해하도록 프롬프트 내용은 반드시 '영어(English)'로 작성할 것.
+
+[${tool.label} 전용 프롬프트 작성 규칙]
+${toolRule}
+
+[출력 형식]
+반드시 아래의 JSON 포맷으로만 답변하세요. 마크다운 패키징(\`\`\`json)이나 다른 설명은 절대 추가하지 마세요.
+{
+  "storyContext": "전체 영상의 비주얼 톤앤매너, 색감, 캐릭터 특징 요약 (영문 2-3문장)",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "scriptSegment": "해당 프롬프트에 대응하는 한국어 스크립트 구절",
+      "imagePrompt": "여기에 규칙에 맞춰 생성된 영문 이미지 프롬프트 작성"
+    }
+  ]
+}
+
+[유튜브 스크립트]
+${script}`;
+
+    // 화면에 카드 형태로 렌더링
+    const card = document.createElement("div");
+    card.className = "scene-card";
+    card.innerHTML = `
+      <div class="scene-top-bar" style="width:100%; background:${tool.color}"></div>
       <div class="scene-header">
         <div class="scene-badge-wrap">
-          <span class="scene-num-badge">SCENE ${i + 1}</span>
-          <span class="scene-pos">${i + 1}/${total}</span>
+          <span class="scene-num-badge" style="background:${tool.color}">${tool.short} 탭용</span>
         </div>
-        <p class="scene-text">"${escapeHtml(r.segment)}"</p>
+        <p class="scene-text" style="color:#fff; font-weight:bold;">${tool.label} 대화창에 붙여넣을 복사본</p>
       </div>
-      <div class="scene-body">${bodyHtml}</div>
-    </div>`;
+      <div class="scene-body">
+        <div class="prompt-row" style="background:${tool.bg}; border-color:${tool.color}18">
+          <div class="prompt-row-header">
+            <span class="prompt-tool-name" style="color:${tool.color}">📋 대화창 전용 명령어 시스템</span>
+            <button class="copy-btn" style="background:transparent; border-color:${tool.color}66; color:${tool.color}" onclick="copyToClipboard(this)">복사하기</button>
+          </div>
+          <pre class="prompt-text">${escapeHtml(finalPromptForAI)}</pre>
+        </div>
+      </div>
+    `;
+    resultCards.appendChild(card);
+  });
 }
 
 function escapeHtml(str) {
@@ -741,177 +623,37 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;");
 }
 
-function renderResults() {
-  if (results.length === 0) {
-    resultsSection.classList.add("hidden");
-    return;
-  }
-  resultsSection.classList.remove("hidden");
-  resultsCount.textContent = "총 " + results.length + "개 장면";
-
-  if (isDone) {
-    copyAllBtn.classList.remove("hidden");
-    updateCopyAllLabel();
-  } else {
-    copyAllBtn.classList.add("hidden");
-  }
-
-  resultCards.innerHTML = results.map((r, i) => buildSceneCard(r, i, results.length)).join("");
-}
-
-window.copyPrompt = function(btn, sceneIdx, toolId) {
-  const text = results[sceneIdx]?.prompts?.[toolId] || "";
+window.copyToClipboard = function(btn) {
+  const text = btn.parentElement.nextElementSibling.textContent;
   navigator.clipboard.writeText(text).then(() => {
-    const tool = AI_TOOLS.find(t => t.id === toolId);
-    btn.textContent = "✓ 복사됨";
-    btn.style.background = tool.color;
+    const originalText = btn.textContent;
+    btn.textContent = "✓ 복사 완료!";
+    btn.style.background = "#D97757";
     btn.style.color = "#fff";
     setTimeout(() => {
-      btn.textContent = "복사";
+      btn.textContent = originalText;
       btn.style.background = "transparent";
-      btn.style.color = tool.color;
-    }, 1800);
+      btn.style.color = "#7070a0";
+    }, 1500);
   });
 };
 
 copyAllBtn.addEventListener("click", () => {
-  const tid = selectedTool === "all" ? "gemini" : selectedTool;
-  const label = AI_TOOLS.find(t => t.id === tid)?.label || "Gemini";
-  const text = results
-    .filter(r => r.prompts)
-    .map((r, i) => `[Scene ${i + 1}]\n${r.segment}\n\n→ ${r.prompts?.[tid] || ""}`)
-    .join("\n\n---\n\n");
-  navigator.clipboard.writeText(text);
+  const texts = Array.from(document.querySelectorAll(".prompt-text")).map(p => p.textContent).join("\n\n=========================\n\n");
+  navigator.clipboard.writeText(texts);
+  alert("화면에 표시된 모든 AI 모델용 프롬프트 명령어가 클립보드에 복사되었습니다.");
 });
 
-// API calls
-async function analyzeScript(fullScript, n) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 2000,
-      system: `You are a YouTube video production expert. Analyze a Korean script and:
-1. Extract the overall story/narrative context (tone, setting, characters, color palette, visual theme)
-2. Split the script into exactly ${n} segments of roughly equal length by meaning
-
-Respond ONLY in valid JSON, no preamble, no markdown:
-{
-  "storyContext": "overall visual style, tone, recurring elements, color mood, setting description in English (2-3 sentences)",
-  "segments": ["segment1 text", "segment2 text", ...]
-}`,
-      messages: [{ role: "user", content: fullScript }],
-    }),
-  });
-  const data = await res.json();
-  const text = data.content?.map(c => c.text || "").join("") || "{}";
-  try {
-    return JSON.parse(text.replace(/```json|```/g, "").trim());
-  } catch {
-    const sents = fullScript.split(/(?<=[.!?\n])\s*/).filter(s => s.trim().length > 4);
-    const size = Math.ceil(sents.length / n);
-    const segs = Array.from({ length: n }, (_, i) => sents.slice(i * size, (i + 1) * size).join(" ")).filter(Boolean);
-    return { storyContext: "Korean YouTube video", segments: segs };
+genBtn.addEventListener("click", () => {
+  if (!scriptInput.value.trim()) {
+    alert("스크립트를 입력해주세요!");
+    return;
   }
-}
-
-async function buildPromptForSegment(segment, index, total, context) {
-  const style = styleSelect.value;
-  const ratio = ratioSelect.value;
-  const position = index === 0 ? "opening scene" : index === total - 1 ? "closing scene" : `scene ${index + 1} of ${total}`;
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      system: `You are an expert image prompt creator for YouTube video production.
-
-FULL STORY CONTEXT (maintain visual consistency across ALL scenes):
-${context}
-
-Style: ${style}
-Aspect ratio: ${ratio}
-Current position: ${position}
-
-Create image prompts for THIS scene that:
-- Precisely match the scene content
-- Maintain visual continuity (same color palette, art style, setting feel)
-- Show natural narrative progression
-
-Respond ONLY in valid JSON with keys: gemini, chatgpt, claude, copilot, midjourney, stable
-No preamble, no markdown, no backticks.
-
-Per-tool rules:
-- gemini: natural scene description, detailed, photorealistic or style keyword, English
-- chatgpt: DALL·E style, vivid, lighting + composition details, English
-- claude: subject + environment + mood, balanced narrative match, English
-- copilot: clear, safe, descriptive, scene-based, English
-- midjourney: "--ar 16:9 --v 6", cinematic modifiers, consistent visual language, English
-- stable: (emphasis:1.3) parentheses, consistent descriptors, English
-
-1–3 sentences each. Specific and visual.`,
-      messages: [{ role: "user", content: `Scene content: "${segment}"` }],
-    }),
-  });
-  const data = await res.json();
-  const text = data.content?.map(c => c.text || "").join("") || "{}";
-  try {
-    return JSON.parse(text.replace(/```json|```/g, "").trim());
-  } catch {
-    return { gemini: text, chatgpt: text, claude: text, copilot: text, midjourney: text, stable: text };
-  }
-}
-
-genBtn.addEventListener("click", async () => {
-  if (!scriptInput.value.trim() || loadingIdx !== null) return;
-
-  isDone = false;
-  results = [];
-  loadingIdx = -1;
-  contextBox.classList.add("hidden");
-  doneBanner.classList.add("hidden");
-  updateGenBtn();
-  updateBtnLabel();
-  renderResults();
-
-  const analysis = await analyzeScript(scriptInput.value, sceneCount);
-  const segments = analysis.segments || [];
-  const context  = analysis.storyContext || "";
-
-  if (context) {
-    contextText.textContent = context;
-    contextBox.classList.remove("hidden");
-  }
-
-  results = segments.map(s => ({ segment: s, prompts: null }));
-  renderResults();
-  updateProgress();
-
-  for (let i = 0; i < segments.length; i++) {
-    loadingIdx = i;
-    updateBtnLabel();
-    renderResults();
-    updateProgress();
-    const prompts = await buildPromptForSegment(segments[i], i, segments.length, context);
-    results[i] = { ...results[i], prompts };
-  }
-
-  loadingIdx = null;
-  isDone = true;
-  updateGenBtn();
-  updateBtnLabel();
-  updateProgress();
-  renderResults();
-
-  doneCount.textContent = results.length + "개 장면";
-  doneBanner.classList.remove("hidden");
+  generateTemplates();
 });
 
 // Init
 buildPills();
-updateGenBtn();
 </script>
 </body>
 </html>
