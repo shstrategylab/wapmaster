@@ -209,11 +209,6 @@
     }
     .gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 6px 28px #D9775760; }
     .gen-btn.ready:active { transform: translateY(0); }
-    .gen-btn.disabled {
-      background: #111128;
-      color: #3a3a60;
-      cursor: not-allowed;
-    }
 
     /* ── RESULTS HEADER ── */
     .results-header {
@@ -256,7 +251,6 @@
     .scene-card:hover { border-color: #333360; }
     .scene-top-bar {
       height: 3px;
-      background: linear-gradient(90deg, #D97757, #8B5CF6);
     }
     .scene-header {
       display: flex;
@@ -266,7 +260,6 @@
     }
     .scene-badge-wrap { flex-shrink: 0; text-align: center; }
     .scene-num-badge {
-      background: linear-gradient(135deg, #D97757, #b8462e);
       color: #fff;
       border-radius: 8px;
       font-size: 10px;
@@ -274,12 +267,6 @@
       padding: 4px 10px;
       letter-spacing: 1px;
       display: block;
-    }
-    .scene-pos {
-      color: #444470;
-      font-size: 10px;
-      margin-top: 4px;
-      text-align: center;
     }
     .scene-text {
       color: #b0b0d8;
@@ -341,22 +328,12 @@
     }
     .done-banner strong { color: #8888c0; }
 
-    /* ── MOBILE TWEAKS ── */
-    @media (max-width: 480px) {
-      .card { padding: 16px; }
-      .scene-header { padding: 14px 14px 10px; gap: 10px; }
-      .scene-body { padding: 0 14px 14px; }
-      .prompt-row { padding: 10px 12px; }
-      .tool-pill { padding: 5px 11px; font-size: 11px; }
-    }
-
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- HEADER -->
   <header class="header">
     <p class="header-eyebrow">▶ YouTube Script → AI Instruction Generator</p>
     <h1 class="header-title">AI 대화창 프롬프트 생성기</h1>
@@ -368,7 +345,6 @@
 
   <main class="main">
 
-    <!-- SCRIPT INPUT -->
     <div class="card">
       <p class="card-label">📝 전체 방송 스크립트</p>
       <textarea
@@ -378,7 +354,6 @@
       ></textarea>
     </div>
 
-    <!-- SCENE COUNT -->
     <div class="card">
       <div class="slider-row">
         <p class="card-label" style="margin:0">🎬 목표 이미지 장면 수</p>
@@ -391,7 +366,6 @@
       </div>
     </div>
 
-    <!-- OPTIONS -->
     <div class="options-grid">
       <div>
         <p class="opt-label">🎨 이미지 스타일</p>
@@ -429,13 +403,10 @@
       </div>
     </div>
 
-    <!-- TOOL FILTER PILLS -->
     <div class="tool-pills" id="toolPills"></div>
 
-    <!-- GENERATE BUTTON -->
     <button class="gen-btn ready" id="genBtn">✨ 대화창 복사용 프롬프트 생성하기</button>
 
-    <!-- RESULTS -->
     <div id="resultsSection" class="hidden">
       <div class="results-header">
         <span class="results-count" id="resultsCount">복사할 프롬프트 준비 완료</span>
@@ -444,7 +415,6 @@
       <div id="resultCards"></div>
     </div>
 
-    <!-- DONE BANNER -->
     <div class="done-banner hidden" id="doneBanner">
       ✅ 프롬프트가 성공적으로 생성되었습니다!<br>
       <span style="font-size:12px;margin-top:4px;display:block">아래의 프롬프트를 복사하여 ChatGPT, Gemini, Claude 등의 대화창에 그대로 붙여넣으세요.</span>
@@ -465,7 +435,6 @@ const AI_TOOLS = [
 
 let sceneCount = 10;
 let selectedTool = "all";
-let generatedPromptText = "";
 
 // Elements
 const scriptInput    = document.getElementById("scriptInput");
@@ -481,13 +450,14 @@ const resultCards    = document.getElementById("resultCards");
 const doneBanner     = document.getElementById("doneBanner");
 const copyAllBtn     = document.getElementById("copyAllBtn");
 
+// 상단 필터/탭 버튼 생성 함수
 function buildPills() {
   toolPills.innerHTML = "";
   const allPill = document.createElement("button");
   allPill.className = "tool-pill" + (selectedTool === "all" ? " active" : "");
   allPill.textContent = "전체";
   if (selectedTool === "all") allPill.style.cssText = "background:#D97757;border-color:#D97757;color:#fff";
-  allPill.addEventListener("click", () => { setSelectedTool("all"); });
+  allPill.addEventListener("click", () => { setSelectedTool(allPill, "all"); });
   toolPills.appendChild(allPill);
 
   AI_TOOLS.forEach(tool => {
@@ -495,16 +465,19 @@ function buildPills() {
     pill.className = "tool-pill" + (selectedTool === tool.id ? " active" : "");
     pill.textContent = tool.icon + " " + tool.short;
     if (selectedTool === tool.id) pill.style.cssText = `background:${tool.color};border-color:${tool.color};color:#fff`;
-    pill.addEventListener("click", () => { setSelectedTool(tool.id); });
+    pill.addEventListener("click", () => { setSelectedTool(pill, tool.id); });
     toolPills.appendChild(pill);
   });
 }
 
-function setSelectedTool(id) {
+// 탭 버튼이나 셀렉트 박스를 조작할 때 '필터링 상태'만 변경하고 자동 재생성은 하지 않도록 수정
+function setSelectedTool(pillElement, id) {
   selectedTool = id;
   toolSelect.value = id;
   buildPills();
-  if(scriptInput.value.trim()) {
+  
+  // 이미 생성된 프롬프트 결과물이 화면에 있다면, 필터 결과에 맞게 새로고침해 줍니다.
+  if (!resultsSection.classList.contains("hidden") && scriptInput.value.trim()) {
     generateTemplates();
   }
 }
@@ -512,7 +485,8 @@ function setSelectedTool(id) {
 toolSelect.addEventListener("change", () => {
   selectedTool = toolSelect.value;
   buildPills();
-  if(scriptInput.value.trim()) {
+  
+  if (!resultsSection.classList.contains("hidden") && scriptInput.value.trim()) {
     generateTemplates();
   }
 });
@@ -522,13 +496,16 @@ sceneSlider.addEventListener("input", () => {
   sceneLabel.textContent = sceneCount + " 장면";
 });
 
-// 핵심 기능: AI 대화창용 마스터 프롬프트 생성 규칙
+// 마스터 프롬프트 생성 핵심 로직
 function generateTemplates() {
   const script = scriptInput.value.trim();
   const style = styleSelect.value;
   const ratio = ratioSelect.value;
   
-  if (!script) return;
+  if (!script) {
+    alert("스크립트를 입력해주세요!");
+    return;
+  }
 
   resultsSection.classList.remove("hidden");
   doneBanner.classList.remove("hidden");
@@ -539,7 +516,6 @@ function generateTemplates() {
   toolsToShow.forEach(tool => {
     let toolRule = "";
     
-    // 각 AI 모델별 맞춤형 명령어 세팅
     switch(tool.id) {
       case "gemini":
         toolRule = "- 자연스러운 묘사 중심의 문장형 영어 프롬프트로 작성해줘.\n- 디테일한 상황 묘사와 스타일 키워드를 조화롭게 섞어줘.";
@@ -554,14 +530,13 @@ function generateTemplates() {
         toolRule = "- 안전하고 명확하며 서술적인 묘사 중심의 영어 프롬프트로 작성해줘.\n- 지나치게 추상적인 표현은 배제하고 직관적인 비주얼 위주로 구성해줘.";
         break;
       case "midjourney":
-        toolRule = "- 미드저니 v6 문법에 맞게 핵심 키워드와 시네마틱 수식어 중심으로 작성해줘.\n- 모든 장면 끝에 반드시 비율 옵션인 `---ar ${ratio.split(' ')[0]}`를 붙여주고 일관된 비주얼 랭귀지를 써줘.";
+        toolRule = "- 미드저니 v6 문법에 맞게 핵심 키워드와 시네마틱 수식어 중심으로 작성해줘.\n- 모든 장면 끝에 반드시 비율 옵션인 `--ar ${ratio.split(' ')[0]}`를 붙여주고 일관된 비주얼 랭귀지를 써줘.";
         break;
       case "stable":
         toolRule = "- 스테이블 디퓨전 가중치 문법인 강조 괄호 `(keyword:1.3)` 등을 적절히 활용한 영문 태그/문장 형태로 작성해줘.\n- 퀄리티 관련 네거티브 정보나 고품질 디스크립터를 일관되게 적용해줘.";
         break;
     }
 
-    // AI에게 입력할 최종 완성형 거대 프롬프트 양식
     const finalPromptForAI = `당신은 유튜브 영상 제작 및 AI 이미지 프롬프트 엔지니어링 전문가입니다.
 아래 제공된 [유튜브 스크립트]를 분석하여, 전체 맥락과 시각적 일관성(Visual Continuity)을 유지하는 총 ${sceneCount}개의 이미지 생성용 프롬프트를 만드세요.
 
@@ -590,7 +565,6 @@ ${toolRule}
 [유튜브 스크립트]
 ${script}`;
 
-    // 화면에 카드 형태로 렌더링
     const card = document.createElement("div");
     card.className = "scene-card";
     card.innerHTML = `
@@ -644,15 +618,12 @@ copyAllBtn.addEventListener("click", () => {
   alert("화면에 표시된 모든 AI 모델용 프롬프트 명령어가 클립보드에 복사되었습니다.");
 });
 
+// 오직 이 버튼을 눌렀을 때만 생성이 일어납니다.
 genBtn.addEventListener("click", () => {
-  if (!scriptInput.value.trim()) {
-    alert("스크립트를 입력해주세요!");
-    return;
-  }
   generateTemplates();
 });
 
-// Init
+// 초기화 호출
 buildPills();
 </script>
 </body>
