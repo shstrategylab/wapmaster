@@ -32,7 +32,59 @@ input[type=range]{width:100%;accent-color:#c96a3a;height:4px;cursor:pointer}
 select{width:100%;background:#09091a;border:1px solid #1e1e3a;border-radius:10px;color:#ddddf5;padding:10px 32px 10px 12px;font-size:13px;outline:none;cursor:pointer;font-family:inherit;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236060a0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:border-color .2s}
 select:focus{border-color:#c96a3a}
 
-/* AI 도구 선택 체크박스 */
+/* ── 인물 묘사 섹션 ── */
+.char-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:0;user-select:none}
+.char-toggle-switch{width:40px;height:22px;background:#1a1a35;border-radius:11px;border:1.5px solid #2a2a50;position:relative;transition:all .2s;flex-shrink:0}
+.char-toggle-switch::after{content:'';position:absolute;left:3px;top:3px;width:13px;height:13px;border-radius:50%;background:#4040a0;transition:all .2s}
+.char-toggle-switch.on{background:#c96a3a;border-color:#c96a3a}
+.char-toggle-switch.on::after{left:21px;background:#fff}
+.char-toggle-label{font-size:13px;color:#8080c0;font-weight:600}
+.char-toggle-label span{color:#c96a3a;font-weight:800}
+.char-panel{margin-top:18px;padding-top:18px;border-top:1px solid #1a1a35;display:none}
+.char-panel.open{display:block}
+
+/* 인물 카드 그리드 */
+.char-cards{display:flex;flex-direction:column;gap:14px}
+.char-card{background:#09091a;border:1.5px solid #1e1e3a;border-radius:14px;padding:16px 18px;position:relative;transition:border-color .2s}
+.char-card:hover{border-color:#2e2e5a}
+.char-card-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.char-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#c96a3a22,#8b5cf622);border:1px solid #2a2a50;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.char-name-input{flex:1;background:transparent;border:none;border-bottom:1px solid #2a2a50;color:#ddddf5;font-size:13px;font-weight:700;padding:4px 0;outline:none;font-family:inherit;transition:border-color .2s}
+.char-name-input:focus{border-color:#c96a3a}
+.char-name-input::placeholder{color:#3a3a60;font-weight:400}
+.char-del-btn{background:transparent;border:1px solid #2a2a4040;border-radius:7px;color:#3a3a60;font-size:13px;cursor:pointer;padding:4px 9px;transition:all .18s;flex-shrink:0}
+.char-del-btn:hover{border-color:#c96a3a66;color:#c96a3a}
+
+/* 인물 속성 그리드 */
+.char-fields{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(max-width:540px){.char-fields{grid-template-columns:1fr}}
+.char-field{display:flex;flex-direction:column;gap:5px}
+.char-field-label{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#5050a0}
+.char-field-input{background:#0f0f22;border:1px solid #1e1e3a;border-radius:8px;color:#ddddf5;padding:8px 10px;font-size:12px;outline:none;font-family:inherit;transition:border-color .2s}
+.char-field-input:focus{border-color:#c96a3a}
+.char-field-input::placeholder{color:#2e2e50}
+
+/* 성격/특징 칩 선택 */
+.char-trait-row{grid-column:1/-1}
+.trait-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.trait-chip{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #2a2a50;background:#0f0f22;color:#5050a0;transition:all .15s;user-select:none}
+.trait-chip:hover{border-color:#4040a0;color:#9090d0}
+.trait-chip.selected{background:#c96a3a;border-color:#c96a3a;color:#fff}
+
+/* 자유 묘사 */
+.char-free-row{grid-column:1/-1}
+.char-free-input{width:100%;background:#0f0f22;border:1px solid #1e1e3a;border-radius:8px;color:#ddddf5;padding:9px 12px;font-size:12px;outline:none;font-family:inherit;min-height:60px;resize:vertical;line-height:1.7;transition:border-color .2s}
+.char-free-input:focus{border-color:#c96a3a}
+.char-free-input::placeholder{color:#2e2e50}
+
+/* 미리보기 뱃지 */
+.char-preview{margin-top:12px;padding:9px 12px;background:#12122a;border-radius:8px;border:1px dashed #2a2a50;font-size:11px;color:#7070b0;line-height:1.7;font-family:'SF Mono','Fira Code',monospace}
+.char-preview-label{font-size:9px;color:#4040a0;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+
+.add-char-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border:1.5px dashed #2a2a50;border-radius:12px;background:transparent;color:#5050a0;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;font-family:inherit;margin-top:4px}
+.add-char-btn:hover{border-color:#5050a0;color:#9090d0;background:#0f0f2210}
+
+/* AI 도구 체크박스 */
 .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;margin-bottom:6px}
 .tool-check-item{position:relative;cursor:pointer}
 .tool-check-item input[type=checkbox]{position:absolute;opacity:0;width:0;height:0}
@@ -45,7 +97,6 @@ select:focus{border-color:#c96a3a}
 .tool-check-sub{font-size:10px;color:#3a3a60;margin-top:1px;font-weight:400}
 .tool-check-mark{margin-left:auto;width:16px;height:16px;border-radius:50%;border:1.5px solid #2a2a50;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .18s;flex-shrink:0}
 .tool-check-item input:checked + .tool-check-box .tool-check-mark{background:var(--tc);border-color:var(--tc);color:#fff}
-
 .tool-select-btns{display:flex;gap:8px;margin-top:10px}
 .sel-btn{background:transparent;border:1px solid #1e1e3a;color:#5555a0;border-radius:7px;padding:5px 14px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .18s}
 .sel-btn:hover{border-color:#4040a0;color:#9090d0}
@@ -53,7 +104,6 @@ select:focus{border-color:#c96a3a}
 .gen-btn{width:100%;padding:17px;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:.5px;transition:all .2s;margin-bottom:28px;background:linear-gradient(135deg,#c96a3a,#a0431e);color:#fff;box-shadow:0 4px 24px #c96a3a40}
 .gen-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px #c96a3a60}
 .gen-btn:active{transform:translateY(0)}
-.gen-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
 .results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:8px}
 .results-title{font-size:12px;font-weight:800;color:#6060a0;letter-spacing:1.5px;text-transform:uppercase}
@@ -64,9 +114,11 @@ select:focus{border-color:#c96a3a}
 .scene-card:hover{border-color:#2e2e5a}
 .scene-card-top{height:3px}
 .scene-card-inner{padding:18px 20px}
-.scene-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.scene-num{background:#1a1a35;border:1px solid #2a2a50;border-radius:8px;font-size:10px;font-weight:800;color:#8080c0;padding:3px 10px;letter-spacing:1px;flex-shrink:0}
+.scene-meta{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.scene-num{background:#1a1a35;border:1px solid #2a2a50;border-radius:8px;font-size:10px;font-weight:800;color:#8080c0;padding:3px 10px;letter-spacing:1px;flex-shrink:0;margin-top:2px}
 .scene-script-text{font-size:13px;color:#7878a8;line-height:1.6;font-style:italic;flex:1}
+.scene-chars-used{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.scene-char-tag{font-size:10px;background:#c96a3a18;border:1px solid #c96a3a44;border-radius:12px;padding:2px 8px;color:#c96a3a;font-weight:700}
 
 .tool-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .tool-tab{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #2a2a50;background:#0f0f22;color:#5555a0;transition:all .18s;letter-spacing:.3px}
@@ -81,8 +133,6 @@ select:focus{border-color:#c96a3a}
 .site-link:hover{opacity:1}
 .copy-btn{background:transparent;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .18s;border:1px solid transparent}
 .prompt-text{font-family:'SF Mono','Fira Code',monospace;font-size:12px;color:#c0c0e8;line-height:1.85;white-space:pre-wrap;word-break:break-word}
-
-/* 프롬프트 특이사항 뱃지 */
 .prompt-tips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .tip-badge{font-size:10px;background:#12122a;border:1px solid #2a2a50;border-radius:6px;padding:3px 9px;color:#6060a0}
 
@@ -96,12 +146,12 @@ select:focus{border-color:#c96a3a}
 <header class="header">
   <p class="header-eyebrow">▶ Script → Image Prompt Generator</p>
   <h1 class="header-title">방송 스크립트<br>이미지 프롬프트 생성기</h1>
-  <p class="header-sub">대본을 입력하고 원하는 AI 이미지 도구를 선택하면<br>각 도구 전용 최적화 프롬프트를 장면별로 즉시 생성합니다</p>
+  <p class="header-sub">대본을 입력하고 AI 도구를 선택하면 장면별 최적화 프롬프트를 즉시 생성합니다<br>등장인물 묘사를 추가하면 더욱 현실감 있는 이미지를 만들 수 있습니다</p>
 </header>
 
 <main class="main">
 
-  <!-- 스크립트 입력 -->
+  <!-- 스크립트 -->
   <div class="card">
     <p class="sec-label">📝 방송 스크립트</p>
     <textarea id="scriptInput" placeholder="여기에 방송 대본을 붙여넣으세요.
@@ -113,7 +163,7 @@ select:focus{border-color:#c96a3a}
     <p class="tone-hint">💡 줄바꿈·문장부호(. ! ?)로 자동 분절됩니다. 단락 단위로 작성하면 더 정확합니다.</p>
   </div>
 
-  <!-- 장면 수 슬라이더 -->
+  <!-- 장면 수 -->
   <div class="card">
     <div class="slider-row">
       <p class="sec-label" style="margin:0">🎬 목표 장면 수</p>
@@ -156,6 +206,22 @@ select:focus{border-color:#c96a3a}
     </div>
   </div>
 
+  <!-- ★ 등장인물 묘사 섹션 ★ -->
+  <div class="card">
+    <div class="char-toggle" id="charToggle">
+      <div class="char-toggle-switch" id="charSwitch"></div>
+      <div>
+        <div class="char-toggle-label">👤 등장인물 묘사 설정 <span>(선택사항)</span></div>
+        <div style="font-size:11px;color:#3a3a60;margin-top:2px">인물의 외모·성격을 직접 설정하면 더 현실감 있는 이미지 프롬프트가 생성됩니다</div>
+      </div>
+    </div>
+
+    <div class="char-panel" id="charPanel">
+      <div class="char-cards" id="charCards"></div>
+      <button class="add-char-btn" id="addCharBtn">＋ 인물 추가</button>
+    </div>
+  </div>
+
   <!-- AI 도구 선택 -->
   <div class="card">
     <p class="sec-label">🤖 사용할 AI 이미지 도구 선택</p>
@@ -167,7 +233,7 @@ select:focus{border-color:#c96a3a}
     </div>
   </div>
 
-  <button class="gen-btn" id="genBtn">✨ 선택한 도구의 장면별 프롬프트 생성하기</button>
+  <button class="gen-btn" id="genBtn">✨ 장면별 이미지 프롬프트 생성하기</button>
 
   <div id="resultsSection" class="hidden">
     <div class="results-header">
@@ -182,38 +248,43 @@ select:focus{border-color:#c96a3a}
   </div>
 
 </main>
-
 <script>
-// ══════════════════════════════════════════
-//  AI 도구 정의 (맞춤 프롬프트 + 가이드)
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
+//  AI 도구 정의
+// ══════════════════════════════════════════════
 const TOOLS = [
   {
     id:"dalle", label:"DALL·E 3", sub:"ChatGPT / OpenAI", icon:"🟢", color:"#10A37F",
     link:"https://chatgpt.com", linkLabel:"ChatGPT 열기",
     tips:["자연어 문장형","구체적 묘사 중심","한국어도 인식"],
-    build(seg,style,ratio,mood,visual,lang){
-      if(lang==="ko") return `다음 장면을 ${style.ko} 스타일로 그려주세요.\n장면: ${visual}\n분위기: ${mood}\n맥락: ${seg.slice(0,100)}\n화면 비율 ${ratio}`;
-      return `Create a ${style.en} image.\nScene: ${visual}\nMood & atmosphere: ${mood}\nNarrative context: "${seg.slice(0,120)}"\nComposition: rule of thirds, ${ratio} aspect ratio, professional lighting, high detail.`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `\nCharacter in scene: ${charDesc}` : "";
+      if(lang==="ko"){
+        const cdk = charDesc ? `\n등장인물: ${charDesc}` : "";
+        return `다음 장면을 ${style.ko} 스타일로 그려주세요.\n장면: ${visual}\n분위기: ${mood}\n맥락: ${seg.slice(0,100)}${cdk}\n화면 비율 ${ratio}`;
+      }
+      return `Create a ${style.en} image.\nScene: ${visual}\nMood: ${mood}\nContext: "${seg.slice(0,120)}"${cd}\nComposition: rule of thirds, ${ratio} aspect ratio, professional lighting, high detail.`;
     }
   },
   {
     id:"midj", label:"Midjourney", sub:"Discord /imagine", icon:"🟣", color:"#8B5CF6",
     link:"https://www.midjourney.com", linkLabel:"Midjourney 열기",
     tips:["키워드 나열형","--ar 파라미터 자동","--v 6 --q 2 적용"],
-    build(seg,style,ratio,mood,visual,lang){
-      const ar = ratio.replace(":",":");
-      if(lang==="ko") return `/imagine ${visual}, ${mood}, ${style.ko} --ar ${ar} --v 6 --q 2`;
-      return `/imagine ${visual}, ${mood}, ${style.en}, dramatic lighting, ultra detailed, award-winning photography --ar ${ar} --v 6 --q 2 --style raw`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const ar = ratio;
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `/imagine ${visual}${cd}, ${mood}, ${style.ko} --ar ${ar} --v 6 --q 2`;
+      return `/imagine ${visual}${cd}, ${mood}, ${style.en}, dramatic lighting, ultra detailed --ar ${ar} --v 6 --q 2 --style raw`;
     }
   },
   {
     id:"stable", label:"Stable Diffusion", sub:"AUTOMATIC1111 / ComfyUI", icon:"🔴", color:"#E11D48",
     link:"https://stablediffusionweb.com", linkLabel:"SD Web 열기",
     tips:["(keyword:1.3) 가중치","Negative prompt 포함","CFG 7 권장"],
-    build(seg,style,ratio,mood,visual,lang){
-      const pos = `(${visual}:1.3), (${mood}:1.1), (${style.en}:1.2), (masterpiece:1.4), (best quality:1.3), highly detailed, sharp focus, 8k resolution`;
-      const neg = `Negative prompt: (blurry:1.4), (low quality:1.4), deformed, ugly, watermark, text, signature, jpeg artifacts, cropped`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, (${charDesc}:1.2)` : "";
+      const pos = `(${visual}:1.3)${cd}, (${mood}:1.1), (${style.en}:1.2), (masterpiece:1.4), (best quality:1.3), highly detailed, sharp focus, 8k`;
+      const neg = `Negative prompt: (blurry:1.4), (low quality:1.4), deformed, ugly, watermark, text, cropped`;
       return `${pos}\n${neg}`;
     }
   },
@@ -221,70 +292,83 @@ const TOOLS = [
     id:"gemini", label:"Google Gemini", sub:"Imagen 3", icon:"🔵", color:"#4285F4",
     link:"https://gemini.google.com", linkLabel:"Gemini 열기",
     tips:["자연스러운 묘사","Imagen 3 최적화","상세 상황 설명"],
-    build(seg,style,ratio,mood,visual,lang){
-      if(lang==="ko") return `다음 장면의 이미지를 생성해주세요.\n스타일: ${style.ko}\n장면: ${visual}\n분위기: ${mood}\n내용: ${seg.slice(0,120)}\n화면 비율 ${ratio}`;
-      return `Generate a ${style.en} image.\nDepict: ${visual}\nAtmosphere: ${mood}\nContext: "${seg.slice(0,120)}"\nTechnical: ${ratio} composition, vibrant colors, professional quality.`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `\nCharacter appearance: ${charDesc}` : "";
+      if(lang==="ko"){
+        const cdk = charDesc ? `\n인물 외모: ${charDesc}` : "";
+        return `다음 장면의 이미지를 생성해주세요.\n스타일: ${style.ko}\n장면: ${visual}\n분위기: ${mood}\n내용: ${seg.slice(0,100)}${cdk}\n화면 비율 ${ratio}`;
+      }
+      return `Generate a ${style.en} image.\nDepict: ${visual}\nAtmosphere: ${mood}\nContext: "${seg.slice(0,100)}"${cd}\nTechnical: ${ratio} composition, vibrant colors, professional quality.`;
     }
   },
   {
     id:"copilot", label:"Microsoft Copilot", sub:"Designer / DALL·E", icon:"🩵", color:"#0078D4",
     link:"https://copilot.microsoft.com", linkLabel:"Copilot 열기",
     tips:["명확하고 직관적","안전한 묘사 중심","한/영 모두 가능"],
-    build(seg,style,ratio,mood,visual,lang){
-      if(lang==="ko") return `${style.ko} 스타일로 ${visual}을 보여주는 이미지를 만들어주세요. 분위기는 ${mood}이며 화면 비율은 ${ratio}입니다.`;
-      return `Create a ${style.en} style image showing ${visual} with a ${mood} atmosphere. Clear, detailed composition in ${ratio} format.`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? ` The character is ${charDesc}.` : "";
+      if(lang==="ko"){
+        const cdk = charDesc ? ` 인물: ${charDesc}.` : "";
+        return `${style.ko} 스타일로 ${visual}을 보여주는 이미지를 만들어주세요. 분위기: ${mood}.${cdk} 화면 비율 ${ratio}.`;
+      }
+      return `Create a ${style.en} image showing ${visual} with a ${mood} atmosphere.${cd} Clear, detailed composition in ${ratio} format.`;
     }
   },
   {
     id:"firefly", label:"Adobe Firefly", sub:"Adobe Creative Cloud", icon:"🟠", color:"#FF6B35",
     link:"https://firefly.adobe.com", linkLabel:"Firefly 열기",
     tips:["저작권 안전 생성","스타일 레퍼런스 지원","Adobe 생태계 연동"],
-    build(seg,style,ratio,mood,visual,lang){
-      if(lang==="ko") return `${style.ko} 스타일, ${visual}, ${mood} 분위기, 전문적 품질, ${ratio} 비율`;
-      return `${style.en} style, ${visual}, ${mood} atmosphere, professional quality, ${ratio} format, high resolution, detailed composition`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `${style.ko} 스타일, ${visual}${cd}, ${mood} 분위기, 전문적 품질, ${ratio} 비율`;
+      return `${style.en} style, ${visual}${cd}, ${mood} atmosphere, professional quality, ${ratio} format, high resolution`;
     }
   },
   {
     id:"leonardo", label:"Leonardo AI", sub:"leonardo.ai", icon:"⚡", color:"#F59E0B",
     link:"https://leonardo.ai", linkLabel:"Leonardo 열기",
     tips:["모델 선택 가능","Alchemy 최적화","시네마틱 품질"],
-    build(seg,style,ratio,mood,visual,lang){
-      if(lang==="ko") return `${visual}, ${mood}, ${style.ko}, 시네마틱 조명, 초고해상도, ${ratio}`;
-      return `${visual}, ${mood}, ${style.en}, cinematic lighting, ultra high resolution, intricate details, Alchemy v2, ${ratio} format`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `${visual}${cd}, ${mood}, ${style.ko}, 시네마틱 조명, 초고해상도, ${ratio}`;
+      return `${visual}${cd}, ${mood}, ${style.en}, cinematic lighting, ultra high resolution, Alchemy v2, ${ratio} format`;
     }
   },
   {
     id:"ideogram", label:"Ideogram", sub:"ideogram.ai", icon:"🔡", color:"#7C3AED",
     link:"https://ideogram.ai", linkLabel:"Ideogram 열기",
     tips:["텍스트 렌더링 강점","타이포 포함 이미지","Magic Prompt 지원"],
-    build(seg,style,ratio,mood,visual,lang){
-      if(lang==="ko") return `${style.ko} 스타일로 ${visual}을 표현한 이미지. 분위기: ${mood}. 화면비 ${ratio}.`;
-      return `${style.en} image of ${visual}, ${mood}, clean composition, ${ratio} aspect ratio, high fidelity`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `${style.ko} 스타일로 ${visual}${cd}을 표현한 이미지. 분위기: ${mood}. 화면비 ${ratio}.`;
+      return `${style.en} image of ${visual}${cd}, ${mood}, clean composition, ${ratio} aspect ratio, high fidelity`;
     }
   },
   {
     id:"kling", label:"Kling AI", sub:"kuaishou / 영상 특화", icon:"🎬", color:"#06B6D4",
     link:"https://klingai.com", linkLabel:"Kling 열기",
     tips:["영상→이미지 키프레임","스토리보드 최적화","연속성 강조"],
-    build(seg,style,ratio,mood,visual,lang){
-      if(lang==="ko") return `키프레임 이미지: ${visual}, ${mood}, ${style.ko}, 영상 스토리보드 컷, ${ratio}`;
-      return `Keyframe image: ${visual}, ${mood}, ${style.en}, video storyboard composition, cinematic frame, ${ratio} format, consistent visual style`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `키프레임 이미지: ${visual}${cd}, ${mood}, ${style.ko}, 스토리보드 컷, ${ratio}`;
+      return `Keyframe: ${visual}${cd}, ${mood}, ${style.en}, cinematic storyboard frame, ${ratio} format, consistent visual style`;
     }
   },
   {
     id:"flux", label:"FLUX", sub:"Black Forest Labs", icon:"⚫", color:"#6B7280",
     link:"https://fal.ai/models/fal-ai/flux", linkLabel:"FLUX 열기",
     tips:["최신 오픈소스 모델","FLUX.1 Pro 지원","사실감 최상"],
-    build(seg,style,ratio,mood,visual,lang){
-      if(lang==="ko") return `${visual}, ${mood}, ${style.ko}, 포토리얼리스틱, 8K 해상도, 전문 조명, ${ratio}`;
-      return `${visual}, ${mood}, ${style.en}, photorealistic render, 8K resolution, professional studio lighting, sharp focus, ${ratio} aspect ratio`;
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `${visual}${cd}, ${mood}, ${style.ko}, 포토리얼리스틱, 8K, 전문 조명, ${ratio}`;
+      return `${visual}${cd}, ${mood}, ${style.en}, photorealistic render, 8K resolution, professional studio lighting, sharp focus, ${ratio} aspect ratio`;
     }
   },
 ];
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  스타일 & 무드 매핑
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 const STYLE_MAP = {
   photorealistic:{en:"photorealistic photography, ultra-detailed, sharp focus, natural lighting, 8K", ko:"사실적 사진 스타일, 초고해상도, 자연광"},
   cinematic:     {en:"cinematic shot, dramatic lighting, film grain, anamorphic lens, depth of field", ko:"영화적 구도, 드라마틱 조명, 필름 그레인"},
@@ -295,7 +379,6 @@ const STYLE_MAP = {
   minimal:       {en:"minimalist design, clean composition, negative space, muted tones", ko:"미니멀 디자인, 여백, 기하학적"},
   infographic:   {en:"infographic style, flat design, bold typography, data visualization", ko:"인포그래픽, 플랫 디자인, 아이콘"},
 };
-
 const MOOD_MAP = [
   {keys:["희망","행복","기쁨","성공","밝","좋","아름","긍정"],  en:"hopeful, uplifting, warm, bright"},
   {keys:["위험","위기","두려움","공포","급박","심각","갈등"],    en:"tense, dramatic, dark, ominous"},
@@ -306,7 +389,6 @@ const MOOD_MAP = [
   {keys:["자연","숲","바다","산","하늘","동물","꽃","나무"],     en:"nature, organic, lush, outdoor"},
   {keys:["도시","거리","건물","사람들","군중","현대","빌딩"],    en:"urban, cityscape, modern, architectural"},
 ];
-
 const VISUAL_MAP = [
   {keys:["사람","인물","남자","여자","아이","학생","전문가"],   en:"person, human figure in natural environment"},
   {keys:["도시","서울","뉴욕","건물","빌딩","거리","골목"],    en:"cityscape, urban environment, street scene"},
@@ -319,49 +401,210 @@ const VISUAL_MAP = [
   {keys:["여행","관광","해외","비행기","여행지","휴가"],        en:"travel and tourism, scenic destination"},
   {keys:["역사","고대","전쟁","전통","유적","박물관"],          en:"historical scene, cultural heritage site"},
 ];
+function detectMood(t){for(const m of MOOD_MAP)for(const k of m.keys)if(t.includes(k))return m.en;return "neutral, clear, professional";}
+function detectVisual(t){for(const v of VISUAL_MAP)for(const k of v.keys)if(t.includes(k))return v.en;return "conceptual scene with abstract visual elements";}
 
-function detectMood(text){
-  for(const m of MOOD_MAP) for(const k of m.keys) if(text.includes(k)) return m.en;
-  return "neutral, clear, professional";
-}
-function detectVisual(text){
-  for(const v of VISUAL_MAP) for(const k of v.keys) if(text.includes(k)) return v.en;
-  return "conceptual scene with abstract visual elements";
+// ══════════════════════════════════════════════
+//  인물 묘사 → 영문 프롬프트 변환
+// ══════════════════════════════════════════════
+const ETHNICITY_MAP = {
+  "한국인":"Korean", "동양인":"East Asian", "일본인":"Japanese", "중국인":"Chinese",
+  "서양인":"Caucasian", "흑인":"Black", "라틴계":"Latino", "중동인":"Middle Eastern", "인도인":"Indian"
+};
+const GENDER_MAP = {"여성":"woman","남성":"man","남자":"man","여자":"woman","소녀":"girl","소년":"boy","노인(여)":"elderly woman","노인(남)":"elderly man"};
+const BUILD_MAP  = {"보통":"average build","슬림":"slim figure","마른":"slender","통통":"chubby","근육질":"muscular","모델 체형":"model figure"};
+const HAIR_MAP   = {"검은 머리":"black hair","갈색 머리":"brown hair","금발":"blonde hair","흰 머리":"white hair","회색 머리":"gray hair","단발":"short bob","긴 머리":"long hair","짧은 머리":"short hair","웨이브 머리":"wavy hair","파마머리":"permed hair","업스타일":"updo hairstyle"};
+const STYLE_CHAR = {"비즈니스 캐주얼":"business casual outfit","정장":"formal business suit","캐주얼":"casual clothing","세련된":"sophisticated stylish fashion","고급스러운":"luxury elegant fashion","스포티":"sporty activewear","전통의상":"traditional clothing"};
+const ATMOS_MAP  = {"세련된":"sophisticated and polished","친근한":"warm and approachable","지적인":"intelligent and composed","자신감 있는":"confident and assertive","우아한":"elegant and graceful","신중한":"cautious and thoughtful","활발한":"energetic and lively","차가운":"cool and reserved"};
+
+function buildCharDesc(char, lang){
+  const parts = [];
+  if(char.gender && GENDER_MAP[char.gender])   parts.push(GENDER_MAP[char.gender]);
+  if(char.age)    parts.push(`${char.age} years old`);
+  if(char.ethnic && ETHNICITY_MAP[char.ethnic]) parts.push(ETHNICITY_MAP[char.ethnic]);
+  if(char.build && BUILD_MAP[char.build])       parts.push(BUILD_MAP[char.build]);
+  if(char.hair && HAIR_MAP[char.hair])          parts.push(HAIR_MAP[char.hair]);
+  if(char.clothing && STYLE_CHAR[char.clothing]) parts.push(`wearing ${STYLE_CHAR[char.clothing]}`);
+  if(char.atmos && ATMOS_MAP[char.atmos])       parts.push(`${ATMOS_MAP[char.atmos]} demeanor`);
+  if(char.face)   parts.push(char.face); // 자유 입력 그대로
+  if(char.free)   parts.push(char.free);
+  if(char.traits && char.traits.length)
+    parts.push(char.traits.map(t=> TRAIT_EN[t]||t).join(", "));
+  return parts.join(", ");
 }
 
-// ══════════════════════════════════════════
+function buildCharDescKo(char){
+  const p=[];
+  if(char.gender) p.push(char.gender);
+  if(char.age)    p.push(`${char.age}세`);
+  if(char.ethnic) p.push(char.ethnic);
+  if(char.build)  p.push(char.build);
+  if(char.hair)   p.push(char.hair);
+  if(char.clothing) p.push(char.clothing);
+  if(char.atmos)  p.push(char.atmos);
+  if(char.face)   p.push(char.face);
+  if(char.free)   p.push(char.free);
+  if(char.traits && char.traits.length) p.push(char.traits.join(", "));
+  return p.join(", ");
+}
+
+const TRAIT_EN = {
+  "미인형":"beautiful features, attractive face","지적인 인상":"intelligent-looking","강인한 인상":"strong confident impression",
+  "온화한 인상":"gentle soft impression","카리스마":"charismatic presence","비즈니스 전문가":"professional business person",
+  "투자 전문가":"sophisticated investor type","의심 많은 눈빛":"skeptical sharp eyes","신뢰감 있는":"trustworthy appearance",
+  "패션 센스":"stylish fashion sense","건강미":"healthy athletic glow","성숙미":"mature elegance"
+};
+
+// ══════════════════════════════════════════════
+//  인물 UI
+// ══════════════════════════════════════════════
+const TRAITS = Object.keys(TRAIT_EN);
+let charEnabled = false;
+let characters = []; // [{id,name,gender,age,ethnic,build,hair,clothing,atmos,face,free,traits:[]}]
+let charIdCounter = 0;
+
+const charToggle = document.getElementById("charToggle");
+const charSwitch = document.getElementById("charSwitch");
+const charPanel  = document.getElementById("charPanel");
+const charCards  = document.getElementById("charCards");
+const addCharBtn = document.getElementById("addCharBtn");
+
+charToggle.addEventListener("click", ()=>{
+  charEnabled = !charEnabled;
+  charSwitch.classList.toggle("on", charEnabled);
+  charPanel.classList.toggle("open", charEnabled);
+  if(charEnabled && characters.length===0) addCharacter();
+});
+
+addCharBtn.addEventListener("click", addCharacter);
+
+function addCharacter(){
+  const id = ++charIdCounter;
+  const char = {id, name:"", gender:"", age:"", ethnic:"", build:"", hair:"", clothing:"", atmos:"", face:"", free:"", traits:[]};
+  characters.push(char);
+  renderCharCards();
+}
+
+function removeCharacter(id){
+  characters = characters.filter(c=>c.id!==id);
+  renderCharCards();
+}
+
+function renderCharCards(){
+  charCards.innerHTML = "";
+  characters.forEach((char, idx)=>{
+    const div = document.createElement("div");
+    div.className = "char-card";
+
+    const genderOpts = ["","여성","남성","소녀","소년","노인(여)","노인(남)"].map(v=>`<option${char.gender===v?" selected":""}>${v}</option>`).join("");
+    const ethnicOpts = ["","한국인","동양인","일본인","중국인","서양인","흑인","라틴계","중동인","인도인"].map(v=>`<option${char.ethnic===v?" selected":""}>${v}</option>`).join("");
+    const buildOpts  = ["","보통","슬림","마른","통통","근육질","모델 체형"].map(v=>`<option${char.build===v?" selected":""}>${v}</option>`).join("");
+    const hairOpts   = ["","검은 머리","갈색 머리","금발","흰 머리","회색 머리","단발","긴 머리","짧은 머리","웨이브 머리","파마머리","업스타일"].map(v=>`<option${char.hair===v?" selected":""}>${v}</option>`).join("");
+    const clothOpts  = ["","비즈니스 캐주얼","정장","캐주얼","세련된","고급스러운","스포티","전통의상"].map(v=>`<option${char.clothing===v?" selected":""}>${v}</option>`).join("");
+    const atmosOpts  = ["","세련된","친근한","지적인","자신감 있는","우아한","신중한","활발한","차가운"].map(v=>`<option${char.atmos===v?" selected":""}>${v}</option>`).join("");
+
+    div.innerHTML = `
+      <div class="char-card-header">
+        <div class="char-avatar">👤</div>
+        <input class="char-name-input" placeholder="인물 이름 또는 역할 (예: 상담자, 진행자)" value="${char.name}" data-field="name"/>
+        ${characters.length>1?`<button class="char-del-btn" data-id="${char.id}">✕</button>`:""}
+      </div>
+      <div class="char-fields">
+        <div class="char-field">
+          <div class="char-field-label">성별</div>
+          <select class="char-field-input" data-field="gender">${genderOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">나이 (숫자 입력)</div>
+          <input class="char-field-input" type="number" min="1" max="120" placeholder="예: 61" value="${char.age}" data-field="age"/>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">국적 / 인종</div>
+          <select class="char-field-input" data-field="ethnic">${ethnicOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">체형</div>
+          <select class="char-field-input" data-field="build">${buildOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">헤어스타일</div>
+          <select class="char-field-input" data-field="hair">${hairOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">의상 스타일</div>
+          <select class="char-field-input" data-field="clothing">${clothOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">분위기 / 인상</div>
+          <select class="char-field-input" data-field="atmos">${atmosOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">얼굴 특징 (자유 입력)</div>
+          <input class="char-field-input" placeholder="예: 미인형, 날카로운 눈매, 미소가 아름다운" value="${char.face}" data-field="face"/>
+        </div>
+        <div class="char-field char-trait-row">
+          <div class="char-field-label">성격 / 인상 키워드 (복수 선택)</div>
+          <div class="trait-chips">
+            ${TRAITS.map(t=>`<span class="trait-chip${char.traits.includes(t)?" selected":""}" data-trait="${t}">${t}</span>`).join("")}
+          </div>
+        </div>
+        <div class="char-field char-free-row">
+          <div class="char-field-label">추가 자유 묘사</div>
+          <textarea class="char-free-input" placeholder="예: 투자와 비즈니스를 좋아하며 의심이 많은 성격. 세련된 명품 시계 착용." data-field="free">${char.free}</textarea>
+        </div>
+      </div>
+      <div class="char-preview-label" style="margin-top:12px;font-size:9px;color:#4040a0;font-weight:800;letter-spacing:1px;text-transform:uppercase">생성될 인물 묘사 미리보기</div>
+      <div class="char-preview" id="charPreview_${char.id}">${getPreviewText(char)}</div>`;
+
+    // 이벤트
+    div.querySelectorAll("[data-field]").forEach(el=>{
+      el.addEventListener(el.tagName==="TEXTAREA"||el.type==="number"||el.type==="text"?"input":"change", ()=>{
+        char[el.dataset.field] = el.value;
+        div.querySelector(`#charPreview_${char.id}`).textContent = getPreviewText(char);
+      });
+    });
+    div.querySelectorAll(".trait-chip").forEach(chip=>{
+      chip.addEventListener("click",()=>{
+        const t = chip.dataset.trait;
+        if(char.traits.includes(t)) char.traits = char.traits.filter(x=>x!==t);
+        else char.traits.push(t);
+        chip.classList.toggle("selected", char.traits.includes(t));
+        div.querySelector(`#charPreview_${char.id}`).textContent = getPreviewText(char);
+      });
+    });
+    const delBtn = div.querySelector(".char-del-btn");
+    if(delBtn) delBtn.addEventListener("click",()=>removeCharacter(char.id));
+
+    charCards.appendChild(div);
+  });
+}
+
+function getPreviewText(char){
+  const en = buildCharDesc(char,"en");
+  return en || "(아직 입력된 묘사가 없습니다)";
+}
+
+// ══════════════════════════════════════════════
 //  스크립트 분절
-// ══════════════════════════════════════════
-function splitScript(text, n){
-  let chunks = text.split(/\n+/).map(s=>s.trim()).filter(Boolean);
-  if(chunks.length < n){
-    const sents = text.split(/(?<=[.!?。！？])\s+/).map(s=>s.trim()).filter(s=>s.length>4);
-    if(sents.length >= n) chunks = sents;
-  }
-  if(chunks.length >= n){
-    const out=[], gs=Math.ceil(chunks.length/n);
-    for(let i=0;i<n;i++){
-      const sl=chunks.slice(i*gs,(i+1)*gs).join(" ");
-      if(sl.trim()) out.push(sl.trim());
-    }
-    return out.slice(0,n);
-  }
+// ══════════════════════════════════════════════
+function splitScript(text,n){
+  let chunks=text.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  if(chunks.length<n){const sents=text.split(/(?<=[.!?。！？])\s+/).map(s=>s.trim()).filter(s=>s.length>4);if(sents.length>=n)chunks=sents;}
+  if(chunks.length>=n){const out=[],gs=Math.ceil(chunks.length/n);for(let i=0;i<n;i++){const sl=chunks.slice(i*gs,(i+1)*gs).join(" ");if(sl.trim())out.push(sl.trim());}return out.slice(0,n);}
   return chunks;
 }
 
-// ══════════════════════════════════════════
-//  체크박스 UI 생성
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
+//  AI 도구 체크박스
+// ══════════════════════════════════════════════
 const toolGrid = document.getElementById("toolGrid");
-let selectedToolIds = new Set(["dalle","midj","stable","gemini"]); // 기본 4개
-
+let selectedToolIds = new Set(["dalle","midj","stable","gemini"]);
 TOOLS.forEach(tool=>{
-  const item = document.createElement("label");
-  item.className = "tool-check-item";
-  item.style.setProperty("--tc", tool.color);
-  const checked = selectedToolIds.has(tool.id) ? "checked" : "";
-  item.innerHTML = `
-    <input type="checkbox" value="${tool.id}" ${checked}>
+  const item=document.createElement("label");
+  item.className="tool-check-item";
+  item.style.setProperty("--tc",tool.color);
+  item.innerHTML=`
+    <input type="checkbox" value="${tool.id}" ${selectedToolIds.has(tool.id)?"checked":""}>
     <div class="tool-check-box">
       <div class="tool-icon">${tool.icon}</div>
       <div style="flex:1;min-width:0">
@@ -370,29 +613,19 @@ TOOLS.forEach(tool=>{
       </div>
       <div class="tool-check-mark">✓</div>
     </div>`;
-  item.querySelector("input").addEventListener("change", syncSelected);
+  item.querySelector("input").addEventListener("change",syncSelected);
   toolGrid.appendChild(item);
 });
-
 function syncSelected(){
-  selectedToolIds = new Set(
-    [...toolGrid.querySelectorAll("input:checked")].map(i=>i.value)
-  );
-  document.getElementById("toolWarn").style.display = selectedToolIds.size===0?"block":"none";
+  selectedToolIds=new Set([...toolGrid.querySelectorAll("input:checked")].map(i=>i.value));
+  document.getElementById("toolWarn").style.display=selectedToolIds.size===0?"block":"none";
 }
+document.getElementById("selectAllBtn").addEventListener("click",()=>{toolGrid.querySelectorAll("input").forEach(i=>i.checked=true);syncSelected();});
+document.getElementById("clearAllBtn").addEventListener("click",()=>{toolGrid.querySelectorAll("input").forEach(i=>i.checked=false);syncSelected();});
 
-document.getElementById("selectAllBtn").addEventListener("click",()=>{
-  toolGrid.querySelectorAll("input").forEach(i=>i.checked=true);
-  syncSelected();
-});
-document.getElementById("clearAllBtn").addEventListener("click",()=>{
-  toolGrid.querySelectorAll("input").forEach(i=>i.checked=false);
-  syncSelected();
-});
-
-// ══════════════════════════════════════════
-//  메인 UI
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
+//  생성 메인
+// ══════════════════════════════════════════════
 const scriptInput    = document.getElementById("scriptInput");
 const sceneSlider    = document.getElementById("sceneSlider");
 const sceneLabel     = document.getElementById("sceneLabel");
@@ -405,49 +638,70 @@ const resultCards    = document.getElementById("resultCards");
 const resultsCount   = document.getElementById("resultsCount");
 const copyAllBtn     = document.getElementById("copyAllBtn");
 
-sceneSlider.addEventListener("input",()=>{
-  sceneLabel.textContent = sceneSlider.value+" 장면";
-});
-
+sceneSlider.addEventListener("input",()=>{ sceneLabel.textContent=sceneSlider.value+" 장면"; });
 genBtn.addEventListener("click", generate);
 
 function generate(){
-  const script = scriptInput.value.trim();
-  if(!script){ alert("스크립트를 입력해주세요!"); return; }
-  if(selectedToolIds.size===0){ alert("AI 도구를 최소 1개 선택해주세요!"); return; }
+  const script=scriptInput.value.trim();
+  if(!script){alert("스크립트를 입력해주세요!");return;}
+  if(selectedToolIds.size===0){alert("AI 도구를 최소 1개 선택해주세요!");return;}
 
-  const n        = Number(sceneSlider.value);
-  const styleKey = styleSelect.value;
-  const ratio    = ratioSelect.value;
-  const lang     = langSelect.value;
-  const style    = STYLE_MAP[styleKey] || STYLE_MAP.photorealistic;
-  const activeTools = TOOLS.filter(t=>selectedToolIds.has(t.id));
-  const segments = splitScript(script, n);
-  const actual   = segments.length;
+  const n=Number(sceneSlider.value);
+  const styleKey=styleSelect.value;
+  const ratio=ratioSelect.value;
+  const lang=langSelect.value;
+  const style=STYLE_MAP[styleKey]||STYLE_MAP.photorealistic;
+  const activeTools=TOOLS.filter(t=>selectedToolIds.has(t.id));
+  const segments=splitScript(script,n);
+  const actual=segments.length;
 
-  resultCards.innerHTML = "";
+  // 인물 묘사 합치기
+  const activeChars = charEnabled && characters.length>0 ? characters : [];
+
+  resultCards.innerHTML="";
   resultsSection.classList.remove("hidden");
-  resultsCount.textContent = `총 ${actual}개 장면 · ${activeTools.length}개 AI 도구`;
+  const charInfo = activeChars.length>0 ? ` · 인물 ${activeChars.length}명 반영` : "";
+  resultsCount.textContent=`총 ${actual}개 장면 · ${activeTools.length}개 AI 도구${charInfo}`;
 
-  segments.forEach((seg, idx)=>{
-    const mood   = detectMood(seg);
-    const visual = detectVisual(seg);
-    const card   = document.createElement("div");
-    card.className = "scene-card";
+  segments.forEach((seg,idx)=>{
+    const mood=detectMood(seg);
+    const visual=detectVisual(seg);
+    const card=document.createElement("div");
+    card.className="scene-card";
 
-    let activeTool = activeTools[0].id;
+    let activeTool=activeTools[0].id;
 
     function renderCard(){
-      const tool = activeTools.find(t=>t.id===activeTool) || activeTools[0];
-      activeTool = tool.id;
-      const prompt = tool.build(seg, style, ratio, mood, visual, lang);
+      const tool=activeTools.find(t=>t.id===activeTool)||activeTools[0];
+      activeTool=tool.id;
 
-      card.innerHTML = `
+      // 인물 묘사 문자열 생성
+      let charDesc = "";
+      if(activeChars.length>0){
+        const descs = activeChars.map(c=>{
+          const name = c.name ? `${c.name}: ` : "";
+          const desc = lang==="ko" ? buildCharDescKo(c) : buildCharDesc(c,lang);
+          return desc ? `${name}${desc}` : "";
+        }).filter(Boolean);
+        charDesc = descs.join(" | ");
+      }
+
+      const prompt=tool.build(seg,style,ratio,mood,visual,lang,charDesc);
+
+      // 사용된 인물 태그
+      const charTags = activeChars.length>0
+        ? `<div class="scene-chars-used">${activeChars.map(c=>`<span class="scene-char-tag">👤 ${c.name||"인물"+(activeChars.indexOf(c)+1)}</span>`).join("")}</div>`
+        : "";
+
+      card.innerHTML=`
         <div class="scene-card-top" style="background:${tool.color}"></div>
         <div class="scene-card-inner">
           <div class="scene-meta">
             <span class="scene-num">SCENE ${String(idx+1).padStart(2,"0")}</span>
-            <span class="scene-script-text">${escHtml(seg.slice(0,90))}${seg.length>90?"…":""}</span>
+            <div style="flex:1">
+              <span class="scene-script-text">${escHtml(seg.slice(0,90))}${seg.length>90?"…":""}</span>
+              ${charTags}
+            </div>
           </div>
           ${activeTools.length>1?`
           <div class="tool-tabs">
@@ -461,58 +715,45 @@ function generate(){
             <div class="prompt-block-header">
               <span class="prompt-tool-label" style="color:${tool.color}">${tool.icon} ${tool.label} 전용 프롬프트</span>
               <div class="prompt-actions">
-                <a class="site-link" href="${tool.link}" target="_blank"
-                   style="color:${tool.color};border-color:${tool.color}30">↗ ${tool.linkLabel}</a>
-                <button class="copy-btn" style="border-color:${tool.color}60;color:${tool.color}"
-                  data-prompt="${escHtml(prompt)}">복사하기</button>
+                <a class="site-link" href="${tool.link}" target="_blank" style="color:${tool.color};border-color:${tool.color}30">↗ ${tool.linkLabel}</a>
+                <button class="copy-btn" style="border-color:${tool.color}60;color:${tool.color}" data-prompt="${escHtml(prompt)}">복사하기</button>
               </div>
             </div>
             <pre class="prompt-text">${escHtml(prompt)}</pre>
-            <div class="prompt-tips">
-              ${tool.tips.map(t=>`<span class="tip-badge">✦ ${t}</span>`).join("")}
-            </div>
+            <div class="prompt-tips">${tool.tips.map(t=>`<span class="tip-badge">✦ ${t}</span>`).join("")}</div>
           </div>
         </div>`;
 
-      card.querySelectorAll(".tool-tab").forEach(btn=>{
-        btn.addEventListener("click",()=>{ activeTool=btn.dataset.tool; renderCard(); });
-      });
+      card.querySelectorAll(".tool-tab").forEach(btn=>{btn.addEventListener("click",()=>{activeTool=btn.dataset.tool;renderCard();});});
       card.querySelectorAll(".copy-btn").forEach(btn=>{
         btn.addEventListener("click",()=>{
           navigator.clipboard.writeText(btn.dataset.prompt).then(()=>{
             const orig=btn.textContent;
             btn.textContent="✓ 복사!";
-            btn.style.background=tool.color;
-            btn.style.color="#fff";
-            setTimeout(()=>{ btn.textContent=orig; btn.style.background="transparent"; },1500);
+            btn.style.background=tool.color;btn.style.color="#fff";
+            setTimeout(()=>{btn.textContent=orig;btn.style.background="transparent";},1500);
           });
         });
       });
     }
-
     renderCard();
     resultCards.appendChild(card);
   });
-
   setTimeout(()=>resultsSection.scrollIntoView({behavior:"smooth",block:"start"}),100);
 }
 
-// 전체 복사 (현재 활성 탭 프롬프트)
 copyAllBtn.addEventListener("click",()=>{
   const all=[];
   document.querySelectorAll(".scene-card").forEach((card,i)=>{
-    const scr  = card.querySelector(".scene-script-text")?.textContent||"";
-    const tool = card.querySelector(".tool-tab.active")?.textContent||card.querySelector(".prompt-tool-label")?.textContent||"";
-    const prom = card.querySelector(".prompt-text")?.textContent||"";
+    const scr=card.querySelector(".scene-script-text")?.textContent||"";
+    const tool=card.querySelector(".tool-tab.active")?.textContent||card.querySelector(".prompt-tool-label")?.textContent||"";
+    const prom=card.querySelector(".prompt-text")?.textContent||"";
     all.push(`[SCENE ${i+1}]\n대본: ${scr}\n[${tool}]\n${prom}`);
   });
-  navigator.clipboard.writeText(all.join("\n\n──────────────────────\n\n"))
-    .then(()=>alert(`${all.length}개 장면 프롬프트가 복사되었습니다.`));
+  navigator.clipboard.writeText(all.join("\n\n──────────────────────\n\n")).then(()=>alert(`${all.length}개 장면 프롬프트가 복사되었습니다.`));
 });
 
-function escHtml(s){
-  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-}
+function escHtml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 </script>
 </body>
 </html>
