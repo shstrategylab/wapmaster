@@ -1,630 +1,421 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>이미지 프롬프트 생성기</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #080812; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>방송 스크립트 이미지 프롬프트 생성기</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#07070f;font-family:'Segoe UI',system-ui,sans-serif;color:#e0e0f0;min-height:100vh}
 
-    .app {
-      min-height: 100vh;
-      background: #080812;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      color: #e8e8f8;
-    }
+/* HEADER */
+.header{background:linear-gradient(160deg,#12122a 0%,#07070f 100%);border-bottom:1px solid #1a1a35;padding:36px 20px 28px;text-align:center}
+.header-eyebrow{font-size:10px;letter-spacing:4px;color:#c96a3a;font-weight:700;text-transform:uppercase;margin-bottom:12px}
+.header-title{font-size:clamp(24px,5vw,38px);font-weight:900;letter-spacing:-0.5px;line-height:1.15;margin-bottom:10px;background:linear-gradient(110deg,#fff 30%,#9090c0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header-sub{color:#55557a;font-size:13px;line-height:1.7;max-width:480px;margin:0 auto}
 
-    /* ── HEADER ── */
-    .header {
-      background: linear-gradient(180deg, #10102a 0%, #080812 100%);
-      border-bottom: 1px solid #1c1c38;
-      padding: 32px 20px 24px;
-      text-align: center;
-    }
-    .header-eyebrow {
-      font-size: 10px;
-      letter-spacing: 4px;
-      color: #D97757;
-      font-weight: 700;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-    .header-title {
-      font-size: clamp(22px, 5vw, 34px);
-      font-weight: 900;
-      background: linear-gradient(100deg, #ffffff 20%, #a0a0d0 80%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
-      line-height: 1.15;
-      margin-bottom: 8px;
-    }
-    .header-sub {
-      color: #6666a0;
-      font-size: clamp(12px, 2.5vw, 14px);
-      line-height: 1.6;
-    }
+/* MAIN */
+.main{max-width:860px;margin:0 auto;padding:28px 16px 80px}
 
-    /* ── LAYOUT ── */
-    .main {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 24px 16px 80px;
-    }
+/* SECTION LABEL */
+.sec-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#6060a0;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 
-    /* ── CARD ── */
-    .card {
-      background: #111128;
-      border: 1px solid #222240;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .card-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: #7070a0;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+/* CARD */
+.card{background:#0f0f22;border:1px solid #1e1e3a;border-radius:16px;padding:22px;margin-bottom:16px}
 
-    /* ── TEXTAREA ── */
-    .script-area {
-      width: 100%;
-      min-height: 180px;
-      background: #0c0c20;
-      border: 1px solid #222240;
-      border-radius: 12px;
-      padding: 14px 16px;
-      color: #ddddf8;
-      font-size: clamp(13px, 2.5vw, 15px);
-      line-height: 1.8;
-      resize: vertical;
-      outline: none;
-      font-family: inherit;
-      transition: border-color 0.2s;
-    }
-    .script-area:focus { border-color: #D97757; }
-    .script-area::placeholder { color: #3a3a60; }
+/* TEXTAREA */
+textarea{width:100%;min-height:200px;background:#09091a;border:1px solid #1e1e3a;border-radius:12px;padding:14px 16px;color:#ddddf5;font-size:14px;line-height:1.9;resize:vertical;outline:none;font-family:inherit;transition:border-color .2s}
+textarea:focus{border-color:#c96a3a}
+textarea::placeholder{color:#333355}
 
-    /* ── SCENE SLIDER ── */
-    .slider-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .scene-badge {
-      background: linear-gradient(135deg, #D97757, #b8462e);
-      color: #fff;
-      border-radius: 20px;
-      padding: 3px 16px;
-      font-size: 15px;
-      font-weight: 800;
-    }
-    input[type="range"] {
-      width: 100%;
-      accent-color: #D97757;
-      cursor: pointer;
-      height: 4px;
-    }
-    .slider-hints {
-      display: flex;
-      justify-content: space-between;
-      color: #3a3a60;
-      font-size: 11px;
-      margin-top: 6px;
-    }
+/* SLIDER */
+.slider-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.scene-badge{background:linear-gradient(135deg,#c96a3a,#a0431e);color:#fff;border-radius:20px;padding:4px 18px;font-size:15px;font-weight:800}
+input[type=range]{width:100%;accent-color:#c96a3a;height:4px;cursor:pointer}
+.slider-hints{display:flex;justify-content:space-between;color:#333355;font-size:11px;margin-top:6px}
 
-    /* ── OPTIONS GRID ── */
-    .options-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    @media (max-width: 520px) {
-      .options-grid { grid-template-columns: 1fr; }
-    }
-    .opt-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: #7070a0;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .opt-select {
-      width: 100%;
-      background: #0c0c20;
-      border: 1px solid #222240;
-      border-radius: 10px;
-      color: #ddddf8;
-      padding: 10px 12px;
-      font-size: 13px;
-      outline: none;
-      cursor: pointer;
-      font-family: inherit;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237070a0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 32px;
-    }
-    .opt-select:focus { border-color: #D97757; }
+/* OPTIONS GRID */
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:540px){.opts{grid-template-columns:1fr}}
+.opt-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#6060a0;margin-bottom:7px}
+select{width:100%;background:#09091a;border:1px solid #1e1e3a;border-radius:10px;color:#ddddf5;padding:10px 32px 10px 12px;font-size:13px;outline:none;cursor:pointer;font-family:inherit;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236060a0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:border-color .2s}
+select:focus{border-color:#c96a3a}
 
-    /* ── TOOL FILTER PILLS ── */
-    .tool-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .tool-pill {
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: all 0.18s;
-      letter-spacing: 0.3px;
-      background: #111128;
-      color: #5555a0;
-      border-color: #222240;
-    }
-    .tool-pill:hover {
-      border-color: #444480;
-      color: #9999d0;
-    }
-    .tool-pill.active {
-      color: #fff;
-    }
+/* GENERATE BUTTON */
+.gen-btn{width:100%;padding:17px;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:.5px;transition:all .2s;margin-bottom:28px;background:linear-gradient(135deg,#c96a3a,#a0431e);color:#fff;box-shadow:0 4px 24px #c96a3a40}
+.gen-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px #c96a3a60}
+.gen-btn:active{transform:translateY(0)}
 
-    /* ── GENERATE BUTTON ── */
-    .gen-btn {
-      width: 100%;
-      padding: 16px;
-      border: none;
-      border-radius: 14px;
-      font-size: clamp(14px, 2.5vw, 16px);
-      font-weight: 800;
-      cursor: pointer;
-      letter-spacing: 0.5px;
-      transition: all 0.2s;
-      margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
-    }
-    .gen-btn.ready {
-      background: linear-gradient(135deg, #D97757 0%, #b8462e 100%);
-      color: #fff;
-      box-shadow: 0 4px 20px #D9775740;
-    }
-    .gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 6px 28px #D9775760; }
-    .gen-btn.ready:active { transform: translateY(0); }
+/* RESULTS */
+.results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.results-title{font-size:12px;font-weight:800;color:#6060a0;letter-spacing:1.5px;text-transform:uppercase}
+.copy-all-btn{background:transparent;border:1px solid #2a2a50;color:#7070b0;border-radius:8px;padding:7px 18px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .2s}
+.copy-all-btn:hover{border-color:#5050a0;color:#b0b0e0}
 
-    /* ── RESULTS HEADER ── */
-    .results-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .results-count {
-      font-size: 12px;
-      font-weight: 700;
-      color: #7070a0;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .copy-all-btn {
-      background: transparent;
-      border: 1px solid #333360;
-      color: #8888c0;
-      border-radius: 8px;
-      padding: 6px 16px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-    .copy-all-btn:hover { border-color: #5555a0; color: #c0c0e8; }
+/* SCENE CARD */
+.scene-card{background:#0f0f22;border:1px solid #1e1e3a;border-radius:16px;margin-bottom:14px;overflow:hidden;transition:border-color .2s}
+.scene-card:hover{border-color:#2e2e5a}
+.scene-card-top{height:3px}
+.scene-card-inner{padding:18px 20px}
+.scene-meta{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.scene-num{background:#1a1a35;border:1px solid #2a2a50;border-radius:8px;font-size:10px;font-weight:800;color:#8080c0;padding:3px 10px;letter-spacing:1px;flex-shrink:0}
+.scene-script-text{font-size:13px;color:#8888b8;line-height:1.6;font-style:italic;flex:1}
 
-    /* ── SCENE CARD ── */
-    .scene-card {
-      background: #111128;
-      border: 1px solid #222240;
-      border-radius: 16px;
-      margin-bottom: 16px;
-      overflow: hidden;
-      transition: border-color 0.2s;
-    }
-    .scene-card:hover { border-color: #333360; }
-    .scene-top-bar {
-      height: 3px;
-    }
-    .scene-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 16px 20px 12px;
-    }
-    .scene-badge-wrap { flex-shrink: 0; text-align: center; }
-    .scene-num-badge {
-      color: #fff;
-      border-radius: 8px;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 4px 10px;
-      letter-spacing: 1px;
-      display: block;
-    }
-    .scene-text {
-      color: #b0b0d8;
-      font-size: 13px;
-      font-style: italic;
-      line-height: 1.65;
-      flex: 1;
-    }
-    .scene-body { padding: 0 20px 20px; }
+/* TOOL TABS */
+.tool-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tool-tab{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #2a2a50;background:#0f0f22;color:#5555a0;transition:all .18s;letter-spacing:.3px}
+.tool-tab:hover{border-color:#4040a0;color:#9090d0}
+.tool-tab.active{color:#fff}
 
-    /* ── PROMPT ROW ── */
-    .prompt-row {
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      border: 1px solid transparent;
-      transition: border-color 0.2s;
-    }
-    .prompt-row:last-child { margin-bottom: 0; }
-    .prompt-row-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .prompt-tool-name {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-    .copy-btn {
-      border-radius: 6px;
-      padding: 3px 12px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.18s;
-      font-family: inherit;
-      border: 1px solid transparent;
-    }
-    .prompt-text {
-      color: #ccccf0;
-      font-size: 12px;
-      line-height: 1.75;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
+/* PROMPT BLOCK */
+.prompt-block{background:#09091a;border:1px solid transparent;border-radius:10px;padding:14px 16px;position:relative}
+.prompt-block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.prompt-tool-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.copy-btn{background:transparent;border:1px solid #2a2a50;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .18s;color:#6060a0}
+.copy-btn:hover{border-color:#5050a0;color:#a0a0e0}
+.prompt-text{font-family:'SF Mono','Fira Code',monospace;font-size:12px;color:#c0c0e8;line-height:1.8;white-space:pre-wrap;word-break:break-word}
 
-    /* ── DONE BANNER ── */
-    .done-banner {
-      text-align: center;
-      padding: 24px;
-      color: #5555a0;
-      font-size: 13px;
-      border: 1px dashed #222240;
-      border-radius: 12px;
-      margin-top: 8px;
-    }
-    .done-banner strong { color: #8888c0; }
+.hidden{display:none!important}
 
-    .hidden { display: none !important; }
-  </style>
+/* DONE BANNER */
+.done-banner{text-align:center;padding:22px;background:#0f0f22;border:1px dashed #1e1e3a;border-radius:14px;margin-top:8px;color:#5555a0;font-size:13px;line-height:1.7}
+
+/* TONE KEYWORDS */
+.tone-hint{font-size:11px;color:#3a3a6a;margin-top:8px;font-style:italic}
+</style>
 </head>
 <body>
-<div class="app">
 
+<div>
   <header class="header">
-    <p class="header-eyebrow">▶ YouTube Script → AI Instruction Generator</p>
-    <h1 class="header-title">AI 대화창 프롬프트 생성기</h1>
-    <p class="header-sub">
-      설정한 옵션에 맞춰 AI 대화창에 바로 복사+붙여넣기 할 수 있는<br>
-      최적의 프롬프트 명령어를 생성합니다.
-    </p>
+    <p class="header-eyebrow">▶ Script → Image Prompt Generator</p>
+    <h1 class="header-title">방송 스크립트<br>이미지 프롬프트 생성기</h1>
+    <p class="header-sub">대본을 입력하면 장면별로 분석해 각 AI 이미지 도구에 맞는 프롬프트를 즉시 생성합니다</p>
   </header>
 
   <main class="main">
 
     <div class="card">
-      <p class="card-label">📝 전체 방송 스크립트</p>
-      <textarea
-        class="script-area"
-        id="scriptInput"
-        placeholder="여기에 방송 스크립트를 붙여넣으세요. 이 스크립트가 AI에게 전달되어 분석됩니다."
-      ></textarea>
+      <p class="sec-label">📝 방송 스크립트</p>
+      <textarea id="scriptInput" placeholder="여기에 방송 대본을 붙여넣으세요.
+문장이나 단락으로 구분되어 있으면 자동으로 장면을 나눠 이미지 프롬프트를 만들어 드립니다.
+
+예시)
+안녕하세요, 오늘은 인공지능이 바꿔놓은 우리 일상에 대해 이야기해 보겠습니다.
+불과 몇 년 전만 해도 상상조차 못했던 일들이 현실이 되고 있습니다.
+스마트폰 하나로 번역, 이미지 생성, 음악 작곡까지 가능한 시대가 왔습니다."></textarea>
+      <p class="tone-hint">💡 문장부호(. ! ?)나 줄바꿈으로 자동 분절됩니다. 단락 단위로 쓰시면 더 정확합니다.</p>
     </div>
 
     <div class="card">
       <div class="slider-row">
-        <p class="card-label" style="margin:0">🎬 목표 이미지 장면 수</p>
-        <span class="scene-badge" id="sceneCountLabel">10 장면</span>
+        <p class="sec-label" style="margin:0">🎬 목표 장면 수</p>
+        <span class="scene-badge" id="sceneLabel">10 장면</span>
       </div>
-      <input type="range" min="3" max="30" value="10" id="sceneCountSlider" />
-      <div class="slider-hints">
-        <span>3장면 · 짧은 영상</span>
-        <span>30장면 · 긴 영상</span>
-      </div>
+      <input type="range" min="3" max="30" value="10" id="sceneSlider"/>
+      <div class="slider-hints"><span>3장면 · 짧은 영상</span><span>30장면 · 긴 영상</span></div>
     </div>
 
-    <div class="options-grid">
+    <div class="opts">
       <div>
         <p class="opt-label">🎨 이미지 스타일</p>
-        <select class="opt-select" id="styleSelect">
-          <option>사실적 사진 스타일(Photorealistic)</option>
-          <option>애니메이션 / 일러스트</option>
-          <option>수채화(Watercolor)</option>
-          <option>유화(Oil Painting)</option>
-          <option>미니멀 디자인</option>
-          <option>영화적 시네마틱(Cinematic)</option>
-          <option>인포그래픽</option>
-          <option>3D 렌더링</option>
+        <select id="styleSelect">
+          <option value="photorealistic">사실적 사진 (Photorealistic)</option>
+          <option value="cinematic">영화적 시네마틱 (Cinematic)</option>
+          <option value="anime">애니메이션 / 일러스트</option>
+          <option value="watercolor">수채화 (Watercolor)</option>
+          <option value="oilpaint">유화 (Oil Painting)</option>
+          <option value="3d">3D 렌더링</option>
+          <option value="minimal">미니멀 디자인</option>
+          <option value="infographic">인포그래픽</option>
         </select>
       </div>
       <div>
         <p class="opt-label">📐 화면 비율</p>
-        <select class="opt-select" id="ratioSelect">
-          <option>16:9 (유튜브 일반)</option>
-          <option>9:16 (쇼츠 / 릴스)</option>
-          <option>1:1 (정사각)</option>
-          <option>4:3</option>
+        <select id="ratioSelect">
+          <option value="16:9">16:9 (유튜브 일반)</option>
+          <option value="9:16">9:16 (쇼츠 / 릴스)</option>
+          <option value="1:1">1:1 (정사각)</option>
+          <option value="4:3">4:3</option>
         </select>
       </div>
       <div>
-        <p class="opt-label">🤖 타겟 AI 모델</p>
-        <select class="opt-select" id="toolSelect">
-          <option value="all">전체 모델용 보기</option>
-          <option value="gemini">Google Gemini</option>
-          <option value="chatgpt">ChatGPT (DALL·E 3)</option>
-          <option value="claude">Claude</option>
-          <option value="copilot">Microsoft Copilot</option>
-          <option value="midjourney">Midjourney</option>
-          <option value="stable">Stable Diffusion</option>
+        <p class="opt-label">🌍 프롬프트 언어</p>
+        <select id="langSelect">
+          <option value="en">영어 (English) — 권장</option>
+          <option value="ko">한국어</option>
         </select>
       </div>
     </div>
 
-    <div class="tool-pills" id="toolPills"></div>
-
-    <button class="gen-btn ready" id="genBtn">✨ 대화창 복사용 프롬프트 생성하기</button>
+    <button class="gen-btn" id="genBtn">✨ 장면별 이미지 프롬프트 생성하기</button>
 
     <div id="resultsSection" class="hidden">
       <div class="results-header">
-        <span class="results-count" id="resultsCount">복사할 프롬프트 준비 완료</span>
+        <span class="results-title" id="resultsCount"></span>
         <button class="copy-all-btn" id="copyAllBtn">📋 전체 복사</button>
       </div>
       <div id="resultCards"></div>
-    </div>
-
-    <div class="done-banner hidden" id="doneBanner">
-      ✅ 프롬프트가 성공적으로 생성되었습니다!<br>
-      <span style="font-size:12px;margin-top:4px;display:block">아래의 프롬프트를 복사하여 ChatGPT, Gemini, Claude 등의 대화창에 그대로 붙여넣으세요.</span>
+      <div class="done-banner">
+        ✅ 프롬프트 생성 완료!<br>
+        <span style="font-size:12px">각 장면의 <strong style="color:#8888c0">복사하기</strong> 버튼을 눌러 원하는 AI 이미지 도구에 붙여넣으세요.</span><br>
+        <span style="font-size:11px;color:#3a3a6a;margin-top:6px;display:block">
+          DALL·E: chatgpt.com → GPT-4o &nbsp;|&nbsp; Midjourney: Discord /imagine &nbsp;|&nbsp; Stable Diffusion: WebUI Prompt창 &nbsp;|&nbsp; Gemini: gemini.google.com
+        </span>
+      </div>
     </div>
 
   </main>
 </div>
 
 <script>
-const AI_TOOLS = [
-  { id: "gemini",     label: "Google Gemini",     short: "Gemini", color: "#4285F4", bg: "#0d1f3c", icon: "✦" },
-  { id: "chatgpt",    label: "ChatGPT / DALL·E",  short: "DALL·E", color: "#10A37F", bg: "#0d2a22", icon: "◆" },
-  { id: "claude",     label: "Claude",             short: "Claude", color: "#D97757", bg: "#2a1a0d", icon: "◉" },
-  { id: "copilot",    label: "Microsoft Copilot",  short: "Copilot",color: "#0078D4", bg: "#0d1e30", icon: "⬡" },
-  { id: "midjourney", label: "Midjourney",          short: "MJ",     color: "#8B5CF6", bg: "#1a0d2a", icon: "◈" },
-  { id: "stable",     label: "Stable Diffusion",   short: "SD",     color: "#E11D48", bg: "#2a0d14", icon: "◇" },
+// ── AI 도구 정의 ──
+const TOOLS = [
+  {id:"dalle",   label:"DALL·E 3",         color:"#10A37F", link:"https://chatgpt.com"},
+  {id:"midj",    label:"Midjourney",        color:"#8B5CF6", link:"https://www.midjourney.com"},
+  {id:"gemini",  label:"Gemini",            color:"#4285F4", link:"https://gemini.google.com"},
+  {id:"stable",  label:"Stable Diffusion",  color:"#E11D48", link:"https://stablediffusionweb.com"},
+  {id:"copilot", label:"Copilot",           color:"#0078D4", link:"https://copilot.microsoft.com"},
 ];
 
-let sceneCount = 10;
-let selectedTool = "all";
+// ── 스타일 매핑 ──
+const STYLE_MAP = {
+  photorealistic: {en:"photorealistic photography, ultra-detailed, sharp focus, natural lighting, 8K resolution", ko:"사실적 사진 스타일, 초고해상도, 자연광, 선명한 초점"},
+  cinematic:      {en:"cinematic shot, dramatic lighting, film grain, anamorphic lens, movie still, depth of field", ko:"영화적 구도, 드라마틱 조명, 필름 그레인, 시네마틱"},
+  anime:          {en:"anime illustration style, vibrant colors, clean lines, expressive, studio-quality", ko:"애니메이션 일러스트, 선명한 색감, 깔끔한 선, 감성적"},
+  watercolor:     {en:"watercolor painting, soft washes, delicate brushstrokes, artistic, pastel tones", ko:"수채화, 부드러운 번짐, 섬세한 붓터치, 파스텔 톤"},
+  oilpaint:       {en:"oil painting style, rich textures, impasto technique, classical art, vivid colors", ko:"유화 스타일, 풍부한 질감, 임파스토 기법, 선명한 색"},
+  "3d":           {en:"3D rendering, octane render, subsurface scattering, realistic materials, studio lighting", ko:"3D 렌더링, 사실적 재질, 스튜디오 조명"},
+  minimal:        {en:"minimalist design, clean composition, negative space, geometric shapes, muted tones", ko:"미니멀 디자인, 깔끔한 구도, 여백, 기하학적 형태"},
+  infographic:    {en:"infographic style, flat design, bold typography, data visualization, modern icons", ko:"인포그래픽, 플랫 디자인, 볼드 타이포그래피, 아이콘"},
+};
 
-// Elements
-const scriptInput    = document.getElementById("scriptInput");
-const sceneSlider    = document.getElementById("sceneCountSlider");
-const sceneLabel     = document.getElementById("sceneCountLabel");
-const styleSelect    = document.getElementById("styleSelect");
-const ratioSelect    = document.getElementById("ratioSelect");
-const toolSelect     = document.getElementById("toolSelect");
-const toolPills      = document.getElementById("toolPills");
-const genBtn         = document.getElementById("genBtn");
+// ── 감정/톤 키워드 추출 ──
+const MOOD_WORDS = {
+  긍정:  {ko:["희망","행복","기쁨","성공","밝","좋","아름"],  en:"hopeful, uplifting, warm, bright"},
+  긴장:  {ko:["위험","위기","두려움","공포","급박","심각"],    en:"tense, dramatic, dark, ominous"},
+  평온:  {ko:["평화","안정","여유","자연","조용","편안"],      en:"serene, peaceful, calm, tranquil"},
+  감동:  {ko:["눈물","감동","따뜻","사랑","그리움","소중"],   en:"emotional, touching, heartfelt, warm"},
+  미래:  {ko:["미래","기술","인공지능","AI","혁신","디지털"], en:"futuristic, technological, sci-fi, digital"},
+  역사:  {ko:["역사","과거","전통","옛날","고대","유적"],      en:"historical, vintage, classic, ancient"},
+  자연:  {ko:["자연","숲","바다","산","하늘","동물","꽃"],     en:"nature, outdoor, organic, lush"},
+  도시:  {ko:["도시","거리","건물","사람들","군중","현대"],    en:"urban, cityscape, modern, architectural"},
+};
+
+function detectMood(text) {
+  for (const [, data] of Object.entries(MOOD_WORDS)) {
+    for (const kw of data.ko) {
+      if (text.includes(kw)) return data.en;
+    }
+  }
+  return "neutral tone, clear composition";
+}
+
+// ── 장면 키워드 → 비주얼 주제 매핑 ──
+const VISUAL_MAP = [
+  {keys:["사람","인물","남자","여자","아이","학생","전문가","의사","기자"],   en:"person, human figure, character"},
+  {keys:["도시","서울","뉴욕","건물","빌딩","거리","골목"],                   en:"cityscape, urban environment, street view"},
+  {keys:["자연","숲","산","바다","하늘","강","들판","꽃","나무"],              en:"natural landscape, outdoor scenery"},
+  {keys:["기술","AI","인공지능","컴퓨터","스마트폰","로봇","데이터"],         en:"technology, digital interface, futuristic devices"},
+  {keys:["음식","요리","식사","밥","음료","카페","레스토랑"],                  en:"food, culinary scene, dining"},
+  {keys:["책","공부","교육","학교","강의","배움","지식"],                      en:"education, books, learning environment"},
+  {keys:["돈","경제","주식","투자","비즈니스","회사","사무실"],                en:"business, finance, corporate environment"},
+  {keys:["건강","운동","병원","의료","치료","약","몸"],                        en:"health, medical, wellness"},
+  {keys:["여행","관광","해외","비행기","여행지","휴가"],                       en:"travel, tourism, destination"},
+  {keys:["역사","고대","전쟁","전통","문화","유적","박물관"],                  en:"historical scene, cultural heritage"},
+];
+
+function detectVisual(text) {
+  for (const v of VISUAL_MAP) {
+    for (const k of v.keys) {
+      if (text.includes(k)) return v.en;
+    }
+  }
+  return "conceptual scene, abstract visual representation";
+}
+
+// ── 스크립트를 N개 장면으로 분절 ──
+function splitScript(text, n) {
+  // 1차: 줄바꿈 단락으로 분리
+  let chunks = text.split(/\n+/).map(s => s.trim()).filter(Boolean);
+
+  // 2차: 단락이 너무 적으면 문장 단위로 더 쪼갬
+  if (chunks.length < n) {
+    const sentences = text.split(/(?<=[.!?。！？])\s+/).map(s => s.trim()).filter(s => s.length > 4);
+    if (sentences.length >= n) chunks = sentences;
+  }
+
+  // 3차: N개로 병합/분할
+  if (chunks.length >= n) {
+    const result = [];
+    const groupSize = Math.ceil(chunks.length / n);
+    for (let i = 0; i < n; i++) {
+      const slice = chunks.slice(i * groupSize, (i + 1) * groupSize).join(" ");
+      if (slice.trim()) result.push(slice.trim());
+    }
+    return result.slice(0, n);
+  } else {
+    // 너무 짧으면 있는 만큼
+    return chunks;
+  }
+}
+
+// ── 도구별 프롬프트 생성 ──
+function buildPrompt(tool, segment, styleKey, ratio, lang) {
+  const styleSuffix = STYLE_MAP[styleKey] || STYLE_MAP.photorealistic;
+  const mood = detectMood(segment);
+  const visual = detectVisual(segment);
+
+  if (lang === "ko") {
+    const base = `${visual}, ${mood}, ${styleSuffix.ko}, 화면비율 ${ratio}`;
+    switch(tool.id) {
+      case "midj":    return `${base} --ar ${ratio.replace(":",":")} --v 6 --q 2`;
+      case "stable":  return `(${visual}:1.3), ${mood}, (${styleSuffix.en}:1.2), high quality, best quality`;
+      default:        return base;
+    }
+  }
+
+  // 영어 (권장)
+  const base = `${visual}, ${mood}, ${styleSuffix.en}, aspect ratio ${ratio}`;
+  switch(tool.id) {
+    case "dalle":
+      return `Create a ${styleSuffix.en} image of: ${visual}. Mood: ${mood}. The scene should visually represent the following narrative context: "${segment.slice(0,120)}". Composition: rule of thirds, ${ratio} aspect ratio.`;
+    case "midj":
+      return `${visual}, ${mood}, ${styleSuffix.en}, cinematic composition --ar ${ratio.replace(":",":")} --v 6 --q 2 --style raw`;
+    case "gemini":
+      return `Generate a ${styleSuffix.en} image depicting: ${visual}. The atmosphere is ${mood}. This image should visually convey the narrative: "${segment.slice(0,100)}". Use ${ratio} composition with professional lighting.`;
+    case "stable":
+      return `(${visual}:1.3), ${mood}, (${styleSuffix.en}:1.2), (masterpiece:1.4), (best quality:1.3), detailed, sharp focus, ${ratio} format\nNegative prompt: blurry, low quality, deformed, ugly, watermark, text`;
+    case "copilot":
+      return `A clear, detailed ${styleSuffix.en} image showing ${visual} with ${mood} atmosphere. Scene context: ${segment.slice(0,100)}. Aspect ratio ${ratio}.`;
+    default:
+      return base;
+  }
+}
+
+// ── UI ──
+const scriptInput = document.getElementById("scriptInput");
+const sceneSlider = document.getElementById("sceneSlider");
+const sceneLabel  = document.getElementById("sceneLabel");
+const styleSelect = document.getElementById("styleSelect");
+const ratioSelect = document.getElementById("ratioSelect");
+const langSelect  = document.getElementById("langSelect");
+const genBtn      = document.getElementById("genBtn");
 const resultsSection = document.getElementById("resultsSection");
 const resultCards    = document.getElementById("resultCards");
-const doneBanner     = document.getElementById("doneBanner");
+const resultsCount   = document.getElementById("resultsCount");
 const copyAllBtn     = document.getElementById("copyAllBtn");
 
-// 상단 필터/탭 버튼 생성 함수
-function buildPills() {
-  toolPills.innerHTML = "";
-  const allPill = document.createElement("button");
-  allPill.className = "tool-pill" + (selectedTool === "all" ? " active" : "");
-  allPill.textContent = "전체";
-  if (selectedTool === "all") allPill.style.cssText = "background:#D97757;border-color:#D97757;color:#fff";
-  allPill.addEventListener("click", () => { setSelectedTool(allPill, "all"); });
-  toolPills.appendChild(allPill);
-
-  AI_TOOLS.forEach(tool => {
-    const pill = document.createElement("button");
-    pill.className = "tool-pill" + (selectedTool === tool.id ? " active" : "");
-    pill.textContent = tool.icon + " " + tool.short;
-    if (selectedTool === tool.id) pill.style.cssText = `background:${tool.color};border-color:${tool.color};color:#fff`;
-    pill.addEventListener("click", () => { setSelectedTool(pill, tool.id); });
-    toolPills.appendChild(pill);
-  });
-}
-
-// 탭 버튼이나 셀렉트 박스를 조작할 때 '필터링 상태'만 변경하고 자동 재생성은 하지 않도록 수정
-function setSelectedTool(pillElement, id) {
-  selectedTool = id;
-  toolSelect.value = id;
-  buildPills();
-  
-  // 이미 생성된 프롬프트 결과물이 화면에 있다면, 필터 결과에 맞게 새로고침해 줍니다.
-  if (!resultsSection.classList.contains("hidden") && scriptInput.value.trim()) {
-    generateTemplates();
-  }
-}
-
-toolSelect.addEventListener("change", () => {
-  selectedTool = toolSelect.value;
-  buildPills();
-  
-  if (!resultsSection.classList.contains("hidden") && scriptInput.value.trim()) {
-    generateTemplates();
-  }
-});
-
 sceneSlider.addEventListener("input", () => {
-  sceneCount = Number(sceneSlider.value);
-  sceneLabel.textContent = sceneCount + " 장면";
+  sceneLabel.textContent = sceneSlider.value + " 장면";
 });
 
-// 마스터 프롬프트 생성 핵심 로직
-function generateTemplates() {
+genBtn.addEventListener("click", generate);
+
+function generate() {
   const script = scriptInput.value.trim();
-  const style = styleSelect.value;
-  const ratio = ratioSelect.value;
-  
-  if (!script) {
-    alert("스크립트를 입력해주세요!");
-    return;
-  }
+  if (!script) { alert("스크립트를 입력해주세요!"); return; }
 
-  resultsSection.classList.remove("hidden");
-  doneBanner.classList.remove("hidden");
+  const n       = Number(sceneSlider.value);
+  const styleKey = styleSelect.value;
+  const ratio    = ratioSelect.value;
+  const lang     = langSelect.value;
+  const segments = splitScript(script, n);
+  const actual   = segments.length;
+
   resultCards.innerHTML = "";
+  resultsSection.classList.remove("hidden");
+  resultsCount.textContent = `총 ${actual}개 장면 · ${TOOLS.length}개 AI 모델 프롬프트 생성됨`;
 
-  const toolsToShow = selectedTool === "all" ? AI_TOOLS : AI_TOOLS.filter(t => t.id === selectedTool);
-
-  toolsToShow.forEach(tool => {
-    let toolRule = "";
-    
-    switch(tool.id) {
-      case "gemini":
-        toolRule = "- 자연스러운 묘사 중심의 문장형 영어 프롬프트로 작성해줘.\n- 디테일한 상황 묘사와 스타일 키워드를 조화롭게 섞어줘.";
-        break;
-      case "chatgpt":
-        toolRule = "- DALL·E 3 엔진에 최적화된 생생하고 구체적인 영어 프롬프트로 작성해줘.\n- 조명(Lighting), 구도(Composition), 분위기(Mood) 정보를 명확하게 포함해줘.";
-        break;
-      case "claude":
-        toolRule = "- 주체(Subject) + 환경(Environment) + 분위기(Mood) 구조의 균형 잡힌 영어 프롬프트로 작성해줘.\n- 텍스트의 문맥과 서사적 연속성이 비주얼에 잘 드러나도록 해줘.";
-        break;
-      case "copilot":
-        toolRule = "- 안전하고 명확하며 서술적인 묘사 중심의 영어 프롬프트로 작성해줘.\n- 지나치게 추상적인 표현은 배제하고 직관적인 비주얼 위주로 구성해줘.";
-        break;
-      case "midjourney":
-        toolRule = "- 미드저니 v6 문법에 맞게 핵심 키워드와 시네마틱 수식어 중심으로 작성해줘.\n- 모든 장면 끝에 반드시 비율 옵션인 `--ar ${ratio.split(' ')[0]}`를 붙여주고 일관된 비주얼 랭귀지를 써줘.";
-        break;
-      case "stable":
-        toolRule = "- 스테이블 디퓨전 가중치 문법인 강조 괄호 `(keyword:1.3)` 등을 적절히 활용한 영문 태그/문장 형태로 작성해줘.\n- 퀄리티 관련 네거티브 정보나 고품질 디스크립터를 일관되게 적용해줘.";
-        break;
-    }
-
-    const finalPromptForAI = `당신은 유튜브 영상 제작 및 AI 이미지 프롬프트 엔지니어링 전문가입니다.
-아래 제공된 [유튜브 스크립트]를 분석하여, 전체 맥락과 시각적 일관성(Visual Continuity)을 유지하는 총 ${sceneCount}개의 이미지 생성용 프롬프트를 만드세요.
-
-[생성 조건]
-1. 목표 장면 수: 정확히 ${sceneCount}개의 장면으로 스크립트를 문맥에 맞게 등분할 것.
-2. 비주얼 스타일: 전체 장면에 '${style}' 스타일을 일관되게 적용할 것.
-3. 화면 비율: 기본 타겟 비율은 '${ratio}' 입니다.
-4. 출력 언어: 이미지 생성 엔진이 잘 이해하도록 프롬프트 내용은 반드시 '영어(English)'로 작성할 것.
-
-[${tool.label} 전용 프롬프트 작성 규칙]
-${toolRule}
-
-[출력 형식]
-반드시 아래의 JSON 포맷으로만 답변하세요. 마크다운 패키징(\`\`\`json)이나 다른 설명은 절대 추가하지 마세요.
-{
-  "storyContext": "전체 영상의 비주얼 톤앤매너, 색감, 캐릭터 특징 요약 (영문 2-3문장)",
-  "scenes": [
-    {
-      "sceneNumber": 1,
-      "scriptSegment": "해당 프롬프트에 대응하는 한국어 스크립트 구절",
-      "imagePrompt": "여기에 규칙에 맞춰 생성된 영문 이미지 프롬프트 작성"
-    }
-  ]
-}
-
-[유튜브 스크립트]
-${script}`;
-
+  segments.forEach((seg, idx) => {
     const card = document.createElement("div");
     card.className = "scene-card";
-    card.innerHTML = `
-      <div class="scene-top-bar" style="width:100%; background:${tool.color}"></div>
-      <div class="scene-header">
-        <div class="scene-badge-wrap">
-          <span class="scene-num-badge" style="background:${tool.color}">${tool.short} 탭용</span>
-        </div>
-        <p class="scene-text" style="color:#fff; font-weight:bold;">${tool.label} 대화창에 붙여넣을 복사본</p>
-      </div>
-      <div class="scene-body">
-        <div class="prompt-row" style="background:${tool.bg}; border-color:${tool.color}18">
-          <div class="prompt-row-header">
-            <span class="prompt-tool-name" style="color:${tool.color}">📋 대화창 전용 명령어 시스템</span>
-            <button class="copy-btn" style="background:transparent; border-color:${tool.color}66; color:${tool.color}" onclick="copyToClipboard(this)">복사하기</button>
+
+    // 탭 상태 (첫 번째 도구 기본 활성)
+    let activeTool = TOOLS[0].id;
+
+    function renderPromptBlock(toolId) {
+      const tool = TOOLS.find(t => t.id === toolId);
+      const prompt = buildPrompt(tool, seg, styleKey, ratio, lang);
+      return `
+        <div class="prompt-block" style="border-color:${tool.color}22">
+          <div class="prompt-block-header">
+            <span class="prompt-tool-label" style="color:${tool.color}">${tool.label} 프롬프트</span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <a href="${tool.link}" target="_blank" style="font-size:10px;color:${tool.color};text-decoration:none;opacity:.7">↗ 사이트 열기</a>
+              <button class="copy-btn" style="border-color:${tool.color}44;color:${tool.color}" data-prompt="${escHtml(prompt)}">복사하기</button>
+            </div>
           </div>
-          <pre class="prompt-text">${escapeHtml(finalPromptForAI)}</pre>
-        </div>
-      </div>
-    `;
+          <pre class="prompt-text">${escHtml(prompt)}</pre>
+        </div>`;
+    }
+
+    function renderCard() {
+      const tool = TOOLS.find(t => t.id === activeTool);
+      card.innerHTML = `
+        <div class="scene-card-top" style="background:${tool.color}"></div>
+        <div class="scene-card-inner">
+          <div class="scene-meta">
+            <span class="scene-num">SCENE ${String(idx+1).padStart(2,"0")}</span>
+            <span class="scene-script-text">${escHtml(seg.slice(0,80))}${seg.length>80?"…":""}</span>
+          </div>
+          <div class="tool-tabs">
+            ${TOOLS.map(t=>`<button class="tool-tab${t.id===activeTool?" active":""}" data-tool="${t.id}" style="${t.id===activeTool?`background:${t.color};border-color:${t.color};color:#fff`:""}">${t.label}</button>`).join("")}
+          </div>
+          ${renderPromptBlock(activeTool)}
+        </div>`;
+
+      // 탭 클릭
+      card.querySelectorAll(".tool-tab").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeTool = btn.dataset.tool;
+          renderCard();
+        });
+      });
+
+      // 복사 버튼
+      card.querySelectorAll(".copy-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const text = btn.dataset.prompt;
+          navigator.clipboard.writeText(text).then(() => {
+            const orig = btn.textContent;
+            btn.textContent = "✓ 복사 완료!";
+            btn.style.background = btn.style.color;
+            btn.style.color = "#fff";
+            setTimeout(() => {
+              btn.textContent = orig;
+              btn.style.background = "transparent";
+            }, 1500);
+          });
+        });
+      });
+    }
+
+    renderCard();
     resultCards.appendChild(card);
   });
 }
 
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-window.copyToClipboard = function(btn) {
-  const text = btn.parentElement.nextElementSibling.textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const originalText = btn.textContent;
-    btn.textContent = "✓ 복사 완료!";
-    btn.style.background = "#D97757";
-    btn.style.color = "#fff";
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.style.background = "transparent";
-      btn.style.color = "#7070a0";
-    }, 1500);
-  });
-};
-
+// 전체 복사
 copyAllBtn.addEventListener("click", () => {
-  const texts = Array.from(document.querySelectorAll(".prompt-text")).map(p => p.textContent).join("\n\n=========================\n\n");
-  navigator.clipboard.writeText(texts);
-  alert("화면에 표시된 모든 AI 모델용 프롬프트 명령어가 클립보드에 복사되었습니다.");
+  const all = [];
+  document.querySelectorAll(".scene-card").forEach((card, i) => {
+    const script = card.querySelector(".scene-script-text")?.textContent || "";
+    const prompt = card.querySelector(".prompt-text")?.textContent || "";
+    const tool   = card.querySelector(".tool-tab.active")?.textContent || "";
+    all.push(`[SCENE ${i+1}]\n대본: ${script}\n(${tool}) 프롬프트:\n${prompt}`);
+  });
+  navigator.clipboard.writeText(all.join("\n\n─────────────────\n\n"))
+    .then(() => alert(`${all.length}개 장면의 프롬프트가 복사되었습니다.`));
 });
 
-// 오직 이 버튼을 눌렀을 때만 생성이 일어납니다.
-genBtn.addEventListener("click", () => {
-  generateTemplates();
-});
-
-// 초기화 호출
-buildPills();
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
 </script>
 </body>
 </html>
