@@ -450,27 +450,44 @@ let allApps = [];
 let currentFilter = '전체';
 let selectedId = null;
 
-async function loadApplications() {
+function loadApplications() {
   document.getElementById('appList').innerHTML = '<div class="loading">불러오는 중...</div>';
-  try {
-    const snap = await db.ref('consultations').get();
+
+  // 기존 리스너가 있으면 해제
+  if (loadApplications._unsubscribe) {
+    loadApplications._unsubscribe();
+  }
+
+  const ref = db.ref('consultations');
+
+  const handler = (snap) => {
     if (!snap.exists()) {
       allApps = [];
     } else {
       const raw = snap.val();
       allApps = Object.entries(raw).map(([key, val]) => ({ id: key, ...val }));
-      // 최신순 정렬 (접수시각 기준)
-      allApps.sort((a, b) => {
-        const ta = a.접수시각 || '';
-        const tb = b.접수시각 || '';
-        return tb.localeCompare(ta);
-      });
     }
+
+    // 최신순 정렬: 접수시각(문자열 ISO 형식) 내림차순, 없으면 Firebase key 내림차순
+    allApps.sort((a, b) => {
+      const ta = a.접수시각 || '';
+      const tb = b.접수시각 || '';
+      if (ta && tb) return tb.localeCompare(ta);
+      if (ta) return -1;
+      if (tb) return 1;
+      return b.id.localeCompare(a.id);
+    });
+
     renderList();
     updateStats();
-  } catch(e) {
+  };
+
+  ref.on('value', handler, (e) => {
     document.getElementById('appList').innerHTML = `<div class="loading" style="color:#dc2626;">오류: ${e.message}</div>`;
-  }
+  });
+
+  // 화면 이탈 시 리스너 정리용 저장
+  loadApplications._unsubscribe = () => ref.off('value', handler);
 }
 
 function updateStats() {
@@ -511,6 +528,16 @@ function renderList() {
       (a.접수번호 || '').toLowerCase().includes(query)
     );
   }
+
+  // 최신순 보장 (필터/검색 후에도 유지)
+  filtered.sort((a, b) => {
+    const ta = a.접수시각 || '';
+    const tb = b.접수시각 || '';
+    if (ta && tb) return tb.localeCompare(ta);
+    if (ta) return -1;
+    if (tb) return 1;
+    return b.id.localeCompare(a.id);
+  });
 
   document.getElementById('countBadge').textContent = filtered.length;
   const el = document.getElementById('appList');
