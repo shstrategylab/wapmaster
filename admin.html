@@ -450,6 +450,21 @@ let allApps = [];
 let currentFilter = '전체';
 let selectedId = null;
 
+// "2026. 6. 14. 오후 3:57:06" 형식을 Date 객체로 파싱
+function parseKoreanDate(str) {
+  if (!str) return null;
+  try {
+    // 예: "2026. 6. 14. 오후 3:57:06"
+    const m = str.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.\s*(오전|오후)\s*(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+    if (!m) return null;
+    let [, year, month, day, ampm, hour, min, sec] = m;
+    hour = parseInt(hour, 10);
+    if (ampm === '오전' && hour === 12) hour = 0;
+    if (ampm === '오후' && hour !== 12) hour += 12;
+    return new Date(+year, +month - 1, +day, hour, +min, +(sec || 0));
+  } catch { return null; }
+}
+
 function loadApplications() {
   document.getElementById('appList').innerHTML = '<div class="loading">불러오는 중...</div>';
 
@@ -468,11 +483,11 @@ function loadApplications() {
       allApps = Object.entries(raw).map(([key, val]) => ({ id: key, ...val }));
     }
 
-    // 최신순 정렬: 접수시각(문자열 ISO 형식) 내림차순, 없으면 Firebase key 내림차순
+    // 최신순 정렬: 한국어 날짜 형식 파싱 후 내림차순
     allApps.sort((a, b) => {
-      const ta = a.접수시각 || '';
-      const tb = b.접수시각 || '';
-      if (ta && tb) return tb.localeCompare(ta);
+      const ta = parseKoreanDate(a.접수시각);
+      const tb = parseKoreanDate(b.접수시각);
+      if (ta && tb) return tb - ta;
       if (ta) return -1;
       if (tb) return 1;
       return b.id.localeCompare(a.id);
@@ -531,9 +546,9 @@ function renderList() {
 
   // 최신순 보장 (필터/검색 후에도 유지)
   filtered.sort((a, b) => {
-    const ta = a.접수시각 || '';
-    const tb = b.접수시각 || '';
-    if (ta && tb) return tb.localeCompare(ta);
+    const ta = parseKoreanDate(a.접수시각);
+    const tb = parseKoreanDate(b.접수시각);
+    if (ta && tb) return tb - ta;
     if (ta) return -1;
     if (tb) return 1;
     return b.id.localeCompare(a.id);
