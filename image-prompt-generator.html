@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>방송 스크립트 이미지 프롬프트 생성기 PRO v6</title>
+<title>방송 스크립트 이미지 프롬프트 생성기</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:#07070f;font-family:'Segoe UI',system-ui,sans-serif;color:#e0e0f0;min-height:100vh}
@@ -26,12 +26,13 @@ textarea::placeholder{color:#2e2e50}
 input[type=range]{width:100%;accent-color:#c96a3a;height:4px;cursor:pointer}
 .slider-hints{display:flex;justify-content:space-between;color:#2e2e50;font-size:11px;margin-top:6px}
 
-.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
 @media(max-width:540px){.opts{grid-template-columns:1fr}}
 .opt-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#6060a0;margin-bottom:7px}
 select{width:100%;background:#09091a;border:1px solid #1e1e3a;border-radius:10px;color:#ddddf5;padding:10px 32px 10px 12px;font-size:13px;outline:none;cursor:pointer;font-family:inherit;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236060a0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:border-color .2s}
 select:focus{border-color:#c96a3a}
 
+/* ── 인물 묘사 섹션 ── */
 .char-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:0;user-select:none}
 .char-toggle-switch{width:40px;height:22px;background:#1a1a35;border-radius:11px;border:1.5px solid #2a2a50;position:relative;transition:all .2s;flex-shrink:0}
 .char-toggle-switch::after{content:'';position:absolute;left:3px;top:3px;width:13px;height:13px;border-radius:50%;background:#4040a0;transition:all .2s}
@@ -42,6 +43,7 @@ select:focus{border-color:#c96a3a}
 .char-panel{margin-top:18px;padding-top:18px;border-top:1px solid #1a1a35;display:none}
 .char-panel.open{display:block}
 
+/* 인물 카드 그리드 */
 .char-cards{display:flex;flex-direction:column;gap:14px}
 .char-card{background:#09091a;border:1.5px solid #1e1e3a;border-radius:14px;padding:16px 18px;position:relative;transition:border-color .2s}
 .char-card:hover{border-color:#2e2e5a}
@@ -53,6 +55,7 @@ select:focus{border-color:#c96a3a}
 .char-del-btn{background:transparent;border:1px solid #2a2a4040;border-radius:7px;color:#3a3a60;font-size:13px;cursor:pointer;padding:4px 9px;transition:all .18s;flex-shrink:0}
 .char-del-btn:hover{border-color:#c96a3a66;color:#c96a3a}
 
+/* 인물 속성 그리드 */
 .char-fields{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 @media(max-width:540px){.char-fields{grid-template-columns:1fr}}
 .char-field{display:flex;flex-direction:column;gap:5px}
@@ -61,23 +64,27 @@ select:focus{border-color:#c96a3a}
 .char-field-input:focus{border-color:#c96a3a}
 .char-field-input::placeholder{color:#2e2e50}
 
+/* 성격/특징 칩 선택 */
 .char-trait-row{grid-column:1/-1}
 .trait-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
 .trait-chip{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #2a2a50;background:#0f0f22;color:#5050a0;transition:all .15s;user-select:none}
 .trait-chip:hover{border-color:#4040a0;color:#9090d0}
 .trait-chip.selected{background:#c96a3a;border-color:#c96a3a;color:#fff}
 
+/* 자유 묘사 */
 .char-free-row{grid-column:1/-1}
 .char-free-input{width:100%;background:#0f0f22;border:1px solid #1e1e3a;border-radius:8px;color:#ddddf5;padding:9px 12px;font-size:12px;outline:none;font-family:inherit;min-height:60px;resize:vertical;line-height:1.7;transition:border-color .2s}
 .char-free-input:focus{border-color:#c96a3a}
 .char-free-input::placeholder{color:#2e2e50}
 
+/* 미리보기 뱃지 */
 .char-preview{margin-top:12px;padding:9px 12px;background:#12122a;border-radius:8px;border:1px dashed #2a2a50;font-size:11px;color:#7070b0;line-height:1.7;font-family:'SF Mono','Fira Code',monospace}
 .char-preview-label{font-size:9px;color:#4040a0;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
 
 .add-char-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border:1.5px dashed #2a2a50;border-radius:12px;background:transparent;color:#5050a0;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;font-family:inherit;margin-top:4px}
 .add-char-btn:hover{border-color:#5050a0;color:#9090d0;background:#0f0f2210}
 
+/* AI 도구 체크박스 */
 .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;margin-bottom:6px}
 .tool-check-item{position:relative;cursor:pointer}
 .tool-check-item input[type=checkbox]{position:absolute;opacity:0;width:0;height:0}
@@ -129,6 +136,7 @@ select:focus{border-color:#c96a3a}
 .prompt-tips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .tip-badge{font-size:10px;background:#12122a;border:1px solid #2a2a50;border-radius:6px;padding:3px 9px;color:#6060a0}
 
+/* ── 분절 미리보기 ── */
 .split-preview-wrap{border:1px solid #1e1e3a;border-radius:12px;overflow:hidden}
 .split-preview-header{background:#12122a;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a35}
 .split-preview-title{font-size:11px;font-weight:800;color:#6060a0;letter-spacing:1px;text-transform:uppercase}
@@ -143,6 +151,7 @@ select:focus{border-color:#c96a3a}
 .split-loading{padding:20px;text-align:center;color:#4040a0;font-size:13px}
 .split-loading-dots::after{content:'';animation:dots 1.2s infinite}
 @keyframes dots{0%{content:''}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
+.split-reason{font-size:10px;color:#3a3a60;font-style:italic;margin-top:3px;line-height:1.5}
 
 .hidden{display:none!important}
 .done-banner{text-align:center;padding:22px;background:#0f0f22;border:1px dashed #1e1e3a;border-radius:14px;margin-top:8px;color:#5555a0;font-size:13px;line-height:1.8}
@@ -159,12 +168,15 @@ select:focus{border-color:#c96a3a}
 
 <main class="main">
 
+  <!-- 스크립트 -->
   <div class="card">
     <p class="sec-label">📝 방송 스크립트</p>
     <textarea id="scriptInput" placeholder="여기에 방송 대본을 붙여넣으세요.
 
 예시)
-어머니는 새벽 4시에 일어나 시장으로 향했다. 무거운 손수레를 끄는 등 뒤로 차가운 푸른 새벽빛이 비쳤다. 시장 골목길은 아직 조용하고 고단한 분위기가 감돌았다."></textarea>
+안녕하세요, 오늘은 인공지능이 바꿔놓은 우리 일상에 대해 이야기해 보겠습니다.
+불과 몇 년 전만 해도 상상조차 못했던 일들이 현실이 되고 있습니다.
+스마트폰 하나로 번역, 이미지 생성, 음악 작곡까지 가능한 시대입니다."></textarea>
     <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
       <button class="sel-btn" id="previewSplitBtn" style="background:#c96a3a18;border-color:#c96a3a60;color:#c96a3a;padding:8px 18px;font-size:12px;font-weight:800">🔍 AI 장면 분절 미리보기</button>
       <button class="sel-btn" id="clearPreviewBtn" style="display:none">✕ 미리보기 닫기</button>
@@ -173,6 +185,7 @@ select:focus{border-color:#c96a3a}
     <p class="tone-hint" style="margin-top:8px">💡 AI가 실제로 "그림이 될 수 있는" 장면 단위로 분절합니다. 미리보기로 확인 후 생성하세요.</p>
   </div>
 
+  <!-- 장면 수 -->
   <div class="card">
     <div class="slider-row">
       <p class="sec-label" style="margin:0">🎬 목표 장면 수</p>
@@ -182,52 +195,58 @@ select:focus{border-color:#c96a3a}
     <div class="slider-hints"><span>3장면 · 짧은 영상</span><span>30장면 · 긴 영상</span></div>
   </div>
 
+  <!-- 스타일 / 비율 / 언어 -->
   <div class="opts">
     <div>
-      <p class="opt-label">🎯 콘텐츠 엔진 모드</p>
-      <select id="contentModeSelect">
-        <option value="news_info">뉴스·시사·정보형 (→ PRO 뉴스 장면 추출기)</option>
-        <option value="emotion" selected>감동 사연 (→ 감정 중심 대표 장면 추출기)</option>
-        <option value="story">스토리텔링 (→ 캐릭터 중심 대표 장면 추출기)</option>
-        <option value="horror">공포·미스터리 (→ 긴장감 중심 대표 장면 추출기)</option>
-        <option value="history">역사·지식 (→ 다큐멘터리형 대표 장면 추출기)</option>
+      <p class="opt-label">🎨 이미지 스타일</p>
+      <select id="styleSelect">
+        <option value="photorealistic">사실적 사진 (Photorealistic)</option>
+        <option value="cinematic">영화적 시네마틱 (Cinematic)</option>
+        <option value="anime">애니메이션 / 일러스트</option>
+        <option value="watercolor">수채화 (Watercolor)</option>
+        <option value="oilpaint">유화 (Oil Painting)</option>
+        <option value="3d">3D 렌더링</option>
+        <option value="minimal">미니멀 디자인</option>
+        <option value="infographic">인포그래픽</option>
       </select>
     </div>
     <div>
-      <p class="opt-label">📐 화면 비율 파라미터</p>
+      <p class="opt-label">📐 화면 비율</p>
       <select id="ratioSelect">
         <option value="16:9">16:9 (유튜브 일반)</option>
-        <option value="9:16" selected>9:16 (쇼츠 / 릴스)</option>
+        <option value="9:16">9:16 (쇼츠 / 릴스)</option>
         <option value="1:1">1:1 (정사각)</option>
         <option value="4:3">4:3</option>
       </select>
     </div>
     <div>
-      <p class="opt-label">🎨 기본 이미지 스타일 베이스</p>
-      <select id="styleSelect">
-        <option value="cinematic" selected>영화적 시네마틱 (Cinematic Realism)</option>
-        <option value="photorealistic">사실적 사진 (Photorealistic)</option>
-        <option value="anime">애니메이션 / 일러스트</option>
-        <option value="watercolor">수채화 (Watercolor)</option>
-        <option value="oilpaint">유화 (Oil Painting)</option>
-        <option value="3d">3D 렌더링</option>
-      </select>
-    </div>
-    <div>
-      <p class="opt-label">🌍 출력 프롬프트 언어</p>
+      <p class="opt-label">🌍 프롬프트 언어</p>
       <select id="langSelect">
-        <option value="en" selected>영어 (English) — 복합 매핑 권장</option>
-        <option value="ko">한국어 전용 요약</option>
+        <option value="en">영어 (English) — 권장</option>
+        <option value="ko">한국어</option>
       </select>
     </div>
+
+    <div>
+      <p class="opt-label">🎯 콘텐츠 모드</p>
+      <select id="contentModeSelect">
+        <option value="news_info">뉴스·시사·정보형</option>
+        <option value="emotion">감동 사연</option>
+        <option value="story">스토리텔링</option>
+        <option value="horror">공포·미스터리</option>
+        <option value="history">역사·지식</option>
+      </select>
+    </div>
+
   </div>
 
+  <!-- ★ 등장인물 묘사 섹션 ★ -->
   <div class="card">
     <div class="char-toggle" id="charToggle">
       <div class="char-toggle-switch" id="charSwitch"></div>
       <div>
-        <div class="char-toggle-label">👤 등장인물 고정 묘사 설정 <span>(선택사항)</span></div>
-        <div style="font-size:11px;color:#3a3a60;margin-top:2px">인물의 일관된 외모·성격을 엔진 프롬프트에 영구 주입 결합합니다</div>
+        <div class="char-toggle-label">👤 등장인물 묘사 설정 <span>(선택사항)</span></div>
+        <div style="font-size:11px;color:#3a3a60;margin-top:2px">인물의 외모·성격을 직접 설정하면 더 현실감 있는 이미지 프롬프트가 생성됩니다</div>
       </div>
     </div>
 
@@ -237,6 +256,7 @@ select:focus{border-color:#c96a3a}
     </div>
   </div>
 
+  <!-- AI 도구 선택 -->
   <div class="card">
     <p class="sec-label">🤖 사용할 AI 이미지 도구 선택</p>
     <div class="tool-grid" id="toolGrid"></div>
@@ -256,227 +276,326 @@ select:focus{border-color:#c96a3a}
     </div>
     <div id="resultCards"></div>
     <div class="done-banner">
-      ✅ 대표 장면 프롬프트 변환 완료!<br>
+      ✅ 프롬프트 생성 완료!<br>
       <span style="font-size:12px">각 장면의 <strong style="color:#9090c0">복사하기</strong> 버튼 → 해당 AI 사이트에 붙여넣기</span>
     </div>
   </div>
 
 </main>
-
 <script>
-// ==============================================================================
-//  [핵심 개선] 콘텐츠 모드별 전용 대표 장면 추출기 매핑 엔진
-// ==============================================================================
 
-// 1. 뉴스·시사·정보형 → PRO 뉴스 장면 추출기
-function extractProNewsScene(text) {
-  const t = text.trim();
-  let subject = "professional journalists", action = "reporting facts", place = "modern newsroom";
-  
-  if(/정부|대통령|장관|국회|정치/.test(t)) { subject = "government official"; action = "speaking at a podium"; place = "official press conference room"; }
-  else if(/기업|회사|주식|경제|투자|금융/.test(t)) { subject = "business professionals"; action = "analyzing complex financial graphs"; place = "modern tech corporate office"; }
-  else if(/시민|현장|시위|대중/.test(t)) { subject = "crowd of ordinary citizens"; action = "gathering and walking together"; place = "busy city public square"; }
-  else if(/AI|기술|과학|연구|스마트폰/.test(t)) { subject = "expert researcher"; action = "interacting with glowing digital interface"; place = "high-tech laboratory"; }
 
-  return {
-    ko: `전문가 및 관계자\n브리핑 및 정보 전달 현장\n정돈된 구도\n안정적인 다큐멘터리 조명\n신뢰감 있고 객관적인 분위기`,
-    en: `${subject}, ${action}, ${place}, fixed camera medium shot, broadcast news style, realistic journalism, crisp focus, clear studio lighting`
-  };
+// 뉴스/시사/정보형 대표 장면 추출기
+
+function extractProNewsScene(text){
+ const t=text.trim();
+ let subject="government official";
+ let action="speaking at a podium";
+ let place="press conference room";
+ let camera="medium shot";
+ let mood="professional journalism";
+
+ const rules=[
+  ["정부","government official"],["대통령","president"],["전문가","industry expert"],
+  ["기업","corporate executive"],["시민","ordinary citizen"]
+ ];
+ rules.forEach(r=>{if(t.includes(r[0])) subject=r[1];});
+
+ if(/발표|브리핑/.test(t)) action="making an official announcement";
+ if(/인터뷰/.test(t)){action="giving an interview";camera="close-up shot";}
+ if(/시위/.test(t)){action="participating in a protest";camera="wide angle shot";}
+ if(/경제|주식|투자/.test(t)){place="financial newsroom";}
+ if(/국회/.test(t)){place="parliament chamber";}
+
+ return `${subject}, ${action}, ${place}, ${camera}, documentary photography, broadcast news style, realistic journalism, highly detailed`;
 }
 
-// 2. 감동 사연 → 감정 중심 대표 장면 추출기
-function extractEmotionScene(text) {
+function extractNewsVisualScene(text){
   const t = text.trim();
-  let age = "70대 여성", sceneKo = "새벽 시장 골목\n무거운 손수레\n푸른 새벽빛\n고단한 분위기";
-  let enProps = "elderly Korean woman pulling a heavy cart, traditional market alley, cold blue dawn light, lonely atmosphere";
 
-  if(/어머니|엄마|새벽|시장|수레/.test(t)) {
-    // 디폴트 예시 조건 유지 및 강화 매핑
-    age = "70대 여성";
-    sceneKo = "70대 여성\n새벽 시장 골목\n무거운 손수레\n푸른 새벽빛\n고단한 분위기";
-    enProps = "elderly Korean woman pulling a heavy cart, traditional market alley, cold blue dawn light, lonely atmosphere";
-  } else if(/가족|아버지|아빠|눈물|혼자/.test(t)) {
-    sceneKo = "50대 중년 남성\n적막한 거실 배경\n빛바랜 옛 사진첩\n기울어지는 저녁 햇살\n애틋하고 그리운 눈물";
-    enProps = "middle-aged man shedding a tear, holding a vintage photo album, quiet living room, warm volumetric sunset light, melancholic atmosphere";
-  } else if(/아이|친구|행복|웃음|치유/.test(t)) {
-    sceneKo = "어린 아이\n햇살 가득한 공원\n환한 웃음과 달리기\n생동감 넘치는 플레어\n따뜻하고 행복한 치유";
-    enProps = "bright smiling child running freely, sun-drenched green playground, vibrant sun flare, joyful warm atmosphere";
-  } else {
-    sceneKo = "서사 중심의 인물\n감정이 묻어나는 배경\n클로즈업 또는 미디엄 숏\n감성적인 빛과 그림자\n애틋하고 고단한 분위기";
-    enProps = "lonely person sitting quietly, dim room, soft golden hour light, heartfelt emotional storytelling, expressive mood";
+  const SUBJECTS = [
+    ["정부","government officials"],
+    ["대통령","president speaking"],
+    ["국회","lawmakers in parliament"],
+    ["전문가","industry experts"],
+    ["기업","corporate executives"],
+    ["시민","ordinary citizens"],
+    ["학생","students"],
+  ];
+
+  const ACTIONS = [
+    ["발표","announcing policy at a podium"],
+    ["회의","meeting around a conference table"],
+    ["인터뷰","giving a media interview"],
+    ["시위","public demonstration"],
+    ["조사","reviewing documents and data"],
+    ["투자","analyzing financial charts"],
+  ];
+
+  const PLACES = [
+    ["기자회견","press conference room"],
+    ["국회","parliament chamber"],
+    ["회사","modern corporate office"],
+    ["학교","classroom"],
+    ["병원","hospital"],
+  ];
+
+  let subject="professional people";
+  let action="in discussion";
+  let place="realistic environment";
+
+  SUBJECTS.forEach(([k,v])=>{ if(t.includes(k)) subject=v; });
+  ACTIONS.forEach(([k,v])=>{ if(t.includes(k)) action=v; });
+  PLACES.forEach(([k,v])=>{ if(t.includes(k)) place=v; });
+
+  return `${subject}, ${action}, ${place}, documentary news photography, realistic journalism`;
+}
+
+
+function detectContentMode(text){
+ const t=text||'';
+ if(/상담|내담자|우울|불안|부부|심리|감정|치유/.test(t)) return 'counseling';
+ if(/건강|혈당|다이어트|영양|음식|식단|질병/.test(t)) return 'health';
+ if(/정부|정책|경제|주식|국회|대통령|뉴스/.test(t)) return 'news';
+ return 'general';
+}
+
+function extractVisualScene(text){
+  const t = text.trim();
+
+  const patterns = [
+    {keys:["발표","기자회견","정책"], scene:"government officials at a press conference, official announcement, journalists taking photos"},
+    {keys:["AI","인공지능","기술"], scene:"futuristic technology scene, digital interface, advanced AI environment"},
+    {keys:["주식","경제","투자","회사"], scene:"business professionals analyzing financial data in a modern office"},
+    {keys:["병원","의사","의료"], scene:"medical professionals in a modern hospital environment"},
+    {keys:["학교","교육","학생"], scene:"students learning in a classroom, educational environment"},
+    {keys:["여행","관광","비행기"], scene:"travel destination, cinematic tourism scene"},
+    {keys:["숲","산","바다","자연"], scene:"beautiful natural landscape, cinematic outdoor scenery"}
+  ];
+
+  for(const p of patterns){
+    if(p.keys.some(k=>t.includes(k))) return p.scene;
   }
 
-  return { ko: sceneKo, en: enProps };
+  const firstSentence = t.split(/[.!?。！？\\n]/)[0].trim();
+  return firstSentence.length > 10 ? firstSentence : detectVisual(t);
 }
 
-// 3. 스토리텔링 → 캐릭터 중심 대표 장면 추출기
-function extractStoryScene(text) {
-  const t = text.trim();
-  let sceneKo = "명확한 캐릭터성\n이야기가 시작되는 핵심 장소\n인물의 시선 중심 구도\n생동감 있는 조명\n내러티브 분위기";
-  let enProps = "protagonist with an expressive face, starting an epic journey, scenic route, cinematic storytelling narrative, sharp focus";
-
-  if(/아이|소년|소녀|모험/.test(t)) {
-    sceneKo = "모험심 강한 소년\n신비로운 비밀 야외 숲\n반짝이는 나침반 소지\n나뭇잎 사이로 내리쬐는 햇살\n몽환적인 어드벤처 분위기";
-    enProps = "young adventurous boy with sparkling eyes, discovering a hidden magical path, mystical fantasy forest, shafts of light, cinematic storytelling look";
-  } else if(/청년|학생|성공|꿈/.test(t)) {
-    sceneKo = "20대 청년 주인공\n창밖을 바라보는 도서관 내부\n두꺼운 전공 서적\n붉게 물드는 노을 빛\n열정적이고 미래지향적 무드";
-    enProps = "determined young student looking out a large window holding books, quiet university library at sunset, dynamic backlighting";
-  } else if(/노인|장인|할아버지/.test(t)) {
-    sceneKo = "늙은 노인 노련한 장인\n작은 목공 공방 작업실\n섬세하게 깎아내는 나뭇조각\n아늑한 노란 백열등 조명\n클래식하고 진정성 있는 순간";
-    enProps = "wise elderly artisan, carefully crafting a wooden artifact, cluttered authentic old workshop, focused warm lighting, rich details";
-  }
-
-  return { ko: sceneKo, en: enProps };
-}
-
-// 4. 공포·미스터리 → 긴장감 중심 대표 장면 추출기
-function extractHorrorScene(text) {
-  const t = text.trim();
-  let sceneKo = "미스터리한 실루엣\n어둡고 폐쇄적인 공간\n하이 콘트라스트 조명\n차가운 안개와 긴장감\n서스펜스 극대화";
-  let enProps = "anxious shadow silhouette, looking back in fear, dark concrete corridor, creepy mist, dynamic low-key lighting, eerie look";
-
-  if(/밤|새벽|골목|추적|추적자/.test(t)) {
-    sceneKo = "도망치는 미상의 인물\n가로등 깜빡이는 젖은 골목길\n자욱한 바닥 밤안개\n어둠 속 번지는 빛방울\n숨 가쁜 미스터리 긴장감";
-    enProps = "frightened person running, narrow deserted wet street at night, dim flickering streetlights, low fog, heavy vignetting, horror thriller look";
-  } else if(/집|방|문|소리|흔적/.test(t)) {
-    sceneKo = "숨죽인 관찰자의 시선\n낡고 폐허가 된 폐가 방 안\n문틈 사이 새어 나오는 파란 달빛\n기괴한 가구들의 그림자\n오싹하고 기괴한 서스펜스";
-    enProps = "shabby abandoned room, staring at a slightly ajar wooden door, chilling pale moonlight piercing through broken window, deep shadows";
-  }
-
-  return { ko: sceneKo, en: enProps };
-}
-
-// 5. 역사·지식 → 다큐멘터리형 대표 장면 추출기
-function extractHistoryScene(text) {
-  const t = text.trim();
-  let sceneKo = "고증된 역사적 요소\n웅장한 아카이브 배경\n와이드 내셔널 지오그래픽 앵글\n자연스럽고 깊은 조명\n교육적인 분위기";
-  let enProps = "historical relic, ancient heritage site, national geographic photography style, macro detailed texture, informative cinematic look";
-
-  if(/조선|왕|궁궐|한국|전통/.test(t)) {
-    sceneKo = "조선시대 전통 궁궐 건축\n운치 있게 펼쳐진 대궁전 마당\n기와지붕 끝에 걸린 비구름\n장엄하고 깊이감 있는 롱숏\n역사 다큐멘터리 스케일";
-    enProps = "traditional Korean palace Gyeongbokgung architecture, grand courtyard under majestic rolling clouds, cinematic history channel style";
-  } else if(/기록|유물|책|지식|비밀/.test(t)) {
-    sceneKo = "빛바랜 고대 양장 가죽 책\n어두운 나무 책상 상단 배열\n돋보기와 낡은 깃펜\n미세한 먼지 입자가 보이는 클로즈업\n지적이고 탐구적인 아카이브";
-    enProps = "ancient calligraphic manuscript, old dusty library books, macro detailed museum archive shot, shallow depth of field";
-  }
-
-  return { ko: sceneKo, en: enProps };
-}
-
-// 모드 코드 매퍼 함수
-function getVisualKitByMode(mode, text) {
-  switch(mode) {
-    case "news_info": return extractProNewsScene(text);
-    case "emotion":   return extractEmotionScene(text);
-    case "story":     return extractStoryScene(text);
-    case "horror":    return extractHorrorScene(text);
-    case "history":   return extractHistoryScene(text);
-    default:          return extractEmotionScene(text);
-  }
-}
 
 // ══════════════════════════════════════════════
-//  AI 도구 정의 및 프롬프트 조립
+//  AI 도구 정의
 // ══════════════════════════════════════════════
 const TOOLS = [
   {
-    id:"midj", label:"Midjourney", sub:"Discord /imagine", icon:"🟣", color:"#8B5CF6",
-    link:"https://www.midjourney.com", linkLabel:"Midjourney 열기",
-    tips:["콘텐츠 모드 추출 최적화","--ar 비율 파라미터 내장","시네마틱 리얼리즘 자동화"],
-    build(seg,style,ratio,mood,kit,lang,charDesc){
-      const cd = charDesc ? `, ${charDesc}` : "";
-      // 대표장면 한글 특징 세트 + 영문 키워드 조합 출력 형태 설계
-      return `[대표 장면 요약]\n${kit.ko}\n\n[Prompt]\n${kit.en}${cd}, ${mood}, ${style.en}, cinematic realism, ultra detailed, ${ratio}`;
-    }
-  },
-  {
     id:"dalle", label:"DALL·E 3", sub:"ChatGPT / OpenAI", icon:"🟢", color:"#10A37F",
     link:"https://chatgpt.com", linkLabel:"ChatGPT 열기",
-    tips:["상황적 한글 묘사 분리","자연어 문장 매핑 강점"],
-    build(seg,style,ratio,mood,kit,lang,charDesc){
-      const cd = charDesc ? `\nCharacter detail: ${charDesc}` : "";
-      return `[대표 장면]\n${kit.ko}\n\n[Prompt]\nCreate an image representing: ${kit.en}. Style option: ${style.en}. Atmosphere: ${mood}.${cd} Aspect ratio parameter is ${ratio}.`;
+    tips:["자연어 문장형","구체적 묘사 중심","한국어도 인식"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `\nCharacter in scene: ${charDesc}` : "";
+      if(lang==="ko"){
+        const cdk = charDesc ? `\n등장인물: ${charDesc}` : "";
+        return `다음 장면을 ${style.ko} 스타일로 그려주세요.\n장면 내용: "${seg.slice(0,150)}"\n시각적 요소: ${visual}\n분위기: ${mood}${cdk}\n화면 비율 ${ratio}`;
+      }
+      return `Create a ${style.en} image.\nScene script: "${seg.slice(0,180)}"\nVisual focus: ${visual}\nMood: ${mood}${cd}\nComposition: rule of thirds, ${ratio} aspect ratio, professional lighting, high detail.`;
     }
   },
   {
-    id:"flux", label:"FLUX", sub:"Black Forest Labs", icon:"⚫", color:"#6B7280",
-    link:"https://fal.ai/models/fal-ai/flux", linkLabel:"FLUX 열기",
-    tips:["사실감 극대화 오픈소스","질감 처리 우수"],
-    build(seg,style,ratio,mood,kit,lang,charDesc){
+    id:"midj", label:"Midjourney", sub:"Discord /imagine", icon:"🟣", color:"#8B5CF6",
+    link:"https://www.midjourney.com", linkLabel:"Midjourney 열기",
+    tips:["키워드 나열형","--ar 파라미터 자동","--v 6 --q 2 적용"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const ar = ratio;
       const cd = charDesc ? `, ${charDesc}` : "";
-      return `[대표 장면 구성]\n${kit.ko}\n\n[Prompt]\n${kit.en}${cd}, photorealistic high fidelity, fine textures, sharp studio focus, aspect ratio ${ratio}`;
+      const segShort = seg.slice(0,120);
+      if(lang==="ko") return `/imagine ${segShort}, ${visual}${cd}, ${mood}, ${style.ko} --ar ${ar} --v 6 --q 2`;
+      return `/imagine ${segShort}, ${visual}${cd}, ${mood}, ${style.en}, dramatic lighting, ultra detailed --ar ${ar} --v 6 --q 2 --style raw`;
+    }
+  },
+  {
+    id:"stable", label:"Stable Diffusion", sub:"AUTOMATIC1111 / ComfyUI", icon:"🔴", color:"#E11D48",
+    link:"https://stablediffusionweb.com", linkLabel:"SD Web 열기",
+    tips:["(keyword:1.3) 가중치","Negative prompt 포함","CFG 7 권장"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, (${charDesc}:1.2)` : "";
+      const segShort = seg.slice(0,150);
+      const pos = `(${segShort}:1.4), (${visual}:1.2)${cd}, (${mood}:1.1), (${style.en}:1.2), (masterpiece:1.4), (best quality:1.3), highly detailed, sharp focus, 8k`;
+      const neg = `Negative prompt: (blurry:1.4), (low quality:1.4), deformed, ugly, watermark, text, cropped`;
+      return `${pos}\n${neg}`;
     }
   },
   {
     id:"gemini", label:"Google Gemini", sub:"Imagen 3", icon:"🔵", color:"#4285F4",
     link:"https://gemini.google.com", linkLabel:"Gemini 열기",
-    tips:["구조화 레이아웃 완벽 이해","화면비 구성 최적화"],
-    build(seg,style,ratio,mood,kit,lang,charDesc){
-      return `[대표 장면 식별]\n${kit.ko}\n\n[Prompt]\nA cinematic illustration of ${kit.en}, ${mood}, aspect ratio ${ratio}.`;
+    tips:["자연스러운 묘사","Imagen 3 최적화","상세 상황 설명"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `\nCharacter appearance: ${charDesc}` : "";
+      if(lang==="ko"){
+        const cdk = charDesc ? `\n인물 외모: ${charDesc}` : "";
+        return `다음 장면의 이미지를 생성해주세요.\n스타일: ${style.ko}\n장면 내용: "${seg.slice(0,150)}"\n시각적 요소: ${visual}\n분위기: ${mood}${cdk}\n화면 비율 ${ratio}`;
+      }
+      return `Generate a ${style.en} image.\nScene script: "${seg.slice(0,180)}"\nDepict: ${visual}\nAtmosphere: ${mood}${cd}\nTechnical: ${ratio} composition, vibrant colors, professional quality.`;
     }
-  }
+  },
+  {
+    id:"copilot", label:"Microsoft Copilot", sub:"Designer / DALL·E", icon:"🩵", color:"#0078D4",
+    link:"https://copilot.microsoft.com", linkLabel:"Copilot 열기",
+    tips:["명확하고 직관적","안전한 묘사 중심","한/영 모두 가능"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? ` The character is ${charDesc}.` : "";
+      if(lang==="ko"){
+        const cdk = charDesc ? ` 인물: ${charDesc}.` : "";
+        return `${style.ko} 스타일로 다음 장면을 담은 이미지를 만들어주세요: "${seg.slice(0,150)}". 시각적 요소: ${visual}. 분위기: ${mood}.${cdk} 화면 비율 ${ratio}.`;
+      }
+      return `Create a ${style.en} image based on this scene: "${seg.slice(0,180)}". Visual: ${visual} with a ${mood} atmosphere.${cd} Clear, detailed composition in ${ratio} format.`;
+    }
+  },
+  {
+    id:"firefly", label:"Adobe Firefly", sub:"Adobe Creative Cloud", icon:"🟠", color:"#FF6B35",
+    link:"https://firefly.adobe.com", linkLabel:"Firefly 열기",
+    tips:["저작권 안전 생성","스타일 레퍼런스 지원","Adobe 생태계 연동"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `${style.ko} 스타일, 장면: "${seg.slice(0,120)}", ${visual}${cd}, ${mood} 분위기, 전문적 품질, ${ratio} 비율`;
+      return `${style.en} style, scene: "${seg.slice(0,150)}", ${visual}${cd}, ${mood} atmosphere, professional quality, ${ratio} format, high resolution`;
+    }
+  },
+  {
+    id:"leonardo", label:"Leonardo AI", sub:"leonardo.ai", icon:"⚡", color:"#F59E0B",
+    link:"https://leonardo.ai", linkLabel:"Leonardo 열기",
+    tips:["모델 선택 가능","Alchemy 최적화","시네마틱 품질"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `장면: "${seg.slice(0,120)}", ${visual}${cd}, ${mood}, ${style.ko}, 시네마틱 조명, 초고해상도, ${ratio}`;
+      return `scene: "${seg.slice(0,150)}", ${visual}${cd}, ${mood}, ${style.en}, cinematic lighting, ultra high resolution, Alchemy v2, ${ratio} format`;
+    }
+  },
+  {
+    id:"ideogram", label:"Ideogram", sub:"ideogram.ai", icon:"🔡", color:"#7C3AED",
+    link:"https://ideogram.ai", linkLabel:"Ideogram 열기",
+    tips:["텍스트 렌더링 강점","타이포 포함 이미지","Magic Prompt 지원"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `${style.ko} 스타일로 다음 장면을 표현한 이미지: "${seg.slice(0,120)}", ${visual}${cd}. 분위기: ${mood}. 화면비 ${ratio}.`;
+      return `${style.en} image depicting: "${seg.slice(0,150)}", ${visual}${cd}, ${mood}, clean composition, ${ratio} aspect ratio, high fidelity`;
+    }
+  },
+  {
+    id:"kling", label:"Kling AI", sub:"kuaishou / 영상 특화", icon:"🎬", color:"#06B6D4",
+    link:"https://klingai.com", linkLabel:"Kling 열기",
+    tips:["영상→이미지 키프레임","스토리보드 최적화","연속성 강조"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `키프레임 이미지: "${seg.slice(0,120)}", ${visual}${cd}, ${mood}, ${style.ko}, 스토리보드 컷, ${ratio}`;
+      return `Keyframe: "${seg.slice(0,150)}", ${visual}${cd}, ${mood}, ${style.en}, cinematic storyboard frame, ${ratio} format, consistent visual style`;
+    }
+  },
+  {
+    id:"flux", label:"FLUX", sub:"Black Forest Labs", icon:"⚫", color:"#6B7280",
+    link:"https://fal.ai/models/fal-ai/flux", linkLabel:"FLUX 열기",
+    tips:["최신 오픈소스 모델","FLUX.1 Pro 지원","사실감 최상"],
+    build(seg,style,ratio,mood,visual,lang,charDesc){
+      const cd = charDesc ? `, ${charDesc}` : "";
+      if(lang==="ko") return `장면: "${seg.slice(0,120)}", ${visual}${cd}, ${mood}, ${style.ko}, 포토리얼리스틱, 8K, 전문 조명, ${ratio}`;
+      return `scene: "${seg.slice(0,150)}", ${visual}${cd}, ${mood}, ${style.en}, photorealistic render, 8K resolution, professional studio lighting, sharp focus, ${ratio} aspect ratio`;
+    }
+  },
 ];
 
 // ══════════════════════════════════════════════
-//  스타일 & 기본 무드 정의
+//  스타일 & 무드 매핑
 // ══════════════════════════════════════════════
 const STYLE_MAP = {
-  cinematic:     {en:"cinematic shot, dramatic cinematic lighting, film grain, depth of field", ko:"영화적 구도, 시네마틱 조명"},
-  photorealistic:{en:"photorealistic photography, ultra-detailed, sharp focus, natural light, 8K", ko:"사실적 사진 스타일"},
-  anime:         {en:"anime illustration, studio Ghibli aesthetic, vibrant colors, clean vector lines", ko:"애니메이션 일러스트"},
-  watercolor:    {en:"watercolor painting, soft fluid washes, pastel tones", ko:"수채화 풍"},
-  oilpaint:      {en:"oil painting style, rich heavy textures, impasto classical art", ko:"유화 화풍"},
-  "3d":          {en:"3D rendering, octane render, intricate subsurface scattering", ko:"3D 디지털 렌더"}
+  photorealistic:{en:"photorealistic photography, ultra-detailed, sharp focus, natural lighting, 8K", ko:"사실적 사진 스타일, 초고해상도, 자연광"},
+  cinematic:     {en:"cinematic shot, dramatic lighting, film grain, anamorphic lens, depth of field", ko:"영화적 구도, 드라마틱 조명, 필름 그레인"},
+  anime:         {en:"anime illustration, vibrant colors, clean lines, expressive, studio-quality", ko:"애니메이션 일러스트, 선명한 색감, 감성적"},
+  watercolor:    {en:"watercolor painting, soft washes, delicate brushstrokes, pastel tones", ko:"수채화, 부드러운 번짐, 파스텔 톤"},
+  oilpaint:      {en:"oil painting, rich textures, impasto technique, classical art", ko:"유화, 풍부한 질감, 고전 미술"},
+  "3d":          {en:"3D rendering, octane render, subsurface scattering, studio lighting", ko:"3D 렌더링, 사실적 재질, 스튜디오 조명"},
+  minimal:       {en:"minimalist design, clean composition, negative space, muted tones", ko:"미니멀 디자인, 여백, 기하학적"},
+  infographic:   {en:"infographic style, flat design, bold typography, data visualization", ko:"인포그래픽, 플랫 디자인, 아이콘"},
 };
-
 const MOOD_MAP = [
-  {keys:["새벽","시장","고단","수레","눈물","슬픔","그리움"], en:"lonely atmosphere"},
-  {keys:["희망","행복","기쁨","성공","밝","좋","아름"],  en:"hopeful, uplifting, warm, bright"},
-  {keys:["위험","위기","두려움","공포","급박","심각","밤"],    en:"tense, dramatic, dark, ominous"},
-  {keys:["평화","안정","여유","조용","편안","평온"],      en:"serene, peaceful, calm"},
-  {keys:["미래","기술","AI","인공지능","혁신","디지털"],  en:"futuristic, sci-fi, high-tech"},
-  {keys:["역사","과거","전통","옛날","고대","궁궐"],      en:"historical, ancient, classic"}
+  {keys:["희망","행복","기쁨","성공","밝","좋","아름","긍정"],  en:"hopeful, uplifting, warm, bright"},
+  {keys:["위험","위기","두려움","공포","급박","심각","갈등"],    en:"tense, dramatic, dark, ominous"},
+  {keys:["평화","안정","여유","자연","조용","편안","평온"],      en:"serene, peaceful, calm, tranquil"},
+  {keys:["눈물","감동","따뜻","사랑","그리움","소중","추억"],    en:"emotional, touching, heartfelt, warm"},
+  {keys:["미래","기술","AI","인공지능","혁신","디지털","로봇"],  en:"futuristic, technological, sci-fi, digital"},
+  {keys:["역사","과거","전통","옛날","고대","유적","문화"],      en:"historical, vintage, classic, ancient"},
+  {keys:["자연","숲","바다","산","하늘","동물","꽃","나무"],     en:"nature, organic, lush, outdoor"},
+  {keys:["도시","거리","건물","사람들","군중","현대","빌딩"],    en:"urban, cityscape, modern, architectural"},
 ];
-
-function detectMood(t){
-  for(const m of MOOD_MAP) {
-    for(const k of m.keys) {
-      if(t.includes(k)) return m.en;
-    }
-  }
-  return "neutral storytelling tone";
-}
+const VISUAL_MAP = [
+  {keys:["사람","인물","남자","여자","아이","학생","전문가"],   en:"person, human figure in natural environment"},
+  {keys:["도시","서울","뉴욕","건물","빌딩","거리","골목"],    en:"cityscape, urban environment, street scene"},
+  {keys:["자연","숲","산","바다","하늘","강","들판","꽃"],     en:"natural landscape, scenic outdoor environment"},
+  {keys:["기술","AI","인공지능","컴퓨터","스마트폰","로봇"],   en:"technology concept, digital interface, futuristic device"},
+  {keys:["음식","요리","식사","밥","카페","레스토랑"],          en:"food and dining, culinary scene"},
+  {keys:["책","공부","교육","학교","강의","배움"],              en:"education scene, books, learning environment"},
+  {keys:["돈","경제","주식","비즈니스","회사","사무실"],        en:"business and finance, professional environment"},
+  {keys:["건강","운동","병원","의료","치료","몸"],              en:"health and wellness, medical environment"},
+  {keys:["여행","관광","해외","비행기","여행지","휴가"],        en:"travel and tourism, scenic destination"},
+  {keys:["역사","고대","전쟁","전통","유적","박물관"],          en:"historical scene, cultural heritage site"},
+];
+function detectMood(t){for(const m of MOOD_MAP)for(const k of m.keys)if(t.includes(k))return m.en;return "neutral, clear, professional";}
+function detectVisual(t){for(const v of VISUAL_MAP)for(const k of v.keys)if(t.includes(k))return v.en;return "conceptual scene with abstract visual elements";}
 
 // ══════════════════════════════════════════════
-//  인물 매핑 처리 로직
+//  인물 묘사 → 영문 프롬프트 변환
 // ══════════════════════════════════════════════
-const ETHNICITY_MAP = {"한국인":"Korean","동양인":"East Asian","서양인":"Caucasian","흑인":"Black"};
-const GENDER_MAP = {"여성":"woman","남성":"man","소녀":"girl","소년":"boy","노인(여)":"elderly woman","노인(남)":"elderly man"};
+const ETHNICITY_MAP = {
+  "한국인":"Korean", "동양인":"East Asian", "일본인":"Japanese", "중국인":"Chinese",
+  "서양인":"Caucasian", "흑인":"Black", "라틴계":"Latino", "중동인":"Middle Eastern", "인도인":"Indian"
+};
+const GENDER_MAP = {"여성":"woman","남성":"man","남자":"man","여자":"woman","소녀":"girl","소년":"boy","노인(여)":"elderly woman","노인(남)":"elderly man"};
+const BUILD_MAP  = {"보통":"average build","슬림":"slim figure","마른":"slender","통통":"chubby","근육질":"muscular","모델 체형":"model figure"};
+const HAIR_MAP   = {"검은 머리":"black hair","갈색 머리":"brown hair","금발":"blonde hair","흰 머리":"white hair","회색 머리":"gray hair","단발":"short bob","긴 머리":"long hair","짧은 머리":"short hair","웨이브 머리":"wavy hair","파마머리":"permed hair","업스타일":"updo hairstyle"};
+const STYLE_CHAR = {"비즈니스 캐주얼":"business casual outfit","정장":"formal business suit","캐주얼":"casual clothing","세련된":"sophisticated stylish fashion","고급스러운":"luxury elegant fashion","스포티":"sporty activewear","전통의상":"traditional clothing"};
+const ATMOS_MAP  = {"세련된":"sophisticated and polished","친근한":"warm and approachable","지적인":"intelligent and composed","자신감 있는":"confident and assertive","우아한":"elegant and graceful","신중한":"cautious and thoughtful","활발한":"energetic and lively","차가운":"cool and reserved"};
 
 function buildCharDesc(char, lang){
   const parts = [];
-  if(char.ethnic && ETHNICITY_MAP[char.ethnic]) parts.push(ETHNICITY_MAP[char.ethnic]);
   if(char.gender && GENDER_MAP[char.gender])   parts.push(GENDER_MAP[char.gender]);
-  if(char.age)    parts.push(`${char.age}-years-old`);
-  if(char.clothing) parts.push(`wearing ${char.clothing}`);
+  if(char.age)    parts.push(`${char.age} years old`);
+  if(char.ethnic && ETHNICITY_MAP[char.ethnic]) parts.push(ETHNICITY_MAP[char.ethnic]);
+  if(char.build && BUILD_MAP[char.build])       parts.push(BUILD_MAP[char.build]);
+  if(char.hair && HAIR_MAP[char.hair])          parts.push(HAIR_MAP[char.hair]);
+  if(char.clothing && STYLE_CHAR[char.clothing]) parts.push(`wearing ${STYLE_CHAR[char.clothing]}`);
+  if(char.atmos && ATMOS_MAP[char.atmos])       parts.push(`${ATMOS_MAP[char.atmos]} demeanor`);
+  if(char.face)   parts.push(char.face); // 자유 입력 그대로
   if(char.free)   parts.push(char.free);
+  if(char.traits && char.traits.length)
+    parts.push(char.traits.map(t=> TRAIT_EN[t]||t).join(", "));
   return parts.join(", ");
 }
 
 function buildCharDescKo(char){
   const p=[];
-  if(char.ethnic) p.push(char.ethnic);
   if(char.gender) p.push(char.gender);
   if(char.age)    p.push(`${char.age}세`);
+  if(char.ethnic) p.push(char.ethnic);
+  if(char.build)  p.push(char.build);
+  if(char.hair)   p.push(char.hair);
+  if(char.clothing) p.push(char.clothing);
+  if(char.atmos)  p.push(char.atmos);
+  if(char.face)   p.push(char.face);
   if(char.free)   p.push(char.free);
+  if(char.traits && char.traits.length) p.push(char.traits.join(", "));
   return p.join(", ");
 }
 
+const TRAIT_EN = {
+  "미인형":"beautiful features, attractive face","지적인 인상":"intelligent-looking","강인한 인상":"strong confident impression",
+  "온화한 인상":"gentle soft impression","카리스마":"charismatic presence","비즈니스 전문가":"professional business person",
+  "투자 전문가":"sophisticated investor type","의심 많은 눈빛":"skeptical sharp eyes","신뢰감 있는":"trustworthy appearance",
+  "패션 센스":"stylish fashion sense","건강미":"healthy athletic glow","성숙미":"mature elegance"
+};
+
 // ══════════════════════════════════════════════
-//  인물 설정 UI 제어
+//  인물 UI
 // ══════════════════════════════════════════════
+const TRAITS = Object.keys(TRAIT_EN);
 let charEnabled = false;
-let characters = [];
+let characters = []; // [{id,name,gender,age,ethnic,build,hair,clothing,atmos,face,free,traits:[]}]
 let charIdCounter = 0;
 
 const charToggle = document.getElementById("charToggle");
@@ -496,7 +615,7 @@ addCharBtn.addEventListener("click", addCharacter);
 
 function addCharacter(){
   const id = ++charIdCounter;
-  const char = {id, name:"", gender:"", age:"", ethnic:"", clothing:"", free:""};
+  const char = {id, name:"", gender:"", age:"", ethnic:"", build:"", hair:"", clothing:"", atmos:"", face:"", free:"", traits:[]};
   characters.push(char);
   renderCharCards();
 }
@@ -508,45 +627,85 @@ function removeCharacter(id){
 
 function renderCharCards(){
   charCards.innerHTML = "";
-  characters.forEach((char)=>{
+  characters.forEach((char, idx)=>{
     const div = document.createElement("div");
     div.className = "char-card";
 
     const genderOpts = ["","여성","남성","소녀","소년","노인(여)","노인(남)"].map(v=>`<option${char.gender===v?" selected":""}>${v}</option>`).join("");
-    const ethnicOpts = ["","한국인","동양인","서양인","흑인"].map(v=>`<option${char.ethnic===v?" selected":""}>${v}</option>`).join("");
+    const ethnicOpts = ["","한국인","동양인","일본인","중국인","서양인","흑인","라틴계","중동인","인도인"].map(v=>`<option${char.ethnic===v?" selected":""}>${v}</option>`).join("");
+    const buildOpts  = ["","보통","슬림","마른","통통","근육질","모델 체형"].map(v=>`<option${char.build===v?" selected":""}>${v}</option>`).join("");
+    const hairOpts   = ["","검은 머리","갈색 머리","금발","흰 머리","회색 머리","단발","긴 머리","짧은 머리","웨이브 머리","파마머리","업스타일"].map(v=>`<option${char.hair===v?" selected":""}>${v}</option>`).join("");
+    const clothOpts  = ["","비즈니스 캐주얼","정장","캐주얼","세련된","고급스러운","스포티","전통의상"].map(v=>`<option${char.clothing===v?" selected":""}>${v}</option>`).join("");
+    const atmosOpts  = ["","세련된","친근한","지적인","자신감 있는","우아한","신중한","활발한","차가운"].map(v=>`<option${char.atmos===v?" selected":""}>${v}</option>`).join("");
 
     div.innerHTML = `
       <div class="char-card-header">
         <div class="char-avatar">👤</div>
-        <input class="char-name-input" placeholder="역할 이름 (예: 어머니, 주인공, 아나운서)" value="${char.name}" data-field="name"/>
+        <input class="char-name-input" placeholder="인물 이름 또는 역할 (예: 상담자, 진행자)" value="${char.name}" data-field="name"/>
         ${characters.length>1?`<button class="char-del-btn" data-id="${char.id}">✕</button>`:""}
       </div>
       <div class="char-fields">
         <div class="char-field">
-          <div class="char-field-label">성별 분류</div>
+          <div class="char-field-label">성별</div>
           <select class="char-field-input" data-field="gender">${genderOpts}</select>
         </div>
         <div class="char-field">
-          <div class="char-field-label">나이대 (숫자)</div>
-          <input class="char-field-input" type="number" placeholder="예: 70" value="${char.age}" data-field="age"/>
+          <div class="char-field-label">나이 (숫자 입력)</div>
+          <input class="char-field-input" type="number" min="1" max="120" placeholder="예: 61" value="${char.age}" data-field="age"/>
         </div>
         <div class="char-field">
-          <div class="char-field-label">인종/국적</div>
+          <div class="char-field-label">국적 / 인종</div>
           <select class="char-field-input" data-field="ethnic">${ethnicOpts}</select>
         </div>
         <div class="char-field">
-          <div class="char-field-label">의상 스타일 설명</div>
-          <input class="char-field-input" placeholder="예: 무거운 패딩, 낡은 한복 외투" value="${char.clothing}" data-field="clothing"/>
+          <div class="char-field-label">체형</div>
+          <select class="char-field-input" data-field="build">${buildOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">헤어스타일</div>
+          <select class="char-field-input" data-field="hair">${hairOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">의상 스타일</div>
+          <select class="char-field-input" data-field="clothing">${clothOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">분위기 / 인상</div>
+          <select class="char-field-input" data-field="atmos">${atmosOpts}</select>
+        </div>
+        <div class="char-field">
+          <div class="char-field-label">얼굴 특징 (자유 입력)</div>
+          <input class="char-field-input" placeholder="예: 미인형, 날카로운 눈매, 미소가 아름다운" value="${char.face}" data-field="face"/>
+        </div>
+        <div class="char-field char-trait-row">
+          <div class="char-field-label">성격 / 인상 키워드 (복수 선택)</div>
+          <div class="trait-chips">
+            ${TRAITS.map(t=>`<span class="trait-chip${char.traits.includes(t)?" selected":""}" data-trait="${t}">${t}</span>`).join("")}
+          </div>
         </div>
         <div class="char-field char-free-row">
-          <div class="char-field-label">상세 자유 외모/성격 묘사</div>
-          <textarea class="char-free-input" placeholder="예: 손에 굳은살이 박혀 있고, 주름진 인자한 얼굴" data-field="free">${char.free}</textarea>
+          <div class="char-field-label">추가 자유 묘사</div>
+          <textarea class="char-free-input" placeholder="예: 투자와 비즈니스를 좋아하며 의심이 많은 성격. 세련된 명품 시계 착용." data-field="free">${char.free}</textarea>
         </div>
-      </div>`;
+      </div>
+      <div class="char-preview-label" style="margin-top:12px;font-size:9px;color:#4040a0;font-weight:800;letter-spacing:1px;text-transform:uppercase">생성될 인물 묘사 미리보기</div>
+      <div class="char-preview" id="charPreview_${char.id}">${getPreviewText(char)}</div>`;
 
+    // 이벤트
     div.querySelectorAll("[data-field]").forEach(el=>{
-      el.addEventListener("input", ()=>{ char[el.dataset.field] = el.value; });
-      el.addEventListener("change", ()=>{ char[el.dataset.field] = el.value; });
+      el.addEventListener(el.tagName==="TEXTAREA"||el.type==="number"||el.type==="text"?"input":"change", ()=>{
+        char[el.dataset.field] = el.value;
+        div.querySelector(`#charPreview_${char.id}`).textContent = getPreviewText(char);
+      });
+    });
+    div.querySelectorAll(".trait-chip").forEach(chip=>{
+      chip.addEventListener("click",()=>{
+        const t = chip.dataset.trait;
+        if(char.traits.includes(t)) char.traits = char.traits.filter(x=>x!==t);
+        else char.traits.push(t);
+        chip.classList.toggle("selected", char.traits.includes(t));
+        div.querySelector(`#charPreview_${char.id}`).textContent = getPreviewText(char);
+      });
     });
     const delBtn = div.querySelector(".char-del-btn");
     if(delBtn) delBtn.addEventListener("click",()=>removeCharacter(char.id));
@@ -555,30 +714,82 @@ function renderCharCards(){
   });
 }
 
+function getPreviewText(char){
+  const en = buildCharDesc(char,"en");
+  return en || "(아직 입력된 묘사가 없습니다)";
+}
+
 // ══════════════════════════════════════════════
-//  의미론적 대본 스크립트 분절 엔진
+//  스크립트 분절 (의미 단위 스마트 분할)
 // ══════════════════════════════════════════════
-const SCENE_BREAK_KEYWORDS = ["어머니는","그는","그녀는","그런데","한편","반면","이제","다음으로","그리고","하지만","결국","마지막으로"];
-const VISUAL_KEYWORDS = ["시장","골목","수레","새벽","빛","거리","의사","빌딩","화면","노을","컴퓨터","숲","바다","사람"];
+
+// 장면 전환 키워드 (문장 앞에 오면 새 장면 시작)
+const SCENE_BREAK_KEYWORDS = [
+  "그런데","한편","반면","이제","다음으로","여기서","그 다음","한편으로","그에 비해",
+  "그렇다면","그리고","또한","하지만","그러나","한편","다시","이어서","이번에는",
+  "더 나아가","예를 들어","실제로","바로 그","다른 한편","이와 함께","이에 반해",
+  "이런 상황에서","이처럼","이렇게 보면","무엇보다","특히","게다가","뿐만 아니라",
+  "결국","마지막으로","첫째","둘째","셋째","먼저","우선","다음은","앞서","앞으로",
+  "Meanwhile","However","On the other hand","Next","Now","Furthermore","Additionally",
+  "In contrast","For example","In fact","Ultimately","Finally","First","Second","Third"
+];
+
+// 시각적 묘사 가능 점수 계산 (장소·인물·행동·감정·사물 포함 여부)
+const VISUAL_KEYWORDS = [
+  // 장소/배경
+  "거리","도시","공원","건물","사무실","집","방","학교","병원","숲","바다","산","하늘","강",
+  "카페","식당","상점","광장","지하철","버스","차","비행기","여행","자연","풍경",
+  // 인물/행동
+  "사람","남자","여자","아이","학생","선생","의사","전문가","걷다","뛰다","서있다","앉다",
+  "웃다","울다","말하다","보다","들다","만지다","잡다","입다","먹다",
+  // 감정/분위기
+  "행복","슬픔","두려움","놀람","기쁨","분노","평화","긴장","설렘","그리움",
+  // 사물/기술
+  "스마트폰","컴퓨터","AI","로봇","책","자동차","음식","옷","돈","화면",
+  // 영문
+  "street","city","building","person","walking","running","smiling","crying",
+  "technology","nature","landscape","scene","moment","image","visual"
+];
 
 function visualScore(sentence) {
+  const lower = sentence.toLowerCase();
   let score = 0;
-  for (const kw of VISUAL_KEYWORDS) { if (sentence.includes(kw)) score+=2; }
+  for (const kw of VISUAL_KEYWORDS) {
+    if (lower.includes(kw)) score++;
+  }
+  // 길이 보너스: 15자 이상 문장 선호
   if (sentence.length >= 15) score += 1;
+  if (sentence.length >= 30) score += 1;
   return score;
 }
 
-function splitScript(text, n) {
-  const rawSentences = text.split(/(?<=[.!?\n])\s*/).map(s => s.trim()).filter(s => s.length > 2);
-  if (rawSentences.length <= 1) return rawSentences.length ? rawSentences : [text.trim()];
+function startsNewScene(sentence) {
+  const s = sentence.trim();
+  return SCENE_BREAK_KEYWORDS.some(kw => s.startsWith(kw));
+}
 
+function splitScript(text, n) {
+  // 1단계: 문장 단위로 분리 (마침표/느낌표/물음표/줄바꿈 기준)
+  const rawSentences = text
+    .split(/(?<=[.!?。！？\n])\s*/)
+    .map(s => s.trim())
+    .filter(s => s.length > 2);
+
+  if (rawSentences.length === 0) return [text.trim()];
+  if (rawSentences.length === 1) return rawSentences;
+
+  // 2단계: 의미 단위 단락 묶기
+  //   - 장면 전환 키워드 → 새 단락 시작
+  //   - 시각 점수 낮은 문장은 앞 단락에 합류
   const paragraphs = [];
   let current = [];
 
   for (let i = 0; i < rawSentences.length; i++) {
     const s = rawSentences[i];
-    const isBreak = SCENE_BREAK_KEYWORDS.some(kw => s.startsWith(kw));
-    if (isBreak && current.length > 0) {
+    const isBreak = startsNewScene(s);
+    const isNewLine = text.indexOf('\n' + s) !== -1 || text.indexOf('\n\n') !== -1;
+
+    if ((isBreak || isNewLine) && current.length > 0) {
       paragraphs.push(current.join(' ').trim());
       current = [s];
     } else {
@@ -587,7 +798,11 @@ function splitScript(text, n) {
   }
   if (current.length > 0) paragraphs.push(current.join(' ').trim());
 
+  // 3단계: 시각 점수로 단락 정렬 후 목표 장면 수에 맞게 조정
+  if (paragraphs.length === n) return paragraphs;
+
   if (paragraphs.length > n) {
+    // 병합: 시각 점수 낮은 인접 단락 합치기
     const scored = paragraphs.map(p => ({ text: p, score: visualScore(p) }));
     while (scored.length > n) {
       let minScore = Infinity, minIdx = 0;
@@ -595,31 +810,46 @@ function splitScript(text, n) {
         const mergedScore = scored[i].score + scored[i+1].score;
         if (mergedScore < minScore) { minScore = mergedScore; minIdx = i; }
       }
-      scored.splice(minIdx, 2, { text: scored[minIdx].text + ' ' + scored[minIdx+1].text, score: minScore });
+      const merged = {
+        text: scored[minIdx].text + ' ' + scored[minIdx+1].text,
+        score: scored[minIdx].score + scored[minIdx+1].score
+      };
+      scored.splice(minIdx, 2, merged);
     }
     return scored.map(p => p.text);
-  } else if (paragraphs.length < n) {
+  }
+
+  if (paragraphs.length < n) {
+    // 분할: 시각 점수 높고 긴 단락을 문장 단위로 쪼개기
     let result = [...paragraphs];
-    while (result.length < n) {
+    let attempts = 0;
+    while (result.length < n && attempts < 50) {
+      attempts++;
+      // 가장 긴 단락 찾기
       let maxLen = 0, maxIdx = 0;
-      for (let i = 0; i < result.length; i++) { if (result[i].length > maxLen) { maxLen = result[i].length; maxIdx = i; } }
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].length > maxLen) { maxLen = result[i].length; maxIdx = i; }
+      }
       const target = result[maxIdx];
-      const sents = target.split(/(?<=[.!?])\s+/).map(s=>s.trim()).filter(Boolean);
+      const sents = target.split(/(?<=[.!?。！？])\s+/).map(s=>s.trim()).filter(s=>s.length>2);
       if (sents.length < 2) break;
       const mid = Math.ceil(sents.length / 2);
-      result.splice(maxIdx, 1, sents.slice(0, mid).join(' '), sents.slice(mid).join(' '));
+      result.splice(maxIdx, 1,
+        sents.slice(0, mid).join(' '),
+        sents.slice(mid).join(' ')
+      );
     }
-    return result.slice(0, n);
+    return result.filter(Boolean).slice(0, n);
   }
+
   return paragraphs;
 }
 
 // ══════════════════════════════════════════════
-//  도구 선택 싱크 처리
+//  AI 도구 체크박스
 // ══════════════════════════════════════════════
 const toolGrid = document.getElementById("toolGrid");
-let selectedToolIds = new Set(["midj","dalle","flux","gemini"]);
-
+let selectedToolIds = new Set(["dalle","midj","stable","gemini"]);
 TOOLS.forEach(tool=>{
   const item=document.createElement("label");
   item.className="tool-check-item";
@@ -637,7 +867,6 @@ TOOLS.forEach(tool=>{
   item.querySelector("input").addEventListener("change",syncSelected);
   toolGrid.appendChild(item);
 });
-
 function syncSelected(){
   selectedToolIds=new Set([...toolGrid.querySelectorAll("input:checked")].map(i=>i.value));
   document.getElementById("toolWarn").style.display=selectedToolIds.size===0?"block":"none";
@@ -646,7 +875,7 @@ document.getElementById("selectAllBtn").addEventListener("click",()=>{toolGrid.q
 document.getElementById("clearAllBtn").addEventListener("click",()=>{toolGrid.querySelectorAll("input").forEach(i=>i.checked=false);syncSelected();});
 
 // ══════════════════════════════════════════════
-//  프롬프트 빌드 연동 제어 시스템
+//  생성 메인
 // ══════════════════════════════════════════════
 const scriptInput    = document.getElementById("scriptInput");
 const sceneSlider    = document.getElementById("sceneSlider");
@@ -666,34 +895,34 @@ genBtn.addEventListener("click", generate);
 function generate(){
   const script=scriptInput.value.trim();
   if(!script){alert("스크립트를 입력해주세요!");return;}
-  if(selectedToolIds.size===0){alert("AI 도구를 선택해주세요!");return;}
+  if(selectedToolIds.size===0){alert("AI 도구를 최소 1개 선택해주세요!");return;}
 
   const n=Number(sceneSlider.value);
   const styleKey=styleSelect.value;
   const ratio=ratioSelect.value;
   const lang=langSelect.value;
-  
-  // 선택된 콘텐츠 모드 확인
-  const contentMode=document.getElementById("contentModeSelect").value;
-  const style=STYLE_MAP[styleKey]||STYLE_MAP.cinematic;
+  const contentMode=document.getElementById("contentModeSelect")?.value || detectContentMode(script);
+  const style=STYLE_MAP[styleKey]||STYLE_MAP.photorealistic;
   const activeTools=TOOLS.filter(t=>selectedToolIds.has(t.id));
   const segments=splitScript(script,n);
   const actual=segments.length;
 
+  // 인물 묘사 합치기
   const activeChars = charEnabled && characters.length>0 ? characters : [];
 
   resultCards.innerHTML="";
   resultsSection.classList.remove("hidden");
-  resultsCount.textContent=`엔진 작동: [${contentMode}] 모드 탑재 · 총 ${actual}개 대표 장면 변환 완료`;
+  const charInfo = activeChars.length>0 ? ` · 인물 ${activeChars.length}명 반영` : "";
+  resultsCount.textContent=`${contentMode} 모드 · 총 ${actual}개 장면 · ${activeTools.length}개 AI 도구${charInfo}`;
 
   segments.forEach((seg,idx)=>{
     const mood=detectMood(seg);
-    
-    // 핵심 개선: 모드에 맞는 특화 장면 키트(ko 특징요약 + en 프롬프트 세트) 도출
-    const kit = getVisualKitByMode(contentMode, seg);
-    
+    const newsMode=document.getElementById('newsModeSelect')?.value||'pro_news';
+    const visual=(newsMode==='pro_news') ? extractProNewsScene(seg) : ("infographic" 
+      ? extractVisualScene(seg) 
+      : extractNewsVisualScene(seg));
     const vscore=visualScore(seg);
-    const vLabel=vscore>=4?"🟢 시각 풍부":vscore>=2?"🟡 시각 보통":"🔴 시각 구성";
+    const vLabel=vscore>=4?"🟢 시각 풍부":vscore>=2?"🟡 시각 보통":"🔴 시각 약함";
     const card=document.createElement("div");
     card.className="scene-card";
 
@@ -703,6 +932,7 @@ function generate(){
       const tool=activeTools.find(t=>t.id===activeTool)||activeTools[0];
       activeTool=tool.id;
 
+      // 인물 묘사 문자열 생성
       let charDesc = "";
       if(activeChars.length>0){
         const descs = activeChars.map(c=>{
@@ -713,9 +943,12 @@ function generate(){
         charDesc = descs.join(" | ");
       }
 
-      // 최종 최적화 프롬프트 추출 함수 전달
-      const prompt=tool.build(seg,style,ratio,mood,kit,lang,charDesc);
-      const charTags = activeChars.length>0 ? `<div class="scene-chars-used">${activeChars.map(c=>`<span class="scene-char-tag">👤 결합인물: ${c.name||"지정인물"}</span>`).join("")}</div>` : "";
+      const prompt=tool.build(seg,style,ratio,mood,visual,lang,charDesc);
+
+      // 사용된 인물 태그
+      const charTags = activeChars.length>0
+        ? `<div class="scene-chars-used">${activeChars.map(c=>`<span class="scene-char-tag">👤 ${c.name||"인물"+(activeChars.indexOf(c)+1)}</span>`).join("")}</div>`
+        : "";
 
       card.innerHTML=`
         <div class="scene-card-top" style="background:${tool.color}"></div>
@@ -723,9 +956,10 @@ function generate(){
           <div class="scene-meta">
             <span class="scene-num">SCENE ${String(idx+1).padStart(2,"0")}</span>
             <div style="flex:1">
-              <span class="scene-script-text">${escHtml(seg)}</span>
+              <span class="scene-script-text">${escHtml(seg.slice(0,140))}${seg.length>140?"…":""}</span>
               <div style="margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
                 <span style="font-size:10px;background:#12122a;border:1px solid #2a2a50;border-radius:10px;padding:2px 9px;color:#8080b0">${vLabel}</span>
+                <span style="font-size:10px;color:#3a3a60">${seg.length}자</span>
               </div>
               ${charTags}
             </div>
@@ -740,9 +974,9 @@ function generate(){
           </div>`:""}
           <div class="prompt-block" style="border-color:${tool.color}30">
             <div class="prompt-block-header">
-              <span class="prompt-tool-label" style="color:${tool.color}">${tool.icon} ${tool.label} 특화 모드 템플릿</span>
+              <span class="prompt-tool-label" style="color:${tool.color}">${tool.icon} ${tool.label} 전용 프롬프트</span>
               <div class="prompt-actions">
-                <a class="site-link" href="${tool.link}" target="_blank" style="color:${tool.color};border-color:${tool.color}30">↗ 사이트 열기</a>
+                <a class="site-link" href="${tool.link}" target="_blank" style="color:${tool.color};border-color:${tool.color}30">↗ ${tool.linkLabel}</a>
                 <button class="copy-btn" style="border-color:${tool.color}60;color:${tool.color}" data-prompt="${escHtml(prompt)}">복사하기</button>
               </div>
             </div>
@@ -756,9 +990,9 @@ function generate(){
         btn.addEventListener("click",()=>{
           navigator.clipboard.writeText(btn.dataset.prompt).then(()=>{
             const orig=btn.textContent;
-            btn.textContent="✓ 완료!";
+            btn.textContent="✓ 복사!";
             btn.style.background=tool.color;btn.style.color="#fff";
-            setTimeout(()=>{btn.textContent=orig;btn.style.background="transparent";},1200);
+            setTimeout(()=>{btn.textContent=orig;btn.style.background="transparent";},1500);
           });
         });
       });
@@ -773,14 +1007,16 @@ copyAllBtn.addEventListener("click",()=>{
   const all=[];
   document.querySelectorAll(".scene-card").forEach((card,i)=>{
     const scr=card.querySelector(".scene-script-text")?.textContent||"";
+    const tool=card.querySelector(".tool-tab.active")?.textContent||card.querySelector(".prompt-tool-label")?.textContent||"";
     const prom=card.querySelector(".prompt-text")?.textContent||"";
-    all.push(`[SCENE ${i+1}]\n원문 대본: ${scr}\n\n${prom}`);
+    all.push(`[SCENE ${i+1}]\n대본: ${scr}\n[${tool}]\n${prom}`);
   });
-  navigator.clipboard.writeText(all.join("\n\n──────────────────────\n\n")).then(()=>alert(`전체 ${all.length}개 장면의 프롬프트 세트가 통합 복사되었습니다.`));
+  navigator.clipboard.writeText(all.join("\n\n──────────────────────\n\n")).then(()=>alert(`${all.length}개 장면 프롬프트가 복사되었습니다.`));
 });
 
+
 // ══════════════════════════════════════════════
-// 장면 분절 미리보기 기능
+// 장면 분절 미리보기
 // ══════════════════════════════════════════════
 const previewSplitBtn = document.getElementById("previewSplitBtn");
 const clearPreviewBtn = document.getElementById("clearPreviewBtn");
@@ -788,7 +1024,10 @@ const splitPreview = document.getElementById("splitPreview");
 
 function renderSplitPreview(){
   const script = scriptInput.value.trim();
-  if(!script){alert("먼저 스크립트를 입력해주세요.");return;}
+  if(!script){
+    alert("먼저 스크립트를 입력해주세요.");
+    return;
+  }
 
   const targetScenes = Number(sceneSlider.value);
   const scenes = splitScript(script, targetScenes);
@@ -799,28 +1038,45 @@ function renderSplitPreview(){
   splitPreview.innerHTML = `
     <div class="split-preview-wrap">
       <div class="split-preview-header">
-        <div class="split-preview-title">엔진 분절 임시 시각 미리보기</div>
-        <div class="split-preview-count">${scenes.length}개 장면 분리됨</div>
+        <div class="split-preview-title">AI 장면 분절 결과</div>
+        <div class="split-preview-count">${scenes.length}개 장면</div>
       </div>
       ${scenes.map((scene,idx)=>{
         const score = visualScore(scene);
-        const badge = score >= 3 ? '<span class="split-scene-badge" style="color:#3fb950;border-color:#3fb95055">매핑 우수</span>' : '<span class="split-scene-badge" style="color:#d29922;border-color:#d2992255">보통 분절</span>';
+        const badge =
+          score >= 4
+            ? '<span class="split-scene-badge" style="color:#3fb950;border-color:#3fb95055">시각 풍부</span>'
+            : score >= 2
+            ? '<span class="split-scene-badge" style="color:#d29922;border-color:#d2992255">시각 보통</span>'
+            : '<span class="split-scene-badge" style="color:#f85149;border-color:#f8514955">시각 약함</span>';
+
         return `
         <div class="split-scene-item">
           <div class="split-scene-num">SCENE ${String(idx+1).padStart(2,"0")}</div>
           <div class="split-scene-text">${escHtml(scene)}</div>
-          <div class="split-scene-meta">${badge}</div>
+          <div class="split-scene-meta">
+            ${badge}
+            <span style="font-size:10px;color:#666">${scene.length}자</span>
+          </div>
         </div>`;
       }).join("")}
     </div>`;
 }
 
 previewSplitBtn?.addEventListener("click", renderSplitPreview);
+
 clearPreviewBtn?.addEventListener("click", ()=>{
   splitPreview.style.display = "none";
+  splitPreview.innerHTML = "";
   clearPreviewBtn.style.display = "none";
 });
-sceneSlider?.addEventListener("input", ()=>{ if(splitPreview.style.display === "block") renderSplitPreview(); });
+
+sceneSlider?.addEventListener("input", ()=>{
+  if(splitPreview.style.display === "block"){
+    renderSplitPreview();
+  }
+});
+
 
 function escHtml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 </script>
