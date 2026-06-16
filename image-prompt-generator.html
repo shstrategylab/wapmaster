@@ -238,6 +238,15 @@ select:focus{border-color:#c96a3a}
       </select>
     </div>
 
+    <div id="newsModeWrap">
+      <p class="opt-label">📡 뉴스 시각화 모드</p>
+      <select id="newsModeSelect">
+        <option value="pro_news">전문 저널리즘형</option>
+        <option value="infographic">인포그래픽형</option>
+        <option value="general">일반 시각화</option>
+      </select>
+    </div>
+
   </div>
 
   <!-- ★ 등장인물 묘사 섹션 ★ -->
@@ -539,6 +548,29 @@ const VISUAL_MAP = [
 function detectMood(t){for(const m of MOOD_MAP)for(const k of m.keys)if(t.includes(k))return m.en;return "neutral, clear, professional";}
 function detectVisual(t){for(const v of VISUAL_MAP)for(const k of v.keys)if(t.includes(k))return v.en;return "conceptual scene with abstract visual elements";}
 
+const CONTENT_MODE_MOOD = {
+  news_info: "documentary news atmosphere, professional journalism, realistic and informative",
+  emotion:   "emotional, heartfelt, touching, warm human story",
+  story:     "narrative storytelling, dramatic scene composition, immersive",
+  horror:    "dark, mysterious, eerie, suspenseful, shadow and tension",
+  history:   "historical, vintage, classical, epic, period-accurate atmosphere",
+};
+const CONTENT_MODE_VISUAL_SUFFIX = {
+  news_info: ", broadcast news style, sharp focus, realistic journalism",
+  emotion:   ", soft warm light, intimate close-up, human emotion",
+  story:     ", cinematic storytelling frame, dynamic composition",
+  horror:    ", dramatic shadows, low key lighting, ominous environment",
+  history:   ", period-accurate details, historical documentary style",
+};
+function applyContentMode(mood, visual, contentMode){
+  const moodOverride = CONTENT_MODE_MOOD[contentMode];
+  const visualSuffix = CONTENT_MODE_VISUAL_SUFFIX[contentMode] || "";
+  return {
+    mood: moodOverride ? `${mood}, ${moodOverride}` : mood,
+    visual: `${visual}${visualSuffix}`,
+  };
+}
+
 // ══════════════════════════════════════════════
 //  인물 묘사 → 영문 프롬프트 변환
 // ══════════════════════════════════════════════
@@ -684,7 +716,7 @@ function renderCharCards(){
           </div>
         </div>
         <div class="char-field char-free-row">
-          <div class="char-field-label">추가 자유 묘사</div>
+          <div class="char-field-label">추가 자유 묘사 (영어 프롬프트 사용 시 영어로 입력 권장)</div>
           <textarea class="char-free-input" placeholder="예: 투자와 비즈니스를 좋아하며 의심이 많은 성격. 세련된 명품 시계 착용." data-field="free">${char.free}</textarea>
         </div>
       </div>
@@ -892,6 +924,14 @@ const copyAllBtn     = document.getElementById("copyAllBtn");
 sceneSlider.addEventListener("input",()=>{ sceneLabel.textContent=sceneSlider.value+" 장면"; });
 genBtn.addEventListener("click", generate);
 
+const contentModeSelect = document.getElementById("contentModeSelect");
+const newsModeWrap = document.getElementById("newsModeWrap");
+function syncNewsModeVisibility(){
+  newsModeWrap.style.display = contentModeSelect.value==="news_info" ? "" : "none";
+}
+contentModeSelect.addEventListener("change", syncNewsModeVisibility);
+syncNewsModeVisibility();
+
 function generate(){
   const script=scriptInput.value.trim();
   if(!script){alert("스크립트를 입력해주세요!");return;}
@@ -913,14 +953,27 @@ function generate(){
   resultCards.innerHTML="";
   resultsSection.classList.remove("hidden");
   const charInfo = activeChars.length>0 ? ` · 인물 ${activeChars.length}명 반영` : "";
-  resultsCount.textContent=`${contentMode} 모드 · 총 ${actual}개 장면 · ${activeTools.length}개 AI 도구${charInfo}`;
+  const CONTENT_MODE_LABEL = {news_info:"뉴스·시사·정보형",emotion:"감동 사연",story:"스토리텔링",horror:"공포·미스터리",history:"역사·지식",counseling:"상담형",health:"건강 정보형",news:"뉴스형",general:"일반"};
+  const contentModeLabel = CONTENT_MODE_LABEL[contentMode] || contentMode;
+  resultsCount.textContent=`${contentModeLabel} 모드 · 총 ${actual}개 장면 · ${activeTools.length}개 AI 도구${charInfo}`;
 
   segments.forEach((seg,idx)=>{
-    const mood=detectMood(seg);
-    const newsMode=document.getElementById('newsModeSelect')?.value||'pro_news';
-    const visual=(newsMode==='pro_news') ? extractProNewsScene(seg) : ("infographic" 
-      ? extractVisualScene(seg) 
-      : extractNewsVisualScene(seg));
+    let mood=detectMood(seg);
+    let visual;
+
+    if(contentMode==='news_info'){
+      const newsMode=document.getElementById('newsModeSelect')?.value||'pro_news';
+      visual = (newsMode==='pro_news') ? extractProNewsScene(seg)
+        : (newsMode==='infographic') ? extractVisualScene(seg)
+        : extractNewsVisualScene(seg);
+    } else {
+      visual = extractVisualScene(seg);
+    }
+
+    const applied = applyContentMode(mood, visual, contentMode);
+    mood = applied.mood;
+    visual = applied.visual;
+
     const vscore=visualScore(seg);
     const vLabel=vscore>=4?"🟢 시각 풍부":vscore>=2?"🟡 시각 보통":"🔴 시각 약함";
     const card=document.createElement("div");
