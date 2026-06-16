@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자기객관화가 안 되면 벌어지는 일들 | 언행심리학 상담 사례</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f3ee;
+      --dark: #100e0a;
+      --gold: #d4a843;
+      --gold-deep: #b8860b;
+      --text: #2a2318;
+      --text-muted: #6b5f4e;
+      --border: #e0d8cc;
+      --serif: 'Noto Serif KR', serif;
+      --sans: 'Noto Sans KR', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--dark);
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: var(--gold);
+      text-decoration: none;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #fff; }
+    nav a::before {
+      content: '←';
+      font-size: 1rem;
+    }
+    nav .nav-title {
+      margin-left: auto;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--dark);
+      color: #fff;
+      padding: 5rem 1.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .hero-meta {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      align-items: center;
+    }
+    .hero-meta span { opacity: 0.6; color: #fff; }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-line {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+      margin-bottom: 1.5rem;
+    }
+    .hero-summary {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+      max-width: 620px;
+    }
+
+    /* TAGS */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+    .tag {
+      background: rgba(212,168,67,0.15);
+      border: 1px solid rgba(212,168,67,0.3);
+      color: var(--gold);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      font-family: var(--sans);
+    }
+
+    /* MAIN */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* SECTION */
+    .section {
+      margin-bottom: 3.5rem;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-deep);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-family: var(--sans);
+      margin-bottom: 0.75rem;
+    }
+    .section h2 {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+    }
+    .section p {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight {
+      background: var(--dark);
+      color: rgba(255,255,255,0.85);
+      border-left: 3px solid var(--gold);
+      padding: 1.75rem 2rem;
+      margin: 2.5rem 0;
+      border-radius: 0 2px 2px 0;
+    }
+    .highlight p {
+      color: rgba(255,255,255,0.8) !important;
+      font-size: 1rem !important;
+      line-height: 1.9;
+    }
+    .highlight strong {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* INSIGHT GRID */
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .insight-item {
+      background: var(--bg);
+      padding: 1.5rem;
+    }
+    .insight-icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .insight-title {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .insight-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* COACHING STEPS */
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .steps li {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      counter-increment: step;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--dark);
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-top: 0.1rem;
+    }
+    .step-text {
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      padding-top: 0.2rem;
+      line-height: 1.75;
+    }
+    .step-text strong {
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      list-style: none;
+      margin: 1.5rem 0;
+      position: relative;
+      padding-left: 1.75rem;
+      border-left: 2px solid var(--border);
+    }
+    .timeline li {
+      position: relative;
+      margin-bottom: 1.5rem;
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .timeline li:last-child { margin-bottom: 0; }
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: -1.94rem;
+      top: 0.35rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--bg);
+    }
+    .timeline strong {
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    /* PHILOSOPHY */
+    .philosophy {
+      background: linear-gradient(135deg, #1a1710 0%, var(--dark) 100%);
+      color: #fff;
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+      margin: 2.5rem 0;
+    }
+    .philosophy .phi-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .philosophy p {
+      font-size: 0.93rem;
+      color: rgba(255,255,255,0.7) !important;
+      margin-bottom: 0.85rem;
+    }
+    .philosophy p:last-child { margin-bottom: 0 !important; }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 2rem 1.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      nav .nav-title { display: none; }
+      .hero { padding: 3.5rem 1.25rem 3rem; }
+      main { padding: 2.5rem 1.25rem 4rem; }
+      .highlight { padding: 1.25rem 1.25rem; }
+      .philosophy { padding: 1.75rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html">메인으로 돌아가기</a>
+  <span class="nav-title">언행심리학 사례 아카이브</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      언행심리학 상담 사례
+      <span>언행심리마스터 · 도현(道賢)</span>
+    </div>
+    <h1>자기객관화가 안 되면<br>벌어지는 일들</h1>
+    <div class="hero-line"></div>
+    <p class="hero-summary">
+      남편과 이혼하고, 아들과 인연을 끊고, 딸과도 멀어졌다. 주변에 남은 사람이 없어졌는데도
+      자신의 잘못을 끝내 보지 못하는 사람. 자기객관화의 부재가 어떻게 모든 관계를 무너뜨리는지
+      담은 사례.
+    </p>
+    <div class="tags">
+      <span class="tag">자기객관화</span>
+      <span class="tag">소통 단절</span>
+      <span class="tag">관계 붕괴</span>
+      <span class="tag">억울함의 심리</span>
+      <span class="tag">역지사지</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- 상황 -->
+  <section class="section">
+    <div class="section-label">상황 분석</div>
+    <h2>한 명씩, 모두 떠났다</h2>
+    <p>
+      요리 연구가로 활발하게 활동했던 미진(가명)은 오랜 시간에 걸쳐 주변의 모든 관계를 잃었다.
+      남편과는 성격 차이를 이유로 이혼했고, 아들과는 금전 문제로 다툰 끝에 인연을 끊었다.
+      집에 CCTV까지 달아 아들이 집 근처에도 얼씬하지 못하게 했을 정도였다.
+      그리고 최근에는 딸과도 사이가 멀어졌다.
+    </p>
+    <p>
+      남편, 아들, 딸 — 세 관계가 차례로 끊기고, 그 자리에 미진 혼자 남았다.
+      그런데도 미진은 항상 "억울하다"는 말을 달고 살았다. 방송에 나가서도, 무당을 찾아가서도,
+      하는 말은 한결같았다. 내가 억울하다.
+    </p>
+  </section>
+
+  <div class="highlight">
+    <p>
+      <strong>"한 번은 실수지만, 잦아지면 누구의 잘못이다."</strong><br>
+      남편과, 아들과, 딸과 — 같은 패턴으로 관계가 끊어졌다면,
+      공통 변수는 상대방이 아니라 자기 자신이다. 그러나 미진은 그것을 끝내 보지 못했다.
+    </p>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- 심리 분석 -->
+  <section class="section">
+    <div class="section-label">심리 분석</div>
+    <h2>시어머니 구박을 아들에게 풀었다</h2>
+    <p>
+      무당조차 핵심을 짚어냈다. 미진과 아들은 성격이 똑같다. 그런데 미진은 어린 아들에게
+      시어머니에게 받은 구박을 그대로 화풀이했다. 아들은 어릴 때 받아낼 수밖에 없었고,
+      자라서도 그 감정의 빚을 계속 내놓으라는 요구를 받아왔다.
+    </p>
+    <p>
+      무당이 이를 짚어주자 미진은 잠시 인정했다. 그러나 바로 다음 순간 돌아온 말은
+      "내가 미안하다 했는데 잘 될까요?"였다. 그리고 무당이 "시간을 두고 지켜봐라"고 하자
+      돌아온 반응은 "여기도 내 편이 아니구먼"이었다. 무당의 입에서 "오마이 갓"이 나왔다는
+      건 그만큼 대화가 통하지 않았다는 뜻이다.
+    </p>
+    <p>
+      미진은 물질로 사랑을 증명하는 방식으로 살아왔다. 잘 먹이고, 재산을 주고, 돈을 쓰면
+      충분하다고 여겼다. 그러나 가족들이 원한 것은 반찬의 가짓수가 아니라, 통하는 대화 한 마디였다.
+    </p>
+
+    <div class="insight-grid">
+      <div class="insight-item">
+        <div class="insight-icon">🔁</div>
+        <div class="insight-title">반복되는 패턴</div>
+        <div class="insight-desc">남편, 아들, 딸 — 대상이 달라도 갈등의 구조는 동일하다. 패턴이 곧 자기 자신을 가리킨다.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">🧱</div>
+        <div class="insight-title">내 편 찾기의 함정</div>
+        <div class="insight-desc">무당을 찾아간 이유도 위로가 목적이었다. 공감이 아닌 동조를 원할 때, 반성은 일어나지 않는다.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">💬</div>
+        <div class="insight-title">동문서답</div>
+        <div class="insight-desc">무당이 "오마이 갓"이라 하자 "한복 입고 영어 하니까 웃겨요"라고 반응했다. 핵심을 받아들이지 못하는 방어 기제다.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">💰</div>
+        <div class="insight-title">물질 = 사랑의 착각</div>
+        <div class="insight-desc">진수성찬을 차려줬다는 것이 사랑의 증거라 믿는다. 그러나 가족에게 필요한 건 마음으로 나누는 소통이었다.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 코칭 포인트 -->
+  <section class="section">
+    <div class="section-label">언행심리 코칭</div>
+    <h2>자기객관화, 어떻게 가능한가</h2>
+    <p>
+      자기객관화가 안 되는 사람은 억울함을 풀어줄 대상을 끊임없이 찾는다.
+      그러나 진짜 문제는 내 편을 못 찾는 것이 아니라, 자신을 바로 보지 못하는 것이다.
+      언행심리에서는 이 과정을 다음 단계로 접근한다.
+    </p>
+
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>패턴을 직면하게 한다</strong><br>
+          "한 번은 실수지만, 이게 잦아지면 누구 잘못이냐"는 질문 하나로 공통 변수가 자신임을 인식하게 한다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>자신을 인정하게 만든다</strong><br>
+          자기 자신을 있는 그대로 보기 시작하면, 잘못도 보이게 된다. 인정이 반성의 출발점이다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>역지사지를 연습시킨다</strong><br>
+          "아들이 얼마나 힘들었을까"라는 감각이 살아야 관계가 회복될 수 있다. 역지사지 없이는 소통도 없다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <strong>작은 소통의 습관을 심는다</strong><br>
+          오늘 기분, 오늘 있었던 일 — 작은 대화를 쌓는 것이 쌓인 오해를 막는 유일한 방법이다. 막히기 시작하면 언젠가 뚝이 무너진다.
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 관계 붕괴 타임라인 -->
+  <section class="section">
+    <div class="section-label">관계 붕괴의 흐름</div>
+    <h2>억울함이 쌓인 자리에 남은 것</h2>
+
+    <ul class="timeline">
+      <li><strong>남편과 이혼</strong> — 성격 차이를 이유로 들었지만, 근본적으로는 대화가 통하지 않았다. 남편의 속에서도 "오마이 갓"이 수없이 나왔을 것이다.</li>
+      <li><strong>아들과 결별</strong> — 금전 문제가 표면적 이유였지만, 어린 시절부터 누적된 화풀이와 억울함의 전가가 바닥에 있었다. CCTV까지 달아 접근을 차단했다.</li>
+      <li><strong>딸과 멀어짐</strong> — 아들에 이어 딸과도 사이가 멀어졌다. 이 시점에서 패턴은 명확해진다. 공통 변수는 한 사람이다.</li>
+      <li><strong>무당을 찾아가다</strong> — 내 편을 찾으러 간 자리에서도, 제대로 된 말을 들으면 "여기도 내 편이 아니구먼"이 되었다.</li>
+      <li><strong>홀로 남다</strong> — 남편도, 아들도, 딸도, 무당도 — 아무도 내 편이 아닌 세계에서 억울함만 남았다. 자기객관화 없이는 이 자리에서 벗어날 수 없다.</li>
+    </ul>
+  </section>
+
+  <!-- 철학 -->
+  <div class="philosophy">
+    <div class="phi-label">언행심리학 핵심 통찰</div>
+    <p>
+      소통은 기술이 아니라 습관이다. 작은 감정 하나를 나누는 것이 오늘은 아무 의미 없어 보여도,
+      그 쌓임이 관계의 뚝을 만든다. 쌓이지 않으면, 어느 순간 한꺼번에 무너진다.
+    </p>
+    <p>
+      자기객관화는 자기 비하가 아니다. 자신을 있는 그대로 보는 것, 그것이 반성을 낳고,
+      반성이 관계를 살린다. 억울함은 내가 나를 못 볼 때 자라난다.
+    </p>
+    <p>
+      부모는 자식에게 사랑을 주는 존재이지, 자식이 부모를 무조건 섬겨야 한다는 생각은
+      관계를 위계로만 바라보는 시선이다. 사랑은 위에서 아래로 흐른다.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  <p>언행심리학 사례 아카이브 &nbsp;·&nbsp; <a href="../cases/index.html">목록으로</a></p>
+</footer>
+
+</body>
+</html>
