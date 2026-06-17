@@ -8,7 +8,6 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap"
     rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -22,6 +21,8 @@
       --text:    #1e1a14;
       --muted:   #6b5e4a;
       --border:  rgba(184,134,11,0.25);
+      --ink:     #5b6b8a;
+      --ink2:    #46577a;
     }
 
     html { scroll-behavior: smooth; }
@@ -89,10 +90,47 @@
       line-height: 1.8; max-width: 480px; margin: 0 auto;
     }
 
+    /* ── TYPE TABS (신규) ── */
+    .type-tabs {
+      max-width: 960px; margin: 0 auto;
+      padding: 32px 24px 0;
+      display: flex; gap: 10px; flex-wrap: wrap;
+      justify-content: center;
+    }
+    .type-tab {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted); font-size: 13px; font-weight: 600;
+      padding: 9px 22px; border-radius: 100px;
+      cursor: pointer; transition: all .2s;
+      font-family: 'Noto Sans KR', sans-serif;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .type-tab .type-tab-count {
+      font-size: 11px; font-weight: 700;
+      background: rgba(184,134,11,0.1);
+      color: var(--gold2);
+      border-radius: 100px; padding: 1px 8px;
+    }
+    .type-tab:hover { border-color: rgba(212,168,67,0.6); }
+    .type-tab.active {
+      background: var(--dark); border-color: var(--dark);
+      color: var(--gold);
+    }
+    .type-tab.active .type-tab-count {
+      background: rgba(212,168,67,0.2); color: var(--gold);
+    }
+    .type-tab[data-type="칼럼"].active {
+      background: var(--ink2); border-color: var(--ink2); color: #fff;
+    }
+    .type-tab[data-type="칼럼"].active .type-tab-count {
+      background: rgba(255,255,255,0.18); color: #fff;
+    }
+
     /* ── CONTROLS ── */
     .controls {
       max-width: 960px; margin: 0 auto;
-      padding: 36px 24px 0;
+      padding: 24px 24px 0;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 16px;
     }
@@ -149,6 +187,21 @@
     }
     .card:hover::before { opacity: 1; }
 
+    /* 칼럼 카드 변형 */
+    .card.is-column {
+      background: linear-gradient(180deg, #fff 0%, #f8f9fc 100%);
+    }
+    .card.is-column::before {
+      background: linear-gradient(90deg, var(--ink2), var(--ink));
+    }
+    .card.is-column:hover {
+      box-shadow: 0 16px 40px rgba(70,87,122,0.14);
+      border-color: rgba(70,87,122,0.4);
+    }
+
+    .card-top-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
     .card-date {
       font-size: 11px; color: var(--muted);
       letter-spacing: 1px; display: flex; align-items: center; gap: 6px;
@@ -157,6 +210,18 @@
       content: '';
       display: inline-block; width: 6px; height: 6px;
       background: var(--gold); border-radius: 50%;
+    }
+    .card.is-column .card-date::before { background: var(--ink2); }
+
+    .type-badge {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 3px 10px; border-radius: 100px;
+      background: rgba(184,134,11,0.1); color: var(--gold2);
+      flex-shrink: 0;
+    }
+    .type-badge.col {
+      background: rgba(70,87,122,0.12); color: var(--ink2);
     }
 
     .card-title {
@@ -175,6 +240,7 @@
       padding-top: 14px;
       flex: 1;
     }
+    .card.is-column .card-summary { border-top-color: rgba(70,87,122,0.14); }
     .card-tags {
       display: flex; gap: 6px; flex-wrap: wrap;
     }
@@ -184,6 +250,9 @@
       color: var(--gold2); border-radius: 6px;
       padding: 3px 10px;
     }
+    .card.is-column .tag {
+      background: rgba(70,87,122,0.08); color: var(--ink2);
+    }
     .card-arrow {
       align-self: flex-end;
       font-size: 12px; color: var(--gold);
@@ -191,6 +260,7 @@
       margin-top: 4px; font-weight: 600;
       opacity: 0; transition: opacity .2s;
     }
+    .card.is-column .card-arrow { color: var(--ink2); }
     .card:hover .card-arrow { opacity: 1; }
 
     /* ── EMPTY ── */
@@ -231,7 +301,8 @@
     @media (max-width: 600px) {
       nav { padding: 0 20px; }
       .hero { padding: 60px 24px 50px; }
-      .controls { padding: 28px 20px 0; }
+      .type-tabs { padding: 24px 20px 0; }
+      .controls { padding: 20px 20px 0; }
       .grid { padding: 20px 20px 60px; grid-template-columns: 1fr; }
     }
   </style>
@@ -250,10 +321,12 @@
   </nav>
 
   <div class="hero">
-    <div class="hero-badge">Real Consulting Cases</div>
+    <div class="hero-badge">Real Consulting Cases &amp; Columns</div>
     <h1>실제 <em>상담 사례</em></h1>
-    <p>언행심리마스터 도현(道賢)의 실제 상담 기록입니다.<br>패턴을 읽고, 구조를 바꾸고, 관계를 회복한 이야기들.</p>
+    <p>언행심리마스터 도현(道賢)의 실제 상담 기록과 시론.<br>패턴을 읽고, 구조를 바꾸고, 관계를 회복한 이야기들 — 그리고 잠시 쉬어가는 생각들.</p>
   </div>
+
+  <div class="type-tabs" id="typeTabs"></div>
 
   <div class="controls">
     <div class="count" id="count">불러오는 중...</div>
@@ -272,19 +345,55 @@
   <script>
     let allCases = [];
     let activeTag = null;
+    let activeType = null; // null = 전체
 
     async function loadCases() {
       try {
         const res = await fetch('../cases-index.json?v=' + Date.now());
         const data = await res.json();
         allCases = data.cases.slice().reverse(); // 최신순
+        buildTypeTabs();
         buildTagFilters();
-        renderCards(allCases);
+        applyFilters();
       } catch (e) {
         document.getElementById('grid').innerHTML =
           '<div class="empty">사례를 불러올 수 없습니다.<br>잠시 후 다시 시도해 주세요.</div>';
         document.getElementById('count').textContent = '';
       }
+    }
+
+    function getType(c) {
+      return c.type || '상담사례';
+    }
+
+    function buildTypeTabs() {
+      const counts = { '상담사례': 0, '칼럼': 0 };
+      allCases.forEach(c => {
+        const t = getType(c);
+        counts[t] = (counts[t] || 0) + 1;
+      });
+
+      const tabs = [
+        { key: null, label: '전체', count: allCases.length },
+        { key: '상담사례', label: '상담사례', count: counts['상담사례'] || 0 },
+        { key: '칼럼', label: '칼럼 · 시론', count: counts['칼럼'] || 0 },
+      ].filter(t => t.key === null || t.count > 0);
+
+      const container = document.getElementById('typeTabs');
+      container.innerHTML = '';
+      tabs.forEach(t => {
+        const btn = document.createElement('button');
+        btn.className = 'type-tab' + (activeType === t.key ? ' active' : '');
+        if (t.key) btn.dataset.type = t.key;
+        btn.innerHTML = `${t.label} <span class="type-tab-count">${t.count}</span>`;
+        btn.onclick = () => {
+          activeType = t.key;
+          document.querySelectorAll('.type-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          applyFilters();
+        };
+        container.appendChild(btn);
+      });
     }
 
     function buildTagFilters() {
@@ -305,29 +414,45 @@
       if (activeTag === tag) {
         activeTag = null;
         document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-        renderCards(allCases);
       } else {
         activeTag = tag;
         document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        renderCards(allCases.filter(c => (c.tags || []).includes(tag)));
       }
+      applyFilters();
+    }
+
+    function applyFilters() {
+      let filtered = allCases;
+      if (activeType) {
+        filtered = filtered.filter(c => getType(c) === activeType);
+      }
+      if (activeTag) {
+        filtered = filtered.filter(c => (c.tags || []).includes(activeTag));
+      }
+      renderCards(filtered);
     }
 
     function renderCards(cases) {
       const grid = document.getElementById('grid');
       const countEl = document.getElementById('count');
 
-      countEl.innerHTML = `총 <strong>${cases.length}</strong>개의 사례`;
+      countEl.innerHTML = `총 <strong>${cases.length}</strong>개의 글`;
 
       if (cases.length === 0) {
-        grid.innerHTML = '<div class="empty">해당 태그의 사례가 없습니다.</div>';
+        grid.innerHTML = '<div class="empty">해당하는 글이 없습니다.</div>';
         return;
       }
 
-      grid.innerHTML = cases.map(c => `
-        <a class="card" href="../${c.file}">
-
+      grid.innerHTML = cases.map(c => {
+        const type = getType(c);
+        const isColumn = type === '칼럼';
+        return `
+        <a class="card${isColumn ? ' is-column' : ''}" href="../${c.file}">
+          <div class="card-top-row">
+            <div class="card-date">${formatDate(c.date)}</div>
+            <span class="type-badge${isColumn ? ' col' : ''}">${isColumn ? '칼럼 · 시론' : '상담사례'}</span>
+          </div>
           <div class="card-title">${c.title}</div>
           ${c.subtitle ? `<div class="card-subtitle">${c.subtitle}</div>` : ''}
           <div class="card-summary">${c.summary}</div>
@@ -336,7 +461,8 @@
           </div>
           <div class="card-arrow">자세히 보기 →</div>
         </a>
-      `).join('');
+      `;
+      }).join('');
     }
 
     function formatDate(str) {
