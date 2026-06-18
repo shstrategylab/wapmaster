@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>우리 사회 종교의 언행 — 가르침과 삶이 일치하는가 | 언행심리마스터</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f7f3ee; --dark: #100e0a; --gold: #d4a843; --gold-deep: #b8860b;
+      --text: #2a2318; --text-muted: #6b5f4e; --border: #e0d8cc;
+      --serif: 'Noto Serif KR', serif; --sans: 'Noto Sans KR', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-weight: 300; line-height: 1.8; }
+
+    /* NAV */
+    nav { background: var(--dark); padding: 0 1.5rem; display: flex; align-items: center; height: 56px; position: sticky; top: 0; z-index: 100; }
+    nav a { color: var(--gold); text-decoration: none; font-family: var(--sans); font-size: 0.8rem; font-weight: 400; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
+    nav a:hover { color: #fff; }
+    nav .nav-title { margin-left: auto; color: rgba(255,255,255,0.35); font-size: 0.75rem; letter-spacing: 0.12em; }
+    /* 상단 nav 뒤로가기 링크에만 화살표 적용 */
+    .nav-back::before { content: '←'; font-size: 1rem; }
+
+    /* HERO */
+    .hero { background: var(--dark); color: #fff; padding: 5rem 1.5rem 4rem; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%); pointer-events: none; }
+    .hero-inner { max-width: 760px; margin: 0 auto; position: relative; }
+    .hero-meta { font-size: 0.75rem; letter-spacing: 0.14em; color: var(--gold); font-family: var(--sans); font-weight: 500; margin-bottom: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: center; }
+    .hero-meta span { opacity: 0.6; color: #fff; }
+    .hero h1 { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 700; line-height: 1.35; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+    .hero-line { width: 48px; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-deep)); margin-bottom: 1.5rem; }
+    .hero-summary { font-size: 1.05rem; line-height: 1.9; color: rgba(255,255,255,0.7); font-weight: 300; max-width: 620px; }
+
+    /* TOC — 신버전에서 이식 */
+    .toc {
+      margin-top: 2.25rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.6rem 1.5rem;
+    }
+    .toc a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.82rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: baseline;
+      border-bottom: 1px dashed transparent;
+      transition: color 0.2s, border-bottom-color 0.2s;
+    }
+    .toc a:hover { color: var(--gold); border-bottom-color: rgba(212,168,67,0.4); }
+    .toc-num { color: var(--gold-deep); font-family: var(--serif); font-size: 0.78rem; flex-shrink: 0; }
+
+    /* NOTICE */
+    .notice { margin-top: 2rem; padding: 1rem 1.25rem; border: 1px solid rgba(212,168,67,0.25); border-left: 3px solid var(--gold); border-radius: 0 2px 2px 0; background: rgba(212,168,67,0.06); font-size: 0.78rem; color: rgba(255,255,255,0.45); line-height: 1.7; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+    .tag { background: rgba(212,168,67,0.15); border: 1px solid rgba(212,168,67,0.3); color: var(--gold); font-size: 0.72rem; letter-spacing: 0.1em; padding: 0.3rem 0.75rem; border-radius: 2px; font-family: var(--sans); }
+
+    /* MAIN */
+    main { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+    .section { margin-bottom: 3.5rem; scroll-margin-top: 80px; }
+    .section-label { font-size: 0.7rem; letter-spacing: 0.18em; color: var(--gold-deep); font-weight: 500; text-transform: uppercase; font-family: var(--sans); margin-bottom: 0.75rem; }
+    .section h2 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; margin-bottom: 1.25rem; color: var(--dark); letter-spacing: -0.01em; }
+    .section h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--dark); margin: 1.75rem 0 0.85rem; }
+    .section p { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .section p:last-child { margin-bottom: 0; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+
+    /* HIGHLIGHT */
+    .highlight { background: var(--dark); color: rgba(255,255,255,0.85); border-left: 3px solid var(--gold); padding: 1.75rem 2rem; margin: 2.5rem 0; border-radius: 0 2px 2px 0; }
+    .highlight p { color: rgba(255,255,255,0.8) !important; font-size: 1rem !important; line-height: 1.9; }
+    .highlight strong { color: var(--gold); font-weight: 500; }
+
+    /* INSIGHT GRID */
+    .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 2rem 0; }
+    .insight-item { background: var(--bg); padding: 1.5rem; }
+    .insight-icon { font-size: 1.25rem; margin-bottom: 0.75rem; }
+    .insight-title { font-family: var(--serif); font-size: 0.95rem; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; }
+    .insight-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.7; }
+
+    /* COMPARE — 신버전에서 이식 */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .compare-col { background: var(--bg); padding: 1.5rem; }
+    .compare-col.neg { background: #fdf7f2; }
+    .compare-head { font-family: var(--serif); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.9rem; color: var(--dark); }
+    .compare-col.pos .compare-head { color: #4a6b3a; }
+    .compare-col.neg .compare-head { color: #a14e2a; }
+    .compare-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .compare-col li { font-size: 0.85rem; color: var(--text-muted); padding-left: 1.1rem; position: relative; line-height: 1.6; }
+    .compare-col.pos li::before { content: '＋'; position: absolute; left: 0; color: #4a6b3a; }
+    .compare-col.neg li::before { content: '－'; position: absolute; left: 0; color: #a14e2a; }
+    @media (max-width: 560px) { .compare { grid-template-columns: 1fr; } }
+
+    /* SELF CHECK */
+    .self-check { background: #fdf8f0; border: 1px solid var(--border); border-top: 2px solid var(--gold); padding: 1.25rem 1.5rem; margin: 2rem 0; border-radius: 0 0 2px 2px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
+    .self-check-label { font-size: 0.68rem; letter-spacing: 0.15em; color: var(--gold-deep); font-weight: 500; margin-bottom: 0.5rem; }
+
+    /* STEPS */
+    .steps { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; margin: 1.5rem 0; }
+    .steps li { display: flex; gap: 1.25rem; align-items: flex-start; }
+    .step-num { flex-shrink: 0; width: 32px; height: 32px; background: var(--dark); color: var(--gold); font-family: var(--serif); font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-top: 0.1rem; }
+    .step-text { font-size: 0.93rem; color: var(--text-muted); padding-top: 0.2rem; line-height: 1.75; }
+    .step-text strong { color: var(--dark); font-weight: 500; }
+
+    /* TIMELINE */
+    .timeline { list-style: none; margin: 1.5rem 0; position: relative; padding-left: 1.75rem; border-left: 2px solid var(--border); }
+    .timeline li { position: relative; margin-bottom: 1.5rem; font-size: 0.93rem; color: var(--text-muted); line-height: 1.75; }
+    .timeline li:last-child { margin-bottom: 0; }
+    .timeline li::before { content: ''; position: absolute; left: -1.94rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--bg); }
+    .timeline strong { color: var(--dark); font-weight: 500; }
+
+    /* CRITERIA */
+    .criteria { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 2rem 0; }
+    .criteria-item { background: var(--bg); padding: 1.5rem 1.75rem; display: flex; gap: 1.25rem; }
+    .criteria-badge { flex-shrink: 0; font-family: var(--serif); font-size: 0.72rem; font-weight: 700; color: var(--gold-deep); letter-spacing: 0.08em; padding-top: 0.1rem; white-space: nowrap; }
+    .criteria-body strong { display: block; font-family: var(--serif); font-size: 0.95rem; font-weight: 600; color: var(--dark); margin-bottom: 0.4rem; }
+    .criteria-body p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; margin: 0; }
+
+    /* QUOTE BLOCK — 신버전에서 이식 */
+    .quote-block {
+      position: relative;
+      padding: 1.5rem 1.75rem 1.5rem 2.5rem;
+      margin: 2rem 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .quote-block::before {
+      content: '"';
+      position: absolute;
+      left: 0.6rem; top: 0.1rem;
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+    .quote-block p { font-family: var(--serif); font-size: 1rem; color: var(--text); margin-bottom: 0.4rem; }
+    .quote-block .quote-src { font-size: 0.78rem; color: var(--text-muted); font-family: var(--sans); }
+
+    /* PHILOSOPHY */
+    .philosophy { background: linear-gradient(135deg, #1a1710 0%, var(--dark) 100%); color: #fff; border-radius: 4px; padding: 2.5rem 2rem; margin: 2.5rem 0; }
+    .philosophy .phi-label { font-size: 0.68rem; letter-spacing: 0.2em; color: var(--gold); font-weight: 500; margin-bottom: 1rem; }
+    .philosophy p { font-size: 0.93rem; color: rgba(255,255,255,0.7) !important; margin-bottom: 0.85rem; }
+    .philosophy p:last-child { margin-bottom: 0 !important; }
+
+    footer { background: var(--dark); color: rgba(255,255,255,0.3); text-align: center; padding: 2rem 1.5rem; font-size: 0.75rem; letter-spacing: 0.08em; }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      nav .nav-title { display: none; }
+      .hero { padding: 3.5rem 1.25rem 3rem; }
+      main { padding: 2.5rem 1.25rem 4rem; }
+      .highlight { padding: 1.25rem 1.25rem; }
+      .philosophy { padding: 1.75rem 1.25rem; }
+      .criteria-item { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../index.html">메인으로 돌아가기</a>
+  <span class="nav-title">언행심리마스터 칼럼</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      언행심리마스터 칼럼
+      <span>도현(道賢) · 2025</span>
+    </div>
+    <h1>우리 사회 종교의 언행<br>— 가르침과 삶이 일치하는가</h1>
+    <div class="hero-line"></div>
+    <p class="hero-summary">
+      수백만의 신자, 전국의 교회, 사회 전반에 미치는 영향력. 그러나 경전의 가르침과
+      일상의 행동 사이에는 왜 이토록 깊은 괴리가 생기는가.
+      이 글은 그 구조를 들여다보고, 우리 각자에게 되돌아올 질문을 던진다.
+    </p>
+
+    <!-- TOC — 신버전에서 이식 -->
+    <div class="toc" role="navigation" aria-label="목차">
+      <a href="#intro"><span class="toc-num">00</span> 왜 이 질문을 해야 하는가</a>
+      <a href="#sec1"><span class="toc-num">01</span> 언행 괴리의 심리 구조</a>
+      <a href="#sec2"><span class="toc-num">02</span> 종교에 빠져드는 심리적 이유</a>
+      <a href="#sec3"><span class="toc-num">03</span> 종교의 정치화와 집단 언어</a>
+      <a href="#sec4"><span class="toc-num">04</span> 한국적 토양의 세 가지 변수</a>
+      <a href="#sec5"><span class="toc-num">05</span> 일상에서 드러나는 장면들</a>
+      <a href="#sec6"><span class="toc-num">06</span> 건강한 종교인의 자기 점검</a>
+    </div>
+
+    <div class="notice">
+      ※ 이 분석은 특정 종교나 단체를 비방할 목적이 아니라, 언행심리학적 관점에서
+      종교와 인간 행동 사이의 괴리 현상을 사회적·심리학적으로 분석한 것입니다.
+      모든 서술은 관찰된 사회적 현상과 심리학 이론에 근거하며,
+      특정 개인이나 단체를 지칭하지 않습니다.
+    </div>
+    <div class="tags">
+      <span class="tag">언행 괴리</span>
+      <span class="tag">도덕적 면허 효과</span>
+      <span class="tag">종교의 정치화</span>
+      <span class="tag">자기 성찰</span>
+      <span class="tag">집단 심리</span>
+      <span class="tag">한국 기독교</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="section" id="intro">
+    <div class="section-label">들어가며</div>
+    <h2>왜 이 질문을 해야 하는가</h2>
+    <p>한국 사회에서 종교, 특히 기독교는 매우 독특한 위치를 차지한다. 신자 수는 수백만에 달하고, 교회는 전국 방방곡곡에 퍼져 있으며, 정치·경제·사회 전반에 상당한 영향력을 행사하고 있다.</p>
+    <p>그런데 일반 시민들이 일상에서 체감하는 일부 종교인의 모습은 경전이 가르치는 이상과 괴리를 보이는 경우가 있다. "종교인답지 않은 행동을 보았다"는 경험담은 주변에서 어렵지 않게 들을 수 있다.</p>
+    <p>이것은 한 개인의 편견이 아니라 오랜 시간 사회적으로 반복 관찰된 현상이다. 이 글은 그 괴리가 왜 생기는지, 그 심리적 구조를 차례로 짚어보려 한다.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="sec1">
+    <div class="section-label">첫 번째</div>
+    <h2>언어와 행동의 불일치 — 언행 괴리의 심리 구조</h2>
+    <p>언행심리학의 핵심 전제는 단순하다. <em>"사람은 자신이 진짜로 믿는 것을 행동으로 드러낸다."</em></p>
+    <p>말로는 사랑, 섬김, 희생을 강조하면서 일상에서는 그와 다른 행동을 보이는 경우가 관찰된다. 이것은 신앙 자체의 문제라기보다 언행이 분리되는 심리적 구조의 문제다.</p>
+
+    <div class="insight-grid">
+      <div class="insight-item">
+        <div class="insight-icon">🎭</div>
+        <div class="insight-title">도덕적 면허 효과</div>
+        <div class="insight-desc">"오늘 선한 일을 했으니 이 정도는 괜찮다"는 무의식적 허가. 예배·헌금·봉사 후 비도덕적 행동에 대한 심리적 제동이 약화되는 현상이다.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">🔄</div>
+        <div class="insight-title">의식의 반복과 악순환</div>
+        <div class="insight-desc">'회개하면 된다'는 믿음이 잘못 적용될 때, 행동 변화 없이 의식만 반복된다. 죄책감은 해소되지만 실제 삶은 변하지 않는 악순환이 이어진다.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">🌱</div>
+        <div class="insight-title">형식과 내면의 분리</div>
+        <div class="insight-desc">진정한 내면 변화 없이 형식만 반복되는 것, 이것이 언행 괴리가 지속되는 심리적 배경이다. 신앙이 아직 삶에 뿌리내리지 못한 상태를 보여준다.</div>
+      </div>
+    </div>
+
+    <p>예배·기도·봉사 이후에도 일상의 언행이 그 전과 다르지 않다면, 신앙은 아직 삶의 표면을 넘지 못한 것이다.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="sec2">
+    <div class="section-label">두 번째</div>
+    <h2>왜 종교에 깊이 빠져드는가 — 심리적 필요와 종교의 기능</h2>
+    <p>사람들이 동양철학이나 역사 공부보다 종교에 더 깊이 빠져드는 이유는 내용의 우월성이 아니라 심리적 필요와의 궁합에 있다.</p>
+    <p>논어는 말한다. "하루 세 번 자신을 돌아보라." 이는 끊임없는 자기 점검을 요구한다. 반면 "믿음으로 구원받는다"는 메시지는 불안한 인간 심리에 즉각적인 안도감을 제공한다.</p>
+
+    <div class="highlight">
+      <p><strong>종교가 제공하는 네 가지 심리적 기능</strong><br>이 기능들 자체는 문제가 없다. 문제는 이 기능들이 진정한 자기 성찰을 <em>대체</em>할 때 발생한다. 종교가 내면 변화의 도구가 아닌 심리적 안정만을 위한 도구로 기능할 때, 언행의 분리는 구조적으로 발생할 수밖에 없다.</p>
+    </div>
+
+    <ul class="timeline">
+      <li><strong>소속감</strong> — 공동체 안에서 "나는 선택받은 사람"이라는 정체성은 불확실한 세상에서 강력한 심리적 닻이 된다.</li>
+      <li><strong>불안 해소</strong> — 죽음, 고통, 미래에 대한 답을 줌으로써 인간의 근원적 공포를 다스릴 수 있게 해준다.</li>
+      <li><strong>공동체 네트워크</strong> — 교회는 예배 공간이자 강력한 사회적 연결망으로 기능한다.</li>
+      <li><strong>단순성</strong> — 복잡한 인생의 문제를 명확한 신앙의 언어로 정리해주는 인지적 편안함을 제공한다.</li>
+    </ul>
+
+    <p>종교 활동이 위로와 안도감으로만 끝나고 있다면, 변화는 일어나지 않는다. 안정과 성찰은 함께 가야 한다.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="sec3">
+    <div class="section-label">세 번째</div>
+    <h2>종교의 정치화 현상 — 집단의 언어로 본 본질</h2>
+    <p>일부 종교 집단이 정치에 깊숙이 개입하는 현상은 한국 사회에서 꾸준히 관찰되어 왔다. 언행심리학적으로 집단의 언어를 분석하면 그 집단의 본질이 드러난다.</p>
+    <p>기독교는 "원수를 사랑하라"고 했고, 불교는 자비를 말하며, 유교는 "군자는 두루 어울리되 편 가르지 않는다"고 했다. 특정인을 적으로 규정하고 공격하는 순간, 그 언어는 종교의 언어가 아닌 정치 선동의 언어가 된다.</p>
+
+    <!-- COMPARE TABLE -->
+    <div class="compare">
+      <div class="compare-col pos">
+        <div class="compare-head">내부를 향하는 언어</div>
+        <ul>
+          <li>"우리가 어떻게 살아야 하는가"를 묻는다</li>
+          <li>자기 성찰이 중심에 있다</li>
+          <li>경전의 가르침을 자신의 행동 기준으로 삼는다</li>
+          <li>외부인을 이해와 포용의 대상으로 본다</li>
+        </ul>
+      </div>
+      <div class="compare-col neg">
+        <div class="compare-head">외부를 향하는 언어</div>
+        <ul>
+          <li>"저들이 왜 틀렸는가"를 말한다</li>
+          <li>외부의 적으로 내부를 결속시킨다</li>
+          <li>경전의 가르침을 상대를 단죄하는 무기로 쓴다</li>
+          <li>외부인을 위협과 경계의 대상으로 본다</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>이것은 특정 종교만의 문제가 아니라, 권력이 종교를 도구화할 때 보편적으로 나타나는 현상이다. 내가 속한 공동체의 언어가 어느 쪽을 향하는지 살피는 것, 그것이 출발점이다.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="sec4">
+    <div class="section-label">네 번째</div>
+    <h2>왜 한국에서 특히 두드러지는가 — 구조적 배경</h2>
+    <p>한국 기독교에서 관찰되는 언행 괴리 현상은 기독교 자체의 문제라기보다 한국의 역사적·문화적 토양과 결합하면서 발생한 구조적 현상으로 이해하는 것이 더 정확하다. 세 가지 문화적 요소가 서로 맞물려 있다.</p>
+
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>기복(祈福)적 신앙 경향</strong><br>
+          "믿으면 복 받는다"는 기대가 신앙 본래의 의미보다 현세적 이익 추구와 결합될 때, 종교 활동이 일종의 거래처럼 기능할 수 있다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>수직적 위계 문화</strong><br>
+          지도자의 권위에 대한 무비판적 복종이 내부 자정(自淨) 기능을 약화시킨다. "어른 말씀이니 옳다"는 수직적 복종 문화가 비판적 성찰을 차단한다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>이데올로기와의 결합</strong><br>
+          특정 역사적 맥락 속에서 종교적 신앙과 정치적 이념이 동일시되는 구조가 형성되었고, 이것이 종교 집단의 정치적 편향성을 신앙적 당위로 포장하는 기제로 작용해왔다.
+        </div>
+      </li>
+    </ul>
+
+    <div class="highlight">
+      <p>이 세 가지가 결합될 때, 종교는 자기 성찰의 도구가 아닌 <strong>집단 정체성과 이익 수호의 도구</strong>로 변질될 위험이 높아진다.</p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 분석 5 -->
+  <section class="section" id="sec5">
+    <div class="section-label">다섯 번째</div>
+    <h2>언행 괴리가 일상에서 드러나는 장면들</h2>
+    <p>앞서 살펴본 심리 구조는 추상적인 개념으로 머물지 않는다. 일상의 구체적인 장면 속에서 반복적으로 모습을 드러낸다. 다음 세 장면은 특정 사건을 지칭하지 않으며, 사회 곳곳에서 공통적으로 발견되는 유형화된 패턴이다.</p>
+
+    <h3>장면 하나 — 신앙 공동체 안과 밖의 이중 언어</h3>
+    <p>예배 공간에서는 온화하고 겸손한 언어를 사용하지만, 직장이나 거래 관계에서는 전혀 다른 태도를 보이는 경우가 있다. 상대가 같은 신앙인인지 아닌지에 따라 언행의 기준이 달라진다면, 그 기준은 신앙에서 나온 것이 아니라 소속 집단의 인정 여부에서 나온 것이다.</p>
+
+    <h3>장면 둘 — 약자에게는 엄격, 권위자에게는 침묵</h3>
+    <p>공동체 내부의 약자나 신참자에게는 엄격한 도덕적 기준을 요구하면서도, 지도자나 권위 있는 인물의 잘못에는 관용적이거나 침묵하는 비대칭이 관찰된다. 이는 수직적 위계 문화가 만들어내는 가장 전형적인 결과 중 하나다.</p>
+
+    <h3>장면 셋 — 비판에 대한 방어가 성찰을 대체</h3>
+    <p>외부의 비판이 제기될 때, 그 내용을 검토하기보다 비판하는 사람의 의도나 자격을 먼저 문제 삼는 반응 양식이 관찰된다. 비판을 막아내는 데는 효과적일 수 있지만, 비판이 담고 있는 진실을 검토할 기회를 스스로 차단한다.</p>
+
+    <p>이 세 장면이 낯설지 않다면, 그 익숙함 자체가 하나의 신호다.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="sec6">
+    <div class="section-label">마지막으로</div>
+    <h2>종교인답게 산다는 것 — 스스로 물을 수 있는 세 가지</h2>
+    <p>이 글은 종교를 부정하지 않는다. 다만 "종교인답게 산다는 것이 무엇인가"라는 질문 앞에서, 우리가 스스로 적용해볼 수 있는 기준을 생각해보고 싶다.</p>
+
+    <div class="criteria">
+      <div class="criteria-item">
+        <div class="criteria-badge">첫째</div>
+        <div class="criteria-body">
+          <strong>언행의 일관성</strong>
+          <p>예배당 안과 밖에서 같은 사람인가? 직장, 가정, 시장, 이웃과의 관계에서 신앙의 가르침이 실제 행동으로 드러나고 있는가? 일관성이 없다면, 신앙은 아직 삶에 뿌리내리지 못한 것이다.</p>
+        </div>
+      </div>
+      <div class="criteria-item">
+        <div class="criteria-badge">둘째</div>
+        <div class="criteria-body">
+          <strong>지향의 방향</strong>
+          <p>내 신앙의 언어가 "나는 어떻게 살아야 하는가"를 향하는가, 아니면 "저 사람이 왜 나쁜가"를 향하는가? 타인에 대한 판단보다 자기 성찰이 앞서야 신앙이 성숙해지고 있다는 신호다.</p>
+        </div>
+      </div>
+      <div class="criteria-item">
+        <div class="criteria-badge">셋째</div>
+        <div class="criteria-body">
+          <strong>변화의 증거</strong>
+          <p>1년 전의 나와 지금의 나가 실제로 달라졌는가? 더 관대해졌는가, 더 정직해졌는가, 더 겸손해졌는가? 의식은 반복되지만 사람이 변하지 않는다면 그 신앙은 형식에 머물러 있는 것이다.</p>
+        </div>
+      </div>
+    </div>
+
+    <p>이 세 가지 물음은 기독교만의 것이 아니다. 논어의 "일일삼성(一日三省)", 불교의 "자기 마음을 직시하라", 어떤 진지한 종교나 철학도 같은 방향을 가리킨다. 종교의 가르침이 진지하게 살아있다면, 그 핵심은 언제나 "타인을 향한 손가락"이 아니라 "자신을 향한 거울"이다.</p>
+
+    <!-- QUOTE BLOCK -->
+    <div class="quote-block">
+      <p>"曾子曰: 吾日三省吾身 (증자가 말하길, 나는 매일 세 가지로 내 자신을 살핀다)"</p>
+      <div class="quote-src">— 논어 학이편</div>
+    </div>
+  </section>
+
+  <div class="philosophy">
+    <div class="phi-label">맺으며</div>
+    <p>타인의 위선을 보는 능력과 자신의 언행을 점검하는 능력은 함께 성장해야 한다. 비판의 화살이 언제나 밖을 향할 때, 그것은 날카로운 눈이 아니라 자신을 향하지 못하는 회피가 될 수도 있다.</p>
+    <p>공자가 말했다. "군자는 자신에게서 구하고, 소인은 남에게서 구한다." (君子求諸己，小人求諸人)</p>
+    <p>세상의 위선을 직시하면서 동시에 자신의 언행을 엄격히 점검하는 것, 그것이 어떤 종교인보다도 더 종교적인 삶의 태도일 것이다.</p>
+  </div>
+
+</main>
+
+<footer>
+  <p>언행심리마스터 칼럼 &nbsp;·&nbsp; <a href="../index.html">목록으로</a> &nbsp;·&nbsp; 도현(道賢) · 2025</p>
+</footer>
+
+</body>
+</html>
