@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>언행심리마스터 상담 사례 — 미경 | 모자 관계 회복</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f3ee;
+      --dark: #100e0a;
+      --gold: #d4a843;
+      --gold-deep: #b8860b;
+      --text: #2a2318;
+      --text-muted: #6b5f4e;
+      --border: #e0d8cc;
+      --serif: 'Noto Serif KR', serif;
+      --sans: 'Noto Sans KR', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--dark);
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: var(--gold);
+      text-decoration: none;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #fff; }
+    nav a::before {
+      content: '←';
+      font-size: 1rem;
+    }
+    nav .nav-title {
+      margin-left: auto;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--dark);
+      color: #fff;
+      padding: 5rem 1.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,67,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-meta {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      align-items: center;
+    }
+    .hero-meta span { opacity: 0.6; color: #fff; }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-line {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+      margin-bottom: 1.5rem;
+    }
+    .hero-summary {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+      max-width: 620px;
+    }
+
+    /* TAGS */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+    .tag {
+      background: rgba(212,168,67,0.15);
+      border: 1px solid rgba(212,168,67,0.3);
+      color: var(--gold);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      font-family: var(--sans);
+    }
+
+    /* NOTICE */
+    .notice {
+      background: rgba(212,168,67,0.08);
+      border: 1px solid rgba(212,168,67,0.25);
+      border-left: 3px solid var(--gold);
+      padding: 1rem 1.25rem;
+      margin-top: 2.5rem;
+      border-radius: 0 2px 2px 0;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* SECTION */
+    .section {
+      margin-bottom: 3.5rem;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-deep);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-family: var(--sans);
+      margin-bottom: 0.75rem;
+    }
+    .section h2 {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+    }
+    .section p {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight {
+      background: var(--dark);
+      color: rgba(255,255,255,0.85);
+      border-left: 3px solid var(--gold);
+      padding: 1.75rem 2rem;
+      margin: 2.5rem 0;
+      border-radius: 0 2px 2px 0;
+    }
+    .highlight p {
+      color: rgba(255,255,255,0.8) !important;
+      font-size: 1rem !important;
+      line-height: 1.9;
+    }
+    .highlight strong {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* INSIGHT GRID */
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .insight-item {
+      background: var(--bg);
+      padding: 1.5rem;
+    }
+    .insight-icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .insight-title {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .insight-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* STEPS */
+    .steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .steps li {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--dark);
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-top: 0.1rem;
+    }
+    .step-text {
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      padding-top: 0.2rem;
+      line-height: 1.75;
+    }
+    .step-text strong {
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    /* CHECK LIST */
+    .check-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+    }
+    .check-box-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-deep);
+      font-weight: 500;
+      margin-bottom: 0.85rem;
+    }
+    .check-box p {
+      font-size: 0.9rem;
+      color: var(--text) !important;
+      font-weight: 400;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+    .check-box p::before {
+      content: '▶';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-size: 0.6rem;
+      top: 0.35rem;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      list-style: none;
+      margin: 1.5rem 0;
+      position: relative;
+      padding-left: 1.75rem;
+      border-left: 2px solid var(--border);
+    }
+    .timeline li {
+      position: relative;
+      margin-bottom: 1.5rem;
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .timeline li:last-child { margin-bottom: 0; }
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: -1.94rem;
+      top: 0.35rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--bg);
+    }
+    .timeline strong {
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    /* DIALOGUE BOX */
+    .dialogue {
+      margin: 2rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .dialogue-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .dialogue-row.right {
+      flex-direction: row-reverse;
+    }
+    .dialogue-speaker {
+      flex-shrink: 0;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--gold-deep);
+      font-weight: 500;
+      padding-top: 0.55rem;
+      min-width: 52px;
+      text-align: right;
+    }
+    .dialogue-row.right .dialogue-speaker {
+      text-align: left;
+    }
+    .dialogue-bubble {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 2px 8px 8px 8px;
+      padding: 0.85rem 1.1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 82%;
+    }
+    .dialogue-row.right .dialogue-bubble {
+      background: rgba(212,168,67,0.08);
+      border-color: rgba(212,168,67,0.25);
+      border-radius: 8px 2px 8px 8px;
+      color: var(--text);
+    }
+
+    /* PHILOSOPHY */
+    .philosophy {
+      background: linear-gradient(135deg, #1a1710 0%, var(--dark) 100%);
+      color: #fff;
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+      margin: 2.5rem 0;
+    }
+    .philosophy .phi-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .philosophy p {
+      font-size: 0.93rem;
+      color: rgba(255,255,255,0.7) !important;
+      margin-bottom: 0.85rem;
+    }
+    .philosophy p:last-child { margin-bottom: 0 !important; }
+    .philosophy .quote {
+      font-family: var(--serif);
+      font-size: 1.05rem !important;
+      color: rgba(255,255,255,0.9) !important;
+      border-left: 2px solid var(--gold);
+      padding-left: 1rem;
+      margin: 1.25rem 0;
+      line-height: 1.9;
+    }
+
+    /* CRITERIA CARDS */
+    .criteria-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .criteria-card {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+    }
+    .criteria-num {
+      background: var(--dark);
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 0.85rem;
+      font-weight: 700;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem 0.85rem;
+      letter-spacing: 0.1em;
+      min-width: 44px;
+    }
+    .criteria-body {
+      padding: 1.25rem 1.5rem;
+      flex: 1;
+    }
+    .criteria-title {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .criteria-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    /* RESULT CARD */
+    .result-card {
+      border: 1px solid rgba(212,168,67,0.4);
+      border-radius: 4px;
+      background: rgba(212,168,67,0.05);
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem 0;
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+    .result-icon {
+      font-size: 1.75rem;
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: 0.1rem;
+    }
+    .result-body {}
+    .result-title {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.4rem;
+    }
+    .result-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 2rem 1.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      nav .nav-title { display: none; }
+      .hero { padding: 3.5rem 1.25rem 3rem; }
+      main { padding: 2.5rem 1.25rem 4rem; }
+      .highlight { padding: 1.25rem 1.25rem; }
+      .philosophy { padding: 1.75rem 1.25rem; }
+      .criteria-num { font-size: 0.75rem; padding: 1rem 0.65rem; min-width: 38px; }
+      .criteria-body { padding: 1rem 1.1rem; }
+      .dialogue-bubble { max-width: 90%; }
+      .result-card { flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html">메인으로 돌아가기</a>
+  <span class="nav-title">언행심리마스터 상담 사례</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      언행심리마스터 상담 사례
+      <span>2026년 6월 · 모자(母子) 관계 회복</span>
+    </div>
+    <h1>엄마인가, 계모인가<br>— 미경의 언행심리 상담 사례</h1>
+    <div class="hero-line"></div>
+    <p class="hero-summary">
+      아들의 핸드폰 저장 이름은 '계모'였다. 먹이고 입히는 데 모든 것을 쏟아부었다고 믿었던 한 어머니.
+      언행심리마스터는 두 사람의 대화 속에서 싸움의 구조를 읽어냈고,
+      단 며칠 만에 관계를 뒤바꾸는 솔루션을 제시했다.
+    </p>
+    <div class="tags">
+      <span class="tag">모자 갈등</span>
+      <span class="tag">언행 구조 분석</span>
+      <span class="tag">객관화</span>
+      <span class="tag">눈높이 양육</span>
+      <span class="tag">관계 회복</span>
+      <span class="tag">SOS 신호</span>
+    </div>
+
+  </div>
+</header>
+
+<main>
+
+  <!-- 들어가며 -->
+  <section class="section">
+    <div class="section-label">들어가며</div>
+    <h2>싸우는 엄마와 아들, 그 구조를 들여다보다</h2>
+    <p>
+      미경은 아들과의 관계로 깊이 지쳐 있었다. 자신은 분명 최선을 다했다고 생각했다.
+      아이가 어렸을 때부터 먹이고 입히는 데 아끼지 않았고, 부족하다 싶으면 더 채워줬다.
+      그런데 아들은 틈만 나면 싸울 준비를 했고, 엄마의 말 한마디에 불같이 반응했다.
+    </p>
+    <p>
+      언행심리마스터는 미경에게 먼저 물었다. 어떤 일이 있었는지, 어떤 대화를 나눴는지,
+      어떤 현상이 반복되고 있는지를. 이유를 묻기 전에 현상을 먼저 들었다.
+      그 대화 속에서 구조가 모습을 드러내기 시작했다.
+    </p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 1. 현상 파악 -->
+  <section class="section">
+    <div class="section-label">분석 1</div>
+    <h2>왜 싸우는가가 아니라 — 어떻게 싸우는가를 본다</h2>
+    <p>
+      대부분의 상담은 "왜 싸우는가"를 묻는다. 하지만 언행심리마스터의 접근은 다르다.
+      싸움의 이유보다 싸움의 현상, 그 패턴과 구조를 먼저 들여다본다.
+    </p>
+    <p>
+      미경의 이야기를 들으면서 몇 가지 장면이 반복되어 나타났다.
+      학교 왕따 사건, 아이의 "죽고 싶다"는 말, 핸드폰의 '계모' 저장 이름.
+      하나하나는 파편처럼 보였지만, 이어 붙이자 하나의 구조가 선명해졌다.
+    </p>
+
+    <div class="highlight">
+      <p>
+        <strong>언행심리학의 핵심 질문</strong><br>
+        "이 두 사람의 관계는 부모와 자식의 구조인가, 아니면 매일 맞붙는 두 싸움꾼의 구조인가?"
+      </p>
+    </div>
+
+    <p>
+      아이는 집에 돌아오면 자동으로 싸울 준비를 했다. 엄마의 잔소리가 '명분'이 되어
+      그 에너지를 터뜨리는 구조였다. 미경 역시 아이를 보면 이유 없이 스트레스가 차올라
+      무의식적으로 잔소리를 쏟아냈다. 둘 다 자기도 모르게 이 싸움의 패턴에 갇혀 있었던 것이다.
+    </p>
+
+    <div class="check-box">
+      <div class="check-box-label">핵심 통찰</div>
+      <p>싸움이 반복된다면, 그것은 상대방의 문제가 아니라 두 사람 사이에 형성된 '구조'의 문제다.</p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 2. 왕따의 구조 -->
+  <section class="section">
+    <div class="section-label">분석 2</div>
+    <h2>아이를 감쌌지만 — 아이의 세상을 보지 못했다</h2>
+    <p>
+      언행심리마스터는 미경에게 아이의 유년 시절을 물었다.
+      그 과정에서 하나의 장면이 떠올랐다. 지하 셋방에 살던 시절,
+      미경의 아이는 친구들을 집으로 초대했다. 바퀴벌레가 나오던 그 집에.
+    </p>
+    <p>
+      미경의 눈에 그것은 아무것도 아닌 일이었다. 친구니까. 그냥 놀면 되지.
+      하지만 아이들의 세계에는 어른이 모르는 서열이 있다.
+      자기 집을 보여주는 그 순간, 아이는 자신도 모르게 반 친구들 앞에서 서열의 아래에 서버렸다.
+    </p>
+
+    <div class="insight-grid">
+      <div class="insight-item">
+        <div class="insight-icon">👁️</div>
+        <div class="insight-title">어른의 시선</div>
+        <div class="insight-desc">미경은 "별것 아닌 일"이라고 보았다. 친구들끼리 놀면 그만이라 생각했다.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">🧒</div>
+        <div class="insight-title">아이의 세계</div>
+        <div class="insight-desc">아이들의 사회에는 정서적 서열이 있다. 그 눈높이에서 보지 않으면 보이지 않는다.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">⚠️</div>
+        <div class="insight-title">결과</div>
+        <div class="insight-desc">왕따는 '나쁜 아이'가 있어서 생기지 않았다. 구조가 만들어낸 것이었다.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">🔍</div>
+        <div class="insight-title">언행심리학적 관점</div>
+        <div class="insight-desc">아이를 키울 때는 부모의 시선이 아닌 아이의 정서·시대·눈높이에서 바라봐야 한다.</div>
+      </div>
+    </div>
+
+    <p>
+      언행심리마스터는 이것을 미경에게 이미 수년 전에 경고한 적이 있었다.
+      "이 아이를 잘 살펴라. 왕따 당할 느낌이 있다." 그 말은 흘러가 버렸고,
+      예감은 현실이 됐다. 중학교 시절 내내, 아이는 학교에서 혼자였다.
+    </p>
+
+    <div class="check-box">
+      <div class="check-box-label">핵심 통찰</div>
+      <p>자식을 키울 때 '나의 시선'이 아닌 '아이의 눈높이'에서 보지 않으면, 부모의 사랑이 아이에게 닿지 않는다.</p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 3. SOS 신호 -->
+  <section class="section">
+    <div class="section-label">분석 3</div>
+    <h2>아이는 여러 번 SOS를 쳤다 — 엄마는 받지 않았다</h2>
+    <p>
+      중학교 시절, 아들은 미경에게 전화를 했다.
+      "엄마, 나 죽고 싶어." 그 말에 미경은 대답했다.
+      "응, 알았어. 엄마 바쁘니까 나중에." 그리고 전화를 끊었다.
+    </p>
+    <p>
+      그것은 단순한 불평이 아니었다. 아이가 꾸준히 보내온 구조요청(SOS)이었다.
+      하지만 그 신호는 번번이 메아리가 되어 돌아왔다.
+    </p>
+
+    <ul class="timeline">
+      <li>
+        <strong>첫 번째 SOS</strong> — 왕따를 당하면서도 말할 곳이 없었다. 엄마에게 전화했지만 "바쁘다"는 말만 돌아왔다.
+      </li>
+      <li>
+        <strong>두 번째 SOS</strong> — "죽고 싶다"는 말을 꺼냈다. 가장 솔직한 위기 신호였다. 무시됐다.
+      </li>
+      <li>
+        <strong>세 번째 SOS</strong> — 아이는 엄마를 핸드폰에 '계모'로 저장했다. 말로 하지 않는 마지막 선언이었다.
+      </li>
+      <li>
+        <strong>일상이 된 싸움</strong> — 더 이상 SOS를 보내는 대신, 엄마를 보면 싸울 준비를 하는 것이 습관이 됐다.
+      </li>
+    </ul>
+
+    <div class="highlight">
+      <p>
+        아이는 나쁜 아이가 아니었다. <strong>SOS를 보냈지만 받아주지 않은 사람</strong>을 향해
+        쌓인 원망이 싸움이 된 것이었다. 아이가 문제가 아니라, 구조가 문제였다.
+      </p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 4. 상담 접근법 -->
+  <section class="section">
+    <div class="section-label">분석 4</div>
+    <h2>상담의 방법 — 아이가 되어 말하다</h2>
+    <p>
+      미경을 객관화시키는 것이 핵심이었다. 그러나 직접 "당신이 잘못했다"고 말하면
+      방어벽이 올라간다. 자신이 헌신했다고 굳게 믿는 사람에게 정면 충돌은 통하지 않는다.
+    </p>
+    <p>
+      언행심리마스터는 다른 방법을 택했다. 아이의 마음속으로 들어가,
+      아들의 목소리로 직접 말을 건네는 방식이었다.
+    </p>
+
+    <div class="dialogue">
+      <div class="dialogue-row">
+        <div class="dialogue-speaker">언행심리마스터</div>
+        <div class="dialogue-bubble">
+          미경 씨, 아들 되게 힘들었겠다. 어떻게 그럴 수 있어요? 엄마가 바쁘다고 끊으면 그 아이는 그 다음에 누구한테 가야 해요?
+        </div>
+      </div>
+      <div class="dialogue-row right">
+        <div class="dialogue-speaker">미경</div>
+        <div class="dialogue-bubble">
+          …그때 그런 소리 했었어요. 근데 그냥 지나쳤는데.
+        </div>
+      </div>
+      <div class="dialogue-row">
+        <div class="dialogue-speaker">언행심리마스터</div>
+        <div class="dialogue-bubble">
+          자식 입에서 "엄마, 나 죽고 싶어"가 나왔는데 그걸 그냥 넘겼다고요. 그 아이 눈에 엄마가 엄마로 보였겠어요?
+        </div>
+      </div>
+      <div class="dialogue-row right">
+        <div class="dialogue-speaker">미경</div>
+        <div class="dialogue-bubble">
+          …제가 진짜 잘못했네요.
+        </div>
+      </div>
+    </div>
+
+    <p>
+      아이의 마음을 미경의 귀에 직접 넣어주는 순간, 비로소 반성이 들어갔다.
+      아무도 이렇게 말해준 사람이 없었기 때문에, 미경은 그 오랜 시간 동안
+      자신이 잘못했다는 것을 단 한 번도 느껴본 적이 없었다.
+    </p>
+
+    <div class="check-box">
+      <div class="check-box-label">상담 방법론</div>
+      <p>상대를 객관화시키려면 직접 충돌하지 않는다. 상대가 보지 못한 시선으로 들어가 그 눈으로 말해주는 것이 핵심이다.</p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 5. 솔루션 -->
+  <section class="section">
+    <div class="section-label">분석 5</div>
+    <h2>솔루션 — 단 하나의 행동을 바꾸다</h2>
+    <p>
+      구조가 보이면 솔루션은 단순해진다. 잘못된 행동을 하는 원인을 찾아
+      그 하나를 바꾸면, 연결된 모든 것이 달라진다.
+    </p>
+    <p>
+      언행심리마스터가 미경에게 제시한 솔루션은 딱 하나였다.
+    </p>
+
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>잔소리를 멈춰라</strong><br>
+          아이가 들어오면 치고 들어가지 않는다. 두 마디 하고 싶으면 한 마디만 한다.
+          한 마디 하고 싶으면 아예 참는다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>믿어줘라</strong><br>
+          "네가 알아서 해. 니가 선택한 결과는 니가 책임지는 거야."
+          잔소리 대신 믿음을 건네는 것이 책임감을 키운다.
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>기다려라</strong><br>
+          아이가 싸울 준비를 하고 있을 때, "잘 자"라는 말 한마디를 건넨다.
+          싸울 명분이 사라지면 아이는 칠 이유를 잃는다.
+        </div>
+      </li>
+    </ul>
+
+    <div class="highlight">
+      <p>
+        <strong>미경이 잔소리를 멈추자, 아들도 멈췄다.</strong><br>
+        싸울 준비를 하고 서 있는데 엄마가 "잘 자"라고 했다. 아이는 멈칫했다.
+        칠 이유가 없어진 것이다. 며칠 사이에 구조가 바뀌기 시작했다.
+      </p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 6. 결과 -->
+  <section class="section">
+    <div class="section-label">결과</div>
+    <h2>핸드폰 저장 이름이 바뀌었다</h2>
+    <p>
+      미경이 행동을 바꾸자, 아들도 달라졌다. 짧은 시간이었다. 그 변화는 극적이었다.
+    </p>
+
+    <div class="result-card">
+      <div class="result-icon">📱</div>
+      <div class="result-body">
+        <div class="result-title">'계모' → '엄마'</div>
+        <div class="result-desc">핸드폰 저장 이름이 바뀌었다. 아이가 직접 바꿨다. 미경이 바꿔달라고 한 것이 아니었다.</div>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-icon">💬</div>
+      <div class="result-body">
+        <div class="result-title">"엄마, 나 돈 벌면 다 줄게"</div>
+        <div class="result-desc">계모라고 불리던 아이가 스스로 먼저 말을 건넸다. 관계의 방향이 완전히 바뀌었다.</div>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-icon">🔄</div>
+      <div class="result-body">
+        <div class="result-title">싸움 패턴의 해체</div>
+        <div class="result-desc">아이는 나쁜 아이가 아니었다. 잘못된 구조 속에서 잘못된 방식으로 반응하고 있었을 뿐이었다. 구조가 바뀌자 아이도 바뀌었다.</div>
+      </div>
+    </div>
+
+    <p>
+      미경은 그제야 알았다. 아이가 나한테 왜 이러나 했는데,
+      아이도 똑같이 생각하고 있었다는 것을. 엄마는 나한테 왜 이러나.
+      엄마가 먼저 바뀌어야 했다. 처음부터 문제는 구조였고, 시작은 엄마였다.
+    </p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- 6. 언행심리학적 핵심 -->
+  <section class="section">
+    <div class="section-label">핵심 정리</div>
+    <h2>이 사례에서 배우는 언행심리학의 세 가지 원리</h2>
+
+    <div class="criteria-list">
+      <div class="criteria-card">
+        <div class="criteria-num">원리 1</div>
+        <div class="criteria-body">
+          <div class="criteria-title">현상을 들어라, 이유를 묻기 전에</div>
+          <div class="criteria-desc">
+            "왜 싸우냐"를 물으면 방어가 올라온다. 어떤 일이 있었는지, 어떤 대화가 오갔는지,
+            그 현상을 먼저 들어야 구조가 보인다. 구조를 보면 원인이 보이고, 원인이 보이면 솔루션이 단순해진다.
+          </div>
+        </div>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-num">원리 2</div>
+        <div class="criteria-body">
+          <div class="criteria-title">아이의 눈높이에서 키워라</div>
+          <div class="criteria-desc">
+            먹이고 입히는 것은 생존을 위한 기본이다. 아이에게 특별한 것이 아니다.
+            아이가 느끼고 싶은 것은 "오늘 엄마가 나의 마음을 알아줬는가"다.
+            아이의 정서, 아이의 시대, 아이의 눈높이에서 함께해야 한다.
+          </div>
+        </div>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-num">원리 3</div>
+        <div class="criteria-body">
+          <div class="criteria-title">원인 하나를 바꾸면 구조가 바뀐다</div>
+          <div class="criteria-desc">
+            복잡해 보이는 관계 문제도 결국 하나의 핵심 원인이 있다.
+            그 원인을 찾아 그 행동을 바꾸면, 오랫동안 굳어진 패턴도
+            생각보다 훨씬 빠르게 변한다. 이것이 언행심리학의 힘이다.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="philosophy">
+    <div class="phi-label">언행심리학 핵심 통찰</div>
+    <p class="quote">
+      "말을 안 듣는 아이는 없다.<br>
+      말을 안 들을 이유가 생긴 구조가 있을 뿐이다."
+    </p>
+    <p>
+      아이가 엄마를 '계모'라 부를 때, 그것은 아이의 반항이 아니라
+      받아들여지지 않은 SOS의 결과다.
+      관계의 문제는 상대방을 바꾸려 할 때가 아니라,
+      내가 먼저 하나를 바꿀 때 풀리기 시작한다.
+    </p>
+    <p>
+      미경은 짧은 시간 안에 그것을 증명해냈다.
+      엄마가 달라지자, 아들도 달라졌다. 이것이 구조를 바꾸는 힘이다.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  <p>언행심리마스터 상담 사례 &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; <a href="../index.html">목록으로</a></p>
+
+</footer>
+
+</body>
+</html>
